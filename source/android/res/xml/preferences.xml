@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="Developer Preferences">
+        <EditTextPreference
+           	android:title="Min. distance threshold"
+	        android:key="@string/preference_min_distance_threshold"
+	        android:defaultValue="@string/preference_default_min_distance_threshold"
+	        android:inputType="number" />
+        <EditTextPreference
+           	android:title="Min. good matches"
+	        android:key="@string/preference_min_good_matches"
+	        android:defaultValue="@string/preference_default_min_good_matches"
+	        android:inputType="number" />
+        <EditTextPreference
+           	android:title="Frame size"
+	        android:key="@string/preference_desired_frame_mat_size"
+	        android:defaultValue="@string/preference_default_desired_frame_mat_size"
+	        android:inputType="number" />
+    </PreferenceCategory>
+</PreferenceScreen>
