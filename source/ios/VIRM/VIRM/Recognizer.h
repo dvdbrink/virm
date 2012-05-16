@@ -8,6 +8,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "AppDelegate.h"
+#import "Utils.h"
 
 using namespace std;
 using namespace cv;
@@ -26,6 +27,8 @@ using namespace cv;
     
     AppDelegate *appDelegate;
     int imageId;
+    
+    Utils *utils;
 }
 
 - (id) initWithDataSet: (vector<Mat>) dataset;
