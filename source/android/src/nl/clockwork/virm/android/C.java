@@ -7,7 +7,7 @@ import org.opencv.features2d.FeatureDetector;
 public final class C {
 	public static final String TAG = "virm";
 
-	public static final String PATH = "db2-50%";
+	public static final String PATH = "mats";
 
 	public static final int OPENCV_DETECTOR_ALGORITHM = FeatureDetector.ORB;
 	public static final int OPENCV_EXTRACTOR_ALGORITHM = DescriptorExtractor.ORB;

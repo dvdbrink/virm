@@ -6,7 +6,7 @@ import nl.clockwork.virm.android.dataset.Painting;
 import nl.clockwork.virm.android.history.BasicHistory;
 import nl.clockwork.virm.android.history.History;
 import nl.clockwork.virm.android.loader.Loader;
-import nl.clockwork.virm.android.loader.LocalLoader;
+import nl.clockwork.virm.android.loader.MatLoader;
 import nl.clockwork.virm.android.scanner.AsyncOpenCVScanner;
 import nl.clockwork.virm.android.scanner.Scanner;
 import nl.clockwork.virm.android.ui.preview.AndroidPreview;
@@ -30,7 +30,7 @@ public final class Factory {
 	}
 
 	public static Loader createLoader(Context context) {
-		return new LocalLoader(context);
+		return new MatLoader(context);
 	}
 
 	public static Scanner createScanner(DataSet dataSet) {

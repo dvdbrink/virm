@@ -39,7 +39,7 @@ public class ClientHandler implements Runnable {
 			while (running) {
 				byte b = (byte) in.read();
 				if (b > -1) {
-					handlePacket(new DataPacket(b, in));
+					handlePacket(b, new DataPacket(in));
 				}
 			}
 		} catch (IOException e) {
@@ -55,8 +55,8 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
-	private void handlePacket(DataPacket dp) throws IOException {
-		switch (dp.getCommand()) {
+	private void handlePacket(byte command, DataPacket dp) throws IOException {
+		switch (command) {
 		case Packets.PING:
 			view.addLogText(ssid, "Received PING.");
 			sendPing();
