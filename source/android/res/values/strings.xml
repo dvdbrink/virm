@@ -17,7 +17,7 @@ Ut enim nunc, fermentum ut bibendum vitae, faucibus et neque. Ut egestas tellus 
 	<string name="preference_min_distance_threshold">distance</string>
 	<string name="preference_min_good_matches">threshold</string>
 	<string name="preference_default_min_distance_threshold">35</string>
-	<string name="preference_default_min_good_matches">10</string>
+	<string name="preference_default_min_good_matches">5</string>
 	<string name="preference_desired_frame_mat_size">frame size</string>
 	<string name="preference_default_desired_frame_mat_size">150</string>
 </resources>

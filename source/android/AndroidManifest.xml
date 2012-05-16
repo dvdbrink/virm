@@ -27,6 +27,7 @@
         <activity
             android:name=".ui.activity.LoadingScreenActivity"
            	android:theme="@android:style/Theme.Black.NoTitleBar"
+           	android:configChanges="orientation"
             android:noHistory="true" >
         </activity>
         <activity
