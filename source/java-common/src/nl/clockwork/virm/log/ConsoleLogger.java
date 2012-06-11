@@ -16,6 +16,6 @@ public class ConsoleLogger implements Logger {
 			case ERROR: out += "[ERROR]"; break;
 			case FATAL: out += "[FATAL]"; break;
 		}
-		System.out.println(out + message);
+		System.out.println(out + " " + message);
 	}
 }

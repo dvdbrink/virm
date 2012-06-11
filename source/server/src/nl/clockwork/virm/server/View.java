@@ -15,12 +15,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
-public class ServerView implements Observer {
+public class View implements Observer {
 	private static final String DATE_FORMAT_NOW = "HH:mm:ss";
-
+	
 	private DefaultTableModel connectionsTableModel, logTableModel;
 
-	public ServerView() {
+	public View() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
@@ -35,6 +35,10 @@ public class ServerView implements Observer {
 
 		initializeGUI();
 	}
+	
+	public void addController(Controller controller) {
+		
+	}
 
 	private void initializeGUI() {
 		JFrame frame = new JFrame();
@@ -43,7 +47,7 @@ public class ServerView implements Observer {
 		frame.setBounds(500, 500, 700, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.add(tabbedPane, BorderLayout.CENTER);
 

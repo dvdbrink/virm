@@ -5,16 +5,16 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import nl.clockwork.virm.server.ServerView;
-
 public class Server implements Runnable {
 	private boolean running;
 	private ServerSocket serverSocket;
-	private ServerView view;
 	private long nConnections;
+	private String ip;
+	private int port;
 
-	public Server(ServerView view) {
-		this.view = view;
+	public Server(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
 		running = false;
 		nConnections = 0;
 	}
@@ -23,7 +23,7 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			serverSocket = new ServerSocket();
-			serverSocket.bind(new InetSocketAddress("172.19.2.62", 1337));
+			serverSocket.bind(new InetSocketAddress(ip, port));
 
 			Socket socket = null;
 
@@ -33,10 +33,7 @@ public class Server implements Runnable {
 				try {
 					socket = serverSocket.accept();
 					long ssid = nConnections++;
-					view.addConnection(ssid, socket.getInetAddress()
-							.getHostAddress(), Integer.toString(socket
-							.getPort()), "Connected");
-					new Thread(new ClientHandler(ssid, socket, view)).start();
+					new Thread(new ClientHandler(ssid, socket)).start();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
