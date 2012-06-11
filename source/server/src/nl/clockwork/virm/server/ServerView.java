@@ -3,6 +3,8 @@ package nl.clockwork.virm.server;
 import java.awt.BorderLayout;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,7 +15,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
-public class ServerView {
+public class ServerView implements Observer {
 	private static final String DATE_FORMAT_NOW = "HH:mm:ss";
 
 	private DefaultTableModel connectionsTableModel, logTableModel;
@@ -126,5 +128,11 @@ public class ServerView {
 				connectionsTableModel.setValueAt(status, row, 3);
 			}
 		}
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }

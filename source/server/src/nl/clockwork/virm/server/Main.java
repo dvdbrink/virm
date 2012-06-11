@@ -7,7 +7,7 @@ import nl.clockwork.virm.server.net.Server;
 
 /*
  * CPU -> VM-arguments: -Djava.library.path="${project_loc}/lib" -Xcheck:jni
- * GPI -> optirun java -Djava.library.path=/home/daniel/dev/projects/virm-android/virm-server/lib -jar virm-server.jar
+ * GPU -> optirun java -Djava.library.path=/home/daniel/dev/projects/virm-android/virm-server/lib -jar virm-server.jar
  */
 
 public class Main {
