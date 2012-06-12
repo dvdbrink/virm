@@ -4,6 +4,8 @@
 #import "HistoryItem.h"
 #import "Recognizer.h"
 #import "Camera.h"
+#import <mach/mach.h>
+#import <mach/mach_host.h>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -116,7 +118,7 @@ using namespace cv;
 - (void)setupNetwork {
     printf("[Network] Setting up connection.\n");
     
-    [networkHandler connect:@"172.19.2.122" :1337];
+    [networkHandler connect:@"172.19.2.30" :1337];
 //    [networkHandler sendPing];
     [networkHandler sendMat:[recognizer getTestMat]];
 }
@@ -129,9 +131,29 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     UIImage* captureUI = [utils imageFromSampleBuffer:sampleBuffer];
     int match = [recognizer recognize:captureUI];
     
+//    natural_t freemem = [self get_free_memory];
+//    printf("[System] Free memory: %u.\n", freemem);
+    
     if(match > -1) {
         [self processMatch:match];
     }
+}
+
+-(natural_t) get_free_memory {
+    mach_port_t host_port;
+    mach_msg_type_number_t host_size;
+    vm_size_t pagesize;
+    host_port = mach_host_self();
+    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+    host_page_size(host_port, &pagesize);
+    vm_statistics_data_t vm_stat;
+    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
+        NSLog(@"Failed to fetch vm statistics");
+        return 0;
+    }
+    /* Stats in bytes */
+    natural_t mem_free = vm_stat.free_count * pagesize;
+    return mem_free;
 }
 
 - (void) processMatch: (int) imageId {

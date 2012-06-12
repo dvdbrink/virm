@@ -89,28 +89,28 @@
     [data getBytes:received length:1];
     
     switch(received[0]) {
-        case 0x00 : {
+        case 0x01 : {
             printf("[Network] PING received.\n");
             break;
         }
-        case 0x01 : {
+        case 0x02 : {
             printf("[Network] OK received.\n");
             break;
         }
-        case 0x02 : {
+        case 0x03 : {
             printf("[Network] FAIL received.\n");            
             break;
         }
-        case 0x03 : {
+        case 0x04 : {
             printf("[Network] CLOSE received.\n");            
             break;
         }
-        case 0x05 : {
+        case 0x06 : {
             printf("[Network] MATCH received.\n");
             [self handleMatch];
             break;
         }
-        case 0x06 : {
+        case 0x07 : {
             printf("[Network] NO_MATCH received.\n");            
             break;
         }            
@@ -148,7 +148,7 @@
 
 - (void) sendMat: (Mat) mat {
     Byte buffer[1];
-    buffer[0] = 0x04;                    
+    buffer[0] = 0x05;                    
     NSMutableData *data = [NSMutableData dataWithCapacity:0];
     [data appendBytes:buffer length:1];
         
@@ -163,6 +163,7 @@
     }
         
     [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];   
+    printf("[Network] Mat sent.\n");
 }
 
 - (NSInputStream *) getInputStream {

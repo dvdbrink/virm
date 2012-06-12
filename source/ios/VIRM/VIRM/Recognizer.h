@@ -19,8 +19,6 @@ using namespace cv;
     vector<DMatch> matches;
     
     Mat capturedDescriptors;    
-    Mat matchImage;
-    Mat grayImage;
     
     OrbFeatureDetector featureDetector;
     OrbDescriptorExtractor featureExtractor;   

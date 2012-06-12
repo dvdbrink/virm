@@ -23,9 +23,6 @@ using namespace cv;
         imageId = -1;
         appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        Mat initImage(appDelegate.imageDimensions, appDelegate.imageDimensions, CV_8UC3);  
-        matchImage = initImage;
-        
         utils = [[Utils alloc] init];
     }
     return self;
@@ -43,18 +40,21 @@ using namespace cv;
     return imageId;
 }
 
-- (Mat) getDescriptors:(UIImage *)image {
+- (Mat) getDescriptors:(UIImage *)image {   
     // Clear previous results.
     keypoints.clear();
     
+    Mat grayImage(appDelegate.imageDimensions, appDelegate.imageDimensions, CV_8UC1);
     Mat capture = [utils MatFromUIImage:image];
-    cvtColor(matchImage, grayImage, CV_RGB2GRAY);    
     
-    cv::resize(capture, grayImage, matchImage.size());
+    cv::resize(capture, grayImage, grayImage.size());
     
     featureDetector.detect(grayImage, keypoints);
     
     featureExtractor.compute(grayImage, keypoints, capturedDescriptors);
+
+    grayImage.release();
+    capture.release();
     
     return capturedDescriptors;
 }
@@ -76,7 +76,7 @@ using namespace cv;
         matcher.match(capturedMat, dataSetDescriptors[i], matches);        
         
         // Save good matches (low distance) in list.
-        for(int k = 0; k < capturedDescriptors.rows; k++ ) {
+        for(int k = 0; k < capturedMat.rows; k++ ) {
             if( matches[k].distance < appDelegate.maxDistance ) {
                 goodMatches++;   
             }
