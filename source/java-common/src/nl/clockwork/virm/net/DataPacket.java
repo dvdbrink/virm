@@ -6,18 +6,12 @@ import java.io.InputStream;
 import nl.clockwork.virm.util.Convert;
 
 public class DataPacket {
-	private byte command;
 	private InputStream in;
 
-	public DataPacket(byte command, InputStream in) {
-		this.command = command;
+	public DataPacket(InputStream in) {
 		this.in = in;
 	}
-
-	public byte getCommand() {
-		return command;
-	}
-
+	
 	public byte readByte() {
 		return readBytes(1)[0];
 	}

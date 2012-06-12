@@ -9,18 +9,15 @@ import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.Packets;
 import nl.clockwork.virm.server.Recognizer;
-import nl.clockwork.virm.server.ServerView;
 
 public class ClientHandler implements Runnable {
-	private ServerView view;
 	private boolean running;
 	private Socket socket;
 	private InputStream in;
 	private OutputStream out;
 	private long ssid;
 
-	public ClientHandler(long ssid, Socket socket, ServerView view) {
-		this.view = view;
+	public ClientHandler(long ssid, Socket socket) {
 		this.running = false;
 		try {
 			this.ssid = ssid;
@@ -39,15 +36,13 @@ public class ClientHandler implements Runnable {
 			while (running) {
 				byte b = (byte) in.read();
 				if (b > -1) {
-					handlePacket(new DataPacket(b, in));
+					handlePacket(b, new DataPacket(in));
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				view.addLogText(ssid, "Closing socket.");
-				view.setConnectionStatus(ssid, "Disconnected");
 				socket.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -55,18 +50,15 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
-	private void handlePacket(DataPacket dp) throws IOException {
-		switch (dp.getCommand()) {
+	private void handlePacket(byte command, DataPacket dp) throws IOException {
+		switch (command) {
 		case Packets.PING:
-			view.addLogText(ssid, "Received PING.");
 			sendPing();
 			break;
 		case Packets.MAT:
-			view.addLogText(ssid, "Received MAT.");
 			handleMat(dp);
 			break;
 		case Packets.CLOSE:
-			view.addLogText(ssid, "Received CLOSE.");
 			handleClose();
 			break;
 		}
@@ -78,8 +70,6 @@ public class ClientHandler implements Runnable {
 	}
 
 	private void handleMat(DataPacket dp) {
-		view.setConnectionStatus(ssid, "Reading capture");
-
 		int rows = dp.readInt();
 		int cols = dp.readInt();
 		int[][] matrix = new int[rows][cols];
@@ -98,7 +88,6 @@ public class ClientHandler implements Runnable {
 	}
 
 	private void sendMatch(String file) {
-		view.addLogText(ssid, "Sending MATCH.");
 		Packet packet = new Packet();
 		packet.addByte(Packets.MATCH);
 		packet.addString(file);
@@ -106,21 +95,18 @@ public class ClientHandler implements Runnable {
 	}
 
 	private void sendNoMatch() {
-		view.addLogText(ssid, "Sending NO_MATCH.");
 		Packet packet = new Packet();
 		packet.addByte(Packets.NO_MATCH);
 		packet.send(out);
 	}
 
 	private void sendPing() {
-		view.addLogText(ssid, "Sending PING.");
 		Packet packet = new Packet();
 		packet.addByte(Packets.PING);
 		packet.send(out);
 	}
 
 	private void sendOk() {
-		view.addLogText(ssid, "Sending OK.");
 		Packet packet = new Packet();
 		packet.addByte(Packets.OK);
 		packet.send(out);
