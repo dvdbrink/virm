@@ -111,38 +111,33 @@ using namespace cv;
     }
     
     [data writeToFile:filePath atomically:YES];
+    [data release];
     printf("[OpenCV] Saved image: %s.\n", [filename UTF8String]);
 }
 
 - (Mat)MatFromUIImage:(UIImage *)image
 {
-    IplImage *iplImage = [self IplImageFromUIImage:image];
-    Mat result(iplImage, true);
-    cvReleaseImage(&iplImage);
-    return result;
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+    CGFloat cols = image.size.width;
+    CGFloat rows = image.size.height;
+    
+    Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels
+    
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to backing data
+                                                    cols,                      // Width of bitmap
+                                                    rows,                     // Height of bitmap
+                                                    8,                          // Bits per component
+                                                    cvMat.step[0],              // Bytes per row
+                                                    colorSpace,                 // Colorspace
+                                                    kCGImageAlphaNoneSkipLast |
+                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
+    
+    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
+    CGContextRelease(contextRef);
+    
+    return cvMat;
 }
 
-- (IplImage *)IplImageFromUIImage:(UIImage *)image 
-{
-    // NOTE you SHOULD cvReleaseImage() for the return value when end of the code.
-    CGImageRef imageRef = image.CGImage;
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    IplImage *iplimage = cvCreateImage(cvSize(image.size.width, image.size.height), IPL_DEPTH_8U, 4);
-    CGContextRef contextRef = CGBitmapContextCreate(iplimage->imageData, iplimage->width, iplimage->height,
-                                                    iplimage->depth, iplimage->widthStep,
-                                                    colorSpace, kCGImageAlphaPremultipliedLast|kCGBitmapByteOrderDefault);
-    CGContextDrawImage(contextRef, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
-    CGContextRelease(contextRef);
-    CGColorSpaceRelease(colorSpace);
-    
-    IplImage *ret = cvCreateImage(cvGetSize(iplimage), IPL_DEPTH_8U, 3);
-    cvCvtColor(iplimage, ret, CV_RGBA2RGB);
-    
-    cvReleaseImage(&iplimage);
-    
-    return ret;
-}
 
 // Create a UIImage from sample buffer data
 - (UIImage *) imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer 
@@ -244,56 +239,56 @@ using namespace cv;
     [imageList addObject:@"IMG_20120328_135941.jpg"];
     
 //    // Museum #2
-    [imageList addObject:@"IMG_20120502_134328.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134336.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134349.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134358.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134407.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134418.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134433.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134440.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134447.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134455.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134526.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134534.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134541.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134547.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134557.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134605.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134612.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134619.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134626.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134647.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134653.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134700.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134707.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134713.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134720.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134755.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134803.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134812.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134822.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134834.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134842.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134850.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134859.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134907.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134914.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134939.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134948.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134957.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135009.jpg"];
-    [imageList addObject:@"IMG_20120502_135018.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135027.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135050.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135057.jpg"];    
-    [imageList addObject:@"IMG_20120502_135126.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135140.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135152.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135200.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135207.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135215.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135224.jpg"];    
+//    [imageList addObject:@"IMG_20120502_134328.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134336.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134349.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134358.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134407.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134418.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134433.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134440.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134447.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134455.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134526.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134534.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134541.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134547.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134557.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134605.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134612.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134619.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134626.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134647.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134653.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134700.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134707.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134713.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134720.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134755.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134803.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134812.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134822.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134834.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134842.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134850.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134859.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134907.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134914.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134939.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134948.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134957.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135009.jpg"];
+//    [imageList addObject:@"IMG_20120502_135018.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135027.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135050.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135057.jpg"];    
+//    [imageList addObject:@"IMG_20120502_135126.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135140.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135152.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135200.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135207.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135215.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135224.jpg"];    
     
     for(NSString *filename in imageList) {
         fileNames.push_back(filename);        
