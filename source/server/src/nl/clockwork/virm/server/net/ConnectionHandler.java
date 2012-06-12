@@ -3,27 +3,25 @@ package nl.clockwork.virm.server.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 
+import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.Packets;
 import nl.clockwork.virm.server.Recognizer;
 
-public class ClientHandler implements Runnable {
-	private boolean running;
-	private Socket socket;
+public class ConnectionHandler implements Runnable {
+	private Connection conn;
 	private InputStream in;
 	private OutputStream out;
-	private long ssid;
+	private boolean running;
 
-	public ClientHandler(long ssid, Socket socket) {
-		this.running = false;
+	public ConnectionHandler(Connection conn) {
 		try {
-			this.ssid = ssid;
-			this.socket = socket;
-			this.in = this.socket.getInputStream();
-			this.out = this.socket.getOutputStream();
+			this.conn = conn;
+			in = this.conn.getInputStream();
+			out = this.conn.getOutputStream();
+			running = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,6 +29,7 @@ public class ClientHandler implements Runnable {
 
 	@Override
 	public void run() {
+		conn.setStatus(Status.CONNECTED);
 		try {
 			running = true;
 			while (running) {
@@ -43,7 +42,8 @@ public class ClientHandler implements Runnable {
 			e.printStackTrace();
 		} finally {
 			try {
-				socket.close();
+				conn.close();
+				conn.setStatus(Status.DISCONNECTED);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -51,25 +51,33 @@ public class ClientHandler implements Runnable {
 	}
 
 	private void handlePacket(byte command, DataPacket dp) throws IOException {
+		Log.d(conn.getSSID() + "", "handlePacket(" + command + ")");
 		switch (command) {
-		case Packets.PING:
-			sendPing();
-			break;
-		case Packets.MAT:
-			handleMat(dp);
-			break;
-		case Packets.CLOSE:
-			handleClose();
-			break;
+			case Packets.PING:
+				sendPing();
+				break;
+			case Packets.MAT:
+				handleMat(dp);
+				break;
+			case Packets.CLOSE:
+				running = false;
+				sendOk();
+				break;
 		}
 	}
 
-	private void handleClose() {
-		sendOk();
-		running = false;
-	}
+	private void handleMat(DataPacket dp) {		
+		int[][] mat = readMat(dp);
 
-	private void handleMat(DataPacket dp) {
+		String value = Recognizer.get().detectMat(mat);
+		if (value == null || value.isEmpty()) {
+			sendNoMatch();
+		} else {
+			sendMatch(value);
+		}
+	}
+	
+	private int[][] readMat(DataPacket dp) {
 		int rows = dp.readInt();
 		int cols = dp.readInt();
 		int[][] matrix = new int[rows][cols];
@@ -78,37 +86,35 @@ public class ClientHandler implements Runnable {
 				matrix[row][col] = dp.readInt();
 			}
 		}
-
-		String value = Recognizer.get().detectMat(matrix);
-		if (value == null || value.isEmpty() || value.equalsIgnoreCase("null")) {
-			sendNoMatch();
-		} else {
-			sendMatch(value);
-		}
+		return matrix;
 	}
 
-	private void sendMatch(String file) {
+	public void sendMatch(String file) {
 		Packet packet = new Packet();
 		packet.addByte(Packets.MATCH);
+		//packet.addLong(conn.getSSID());
 		packet.addString(file);
 		packet.send(out);
 	}
 
-	private void sendNoMatch() {
+	public void sendNoMatch() {
 		Packet packet = new Packet();
 		packet.addByte(Packets.NO_MATCH);
+		packet.addLong(conn.getSSID());
 		packet.send(out);
 	}
 
-	private void sendPing() {
+	public void sendPing() {
 		Packet packet = new Packet();
 		packet.addByte(Packets.PING);
+		packet.addLong(conn.getSSID());
 		packet.send(out);
 	}
 
-	private void sendOk() {
+	public void sendOk() {
 		Packet packet = new Packet();
 		packet.addByte(Packets.OK);
+		packet.addLong(conn.getSSID());
 		packet.send(out);
 	}
 }

@@ -3,7 +3,7 @@
 #include <fstream>
 
 JNIEXPORT jboolean JNICALL
-Java_nl_clockwork_virm_logic_Recognizer_nativeInit(JNIEnv* env, jobject obj, jobjectArray files) {
+Java_nl_clockwork_virm_server_Recognizer_nativeInit(JNIEnv* env, jobject obj, jobjectArray files) {
 	unsigned int numFiles = env->GetArrayLength(files);
 
 	for (unsigned int i = 0; i < numFiles; i++) {
@@ -15,7 +15,7 @@ Java_nl_clockwork_virm_logic_Recognizer_nativeInit(JNIEnv* env, jobject obj, job
 }
 
 JNIEXPORT jint JNICALL
-Java_nl_clockwork_virm_logic_Recognizer_nativeDetect(JNIEnv* env, jobject obj, jstring file) {
+Java_nl_clockwork_virm_server_Recognizer_nativeDetect(JNIEnv* env, jobject obj, jstring file) {
 	cv::Mat rawImage(cv::imread(env->GetStringUTFChars(file, 0), 0));
 	cv::resize(rawImage, image, image.size());
 
@@ -47,7 +47,7 @@ Java_nl_clockwork_virm_logic_Recognizer_nativeDetect(JNIEnv* env, jobject obj, j
 }
 
 JNIEXPORT jint JNICALL
-Java_nl_clockwork_virm_logic_Recognizer_nativeDetectMat(JNIEnv* env, jobject obj, jint rows, jint cols, jobjectArray mat) {
+Java_nl_clockwork_virm_server_Recognizer_nativeDetectMat(JNIEnv* env, jobject obj, jint rows, jint cols, jobjectArray mat) {
 	cv::Mat descriptor(rows, cols, CV_8UC1);
 	for (unsigned int i = 0; i < rows; i++) {
 	     jintArray rowArray = (jintArray)env->GetObjectArrayElement(mat, i);

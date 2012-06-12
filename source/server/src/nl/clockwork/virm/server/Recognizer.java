@@ -4,7 +4,6 @@ import java.io.File;
 
 import nl.clockwork.virm.log.Log;
 
-
 public final class Recognizer {
 	private static Recognizer instance;
 	public static Recognizer get() {
@@ -27,10 +26,9 @@ public final class Recognizer {
 	private Recognizer() {
 		File folder = new File("res/descriptor");
 		File[] files = folder.listFiles();
-		mats = new String[files.length/* * 20*/];
+		mats = new String[files.length];
 		for (int i = 0; i < files.length; i++) {
-			//for (int j = 0; j < 20; j++)
-				mats[i/**20+j*/] = files[i].getPath();
+				mats[i] = files[i].getPath();
 		}
 		Log.d("Files in memory: " + mats.length);
 		nativeInit(mats);
@@ -44,7 +42,7 @@ public final class Recognizer {
 		if (loc > -1) {
 			return mats[loc];
 		}
-		return "null";
+		return null;
 	}
 	
 	public synchronized String detectMat(int[][] mat) {
@@ -55,6 +53,6 @@ public final class Recognizer {
 		if (loc > -1) {
 			return mats[loc];
 		}
-		return "null";
+		return null;
 	}
 }

@@ -15,7 +15,7 @@ public class Client implements Runnable{
 
 	public Client() throws UnknownHostException, IOException, InterruptedException {
 		socket = new Socket();
-		socket.connect(new InetSocketAddress("172.19.2.62", 1337));
+		socket.connect(new InetSocketAddress("172.19.2.30", 1337));
 		out = socket.getOutputStream();
 	}
 
@@ -42,7 +42,7 @@ public class Client implements Runnable{
 		}	
 	}
 
-//	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
-//		new Client();
-//	}
+	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
+		new Client();
+	}
 }

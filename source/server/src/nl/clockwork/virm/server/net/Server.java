@@ -4,19 +4,22 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Server implements Runnable {
-	private boolean running;
-	private ServerSocket serverSocket;
-	private long nConnections;
+public class Server implements Runnable {	
 	private String ip;
 	private int port;
+	private boolean running;
+	private ServerSocket serverSocket;
+	private List<ServerListener> listeners;
 
 	public Server(String ip, int port) {
 		this.ip = ip;
 		this.port = port;
 		running = false;
-		nConnections = 0;
+		serverSocket = null;
+		listeners = new ArrayList<ServerListener>();
 	}
 
 	@Override
@@ -26,14 +29,11 @@ public class Server implements Runnable {
 			serverSocket.bind(new InetSocketAddress(ip, port));
 
 			Socket socket = null;
-
 			running = true;
-
 			while (running) {
 				try {
 					socket = serverSocket.accept();
-					long ssid = nConnections++;
-					new Thread(new ClientHandler(ssid, socket)).start();
+					onConnection(socket);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -46,6 +46,19 @@ public class Server implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void addListener(ServerListener l) {
+		listeners.add(l);
+	}
+	
+	private void onConnection(Socket s) {
+		Connection conn = new Connection(0, s);		
+		new Thread(new ConnectionHandler(conn)).start();
+		
+		for (ServerListener l : listeners) {
+			l.onConnection(conn);
 		}
 	}
 }
