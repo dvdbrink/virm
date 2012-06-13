@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.Packets;
+import nl.clockwork.virm.server.Factory;
+import nl.clockwork.virm.server.detect.Detectable;
 
 public class ConnectionHandler implements Runnable {
 	private Connection conn;
@@ -50,17 +51,16 @@ public class ConnectionHandler implements Runnable {
 	}
 
 	private void handlePacket(byte command, DataPacket dp) throws IOException {
-		Log.d(conn.getSSID() + "", "handlePacket(" + command + ")");
 		switch (command) {
 			case Packets.PING:
-				sendPing();
+				sendPacket(Packets.PING);
 				break;
-			case Packets.MAT:
+			case Packets.DETECT:
 				handleMat(dp);
 				break;
 			case Packets.CLOSE:
 				running = false;
-				sendOk();
+				sendPacket(Packets.OK);
 				break;
 		}
 	}
@@ -68,12 +68,12 @@ public class ConnectionHandler implements Runnable {
 	private void handleMat(DataPacket dp) {		
 		int[][] mat = readMat(dp);
 
-		/*String value = PaintingDetector.get().detectMat(mat);
-		if (value == null || value.isEmpty()) {
-			sendNoMatch();
+		Detectable result = Factory.getDetector().detect(mat);
+		if (result == null) {
+			sendPacket(Packets.NO_MATCH);
 		} else {
-			sendMatch(value);
-		}*/
+			sendMatch(result);
+		}
 	}
 	
 	private int[][] readMat(DataPacket dp) {
@@ -88,28 +88,16 @@ public class ConnectionHandler implements Runnable {
 		return matrix;
 	}
 
-	public void sendMatch(String file) {
+	public void sendMatch(Detectable d) {
 		Packet packet = new Packet();
 		packet.addByte(Packets.MATCH);
-		packet.addString(file);
+		packet.addString(d.getName());
 		packet.send(out);
 	}
-
-	public void sendNoMatch() {
+	
+	public void sendPacket(byte command) {
 		Packet packet = new Packet();
-		packet.addByte(Packets.NO_MATCH);
-		packet.send(out);
-	}
-
-	public void sendPing() {
-		Packet packet = new Packet();
-		packet.addByte(Packets.PING);
-		packet.send(out);
-	}
-
-	public void sendOk() {
-		Packet packet = new Packet();
-		packet.addByte(Packets.OK);
+		packet.addByte(command);
 		packet.send(out);
 	}
 }

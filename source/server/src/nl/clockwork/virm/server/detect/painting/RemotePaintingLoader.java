@@ -1,5 +1,8 @@
 package nl.clockwork.virm.server.detect.painting;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.server.detect.Detectable;
@@ -15,13 +19,29 @@ import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.util.Convert;
 
 public class RemotePaintingLoader implements Loader {
-	private Connection conn;
-	
-	public RemotePaintingLoader(String url) {
-		this(url, "", "");
+	private static RemotePaintingLoader instance = null;
+	public static RemotePaintingLoader get() {
+		if (instance == null) {
+			Properties prop = new Properties();
+			try {
+				prop.load(new FileInputStream("conf/default.properties"));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String host = prop.getProperty("db_host");
+			String user = prop.getProperty("db_user");
+			String pass = prop.getProperty("db_pass");
+			String name = prop.getProperty("db_name");
+			instance = new RemotePaintingLoader(host + name, user, pass);
+		}
+		return instance;
 	}
 	
-	public RemotePaintingLoader(String url, String user, String password) {		
+	private Connection conn;
+	
+	private RemotePaintingLoader(String url, String user, String password) {		
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {

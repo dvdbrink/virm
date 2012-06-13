@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.clockwork.virm.log.Log;
+
 public class Server implements Runnable {	
 	private String ip;
 	private int port;
@@ -27,6 +29,7 @@ public class Server implements Runnable {
 		try {
 			serverSocket = new ServerSocket();
 			serverSocket.bind(new InetSocketAddress(ip, port));
+			Log.i(Server.class.getSimpleName(), "Running on " + serverSocket.getInetAddress().getHostAddress() + ":" + serverSocket.getLocalPort());
 
 			Socket socket = null;
 			running = true;
