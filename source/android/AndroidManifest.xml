@@ -47,10 +47,6 @@
             android:name=".ui.activity.PreferencesActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
-        <activity
-            android:name="nl.clockwork.virm.android.ui.activity.NetworkTestActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
-        </activity>
     </application>
 
 </manifest>

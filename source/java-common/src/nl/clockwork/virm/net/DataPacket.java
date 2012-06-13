@@ -19,6 +19,11 @@ public class DataPacket {
 	public int readInt() {
 		return Convert.byteArrayToInt(readBytes(4));
 	}
+	
+	public String readString() {
+		int length = readInt();
+		return new String(readBytes(length));
+	}
 
 	private byte[] readBytes(int length) {
 		byte[] buffer = new byte[length];

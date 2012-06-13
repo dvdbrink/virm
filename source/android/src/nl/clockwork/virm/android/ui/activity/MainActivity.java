@@ -9,7 +9,7 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		//startActivity(new Intent(this, NetworkTestActivity.class));
-		startActivity(new Intent(this, LoadingScreenActivity.class));
+		//startActivity(new Intent(this, LoadingScreenActivity.class));
+		startActivity(new Intent(this, CameraActivity.class));
 	}
 }
