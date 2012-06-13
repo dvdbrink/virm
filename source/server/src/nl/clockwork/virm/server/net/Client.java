@@ -1,4 +1,4 @@
-package nl.clockwork.virm.server.tmp;
+package nl.clockwork.virm.server.net;
 
 import java.io.IOException;
 import java.io.OutputStream;

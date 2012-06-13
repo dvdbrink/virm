@@ -8,7 +8,7 @@ import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.Packets;
-import nl.clockwork.virm.server.Recognizer;
+import nl.clockwork.virm.server.detect.painting.Recognizer;
 
 public class ConnectionHandler implements Runnable {
 	private Connection conn;

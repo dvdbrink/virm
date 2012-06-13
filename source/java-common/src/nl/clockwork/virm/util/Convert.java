@@ -26,9 +26,13 @@ public final class Convert {
 	}
 	
 	public static int byteArrayToInt(byte[] bytes) {
+		return byteArrayToInt(bytes, 0);
+	}
+	
+	public static int byteArrayToInt(byte[] bytes, int offset) {
 		int integer = 0;
 		for (int i = 0; i < 4; i++) {
-			integer |= (bytes[i] & 0xFF) << (i << 3);
+			integer |= (bytes[i + offset] & 0xFF) << (i << 3);
 		}
 		return integer;
 	}

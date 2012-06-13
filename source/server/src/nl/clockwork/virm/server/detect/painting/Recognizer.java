@@ -1,10 +1,12 @@
-package nl.clockwork.virm.server;
+package nl.clockwork.virm.server.detect.painting;
 
 import java.io.File;
 
 import nl.clockwork.virm.log.Log;
+import nl.clockwork.virm.server.detect.Detectable;
+import nl.clockwork.virm.server.detect.Detector;
 
-public final class Recognizer {
+public final class Recognizer implements Detector {
 	private static Recognizer instance;
 	public static Recognizer get() {
 		if (instance == null) {
@@ -53,6 +55,12 @@ public final class Recognizer {
 		if (loc > -1) {
 			return mats[loc];
 		}
+		return null;
+	}
+	
+	@Override
+	public Detectable detect(Object arg) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
