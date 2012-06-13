@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.clockwork.virm.log.Log;
-import nl.clockwork.virm.server.detect.Loadable;
+import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.util.Convert;
 
@@ -20,8 +20,8 @@ public class LocalPaintingLoader implements Loader {
 	}
 
 	@Override
-	public List<Loadable> load() {
-		List<Loadable> paintings = new ArrayList<Loadable>();
+	public List<Detectable> load() {
+		List<Detectable> paintings = new ArrayList<Detectable>();
 		File folder = new File(path);
 		File[] files = folder.listFiles();
 		for (int i = 0; i < files.length; i++) {

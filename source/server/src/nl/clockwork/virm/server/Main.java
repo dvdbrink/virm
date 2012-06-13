@@ -1,30 +1,27 @@
 package nl.clockwork.virm.server;
 
-import java.io.IOException;
+import java.util.Observable;
 
 import nl.clockwork.virm.log.Log;
-import nl.clockwork.virm.server.detect.Loader;
-import nl.clockwork.virm.server.detect.painting.LocalPaintingLoader;
-import nl.clockwork.virm.server.detect.painting.RemotePaintingLoader;
+import nl.clockwork.virm.server.controller.BasicController;
+import nl.clockwork.virm.server.controller.Controller;
+import nl.clockwork.virm.server.model.Model;
+import nl.clockwork.virm.server.model.ServerModel;
+import nl.clockwork.virm.server.view.BasicGUI;
+import nl.clockwork.virm.server.view.View;
 
 public class Main {
-
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		Log.init(new String[] { "nl.clockwork.virm.log.ConsoleLogger",
 				"nl.clockwork.virm.server.view.ViewLogger" });
-		
-		Loader loader = new RemotePaintingLoader("jdbc:mysql://localhost:3306/virm", "root", "root");
-		//Loader loader = new LocalPaintingLoader("res/descriptor");
-		loader.load();
 
-		/*Server server = new Server("172.19.2.30", 1337);
-		Model model = new ServerModel(server);
-		View view = new ServerView();
-		Controller controller = new ServerController(model, view);
+		Model model = new ServerModel();
+		View view = new BasicGUI();
+		Controller controller = new BasicController(model, view);
 
 		model.addObserver(view);
 		view.addController(controller);
 
-		((Observable) Log.get("nl.clockwork.virm.server.view.ViewLogger")).addObserver(view);*/
+		((Observable) Log.get("nl.clockwork.virm.server.view.ViewLogger")).addObserver(view);
 	}
 }

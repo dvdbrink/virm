@@ -16,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
 import nl.clockwork.virm.server.controller.Controller;
 import nl.clockwork.virm.server.net.Connection;
 
-public class ServerView implements View {
+public class BasicGUI implements View {
 	private DefaultTableModel connections, log;
 	public JButton startButton;
 
-	public ServerView() {
+	public BasicGUI() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {

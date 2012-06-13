@@ -8,7 +8,6 @@ import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.Packets;
-import nl.clockwork.virm.server.detect.painting.Recognizer;
 
 public class ConnectionHandler implements Runnable {
 	private Connection conn;
@@ -69,12 +68,12 @@ public class ConnectionHandler implements Runnable {
 	private void handleMat(DataPacket dp) {		
 		int[][] mat = readMat(dp);
 
-		String value = Recognizer.get().detectMat(mat);
+		/*String value = PaintingDetector.get().detectMat(mat);
 		if (value == null || value.isEmpty()) {
 			sendNoMatch();
 		} else {
 			sendMatch(value);
-		}
+		}*/
 	}
 	
 	private int[][] readMat(DataPacket dp) {
@@ -92,7 +91,6 @@ public class ConnectionHandler implements Runnable {
 	public void sendMatch(String file) {
 		Packet packet = new Packet();
 		packet.addByte(Packets.MATCH);
-		//packet.addLong(conn.getSSID());
 		packet.addString(file);
 		packet.send(out);
 	}
@@ -100,21 +98,18 @@ public class ConnectionHandler implements Runnable {
 	public void sendNoMatch() {
 		Packet packet = new Packet();
 		packet.addByte(Packets.NO_MATCH);
-		packet.addLong(conn.getSSID());
 		packet.send(out);
 	}
 
 	public void sendPing() {
 		Packet packet = new Packet();
 		packet.addByte(Packets.PING);
-		packet.addLong(conn.getSSID());
 		packet.send(out);
 	}
 
 	public void sendOk() {
 		Packet packet = new Packet();
 		packet.addByte(Packets.OK);
-		packet.addLong(conn.getSSID());
 		packet.send(out);
 	}
 }

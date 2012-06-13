@@ -1,9 +1,8 @@
 package nl.clockwork.virm.server.detect.painting;
 
 import nl.clockwork.virm.server.detect.Detectable;
-import nl.clockwork.virm.server.detect.Loadable;
 
-public class Painting implements Detectable, Loadable {
+public class Painting implements Detectable {
 	public long id;
 	public String name;
 	public String description;

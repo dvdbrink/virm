@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.clockwork.virm.log.Log;
-import nl.clockwork.virm.server.detect.Loadable;
+import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.util.Convert;
 
@@ -30,8 +30,8 @@ public class RemotePaintingLoader implements Loader {
 	}
 	
 	@Override
-	public List<Loadable> load() {
-		List<Loadable> paintings = new ArrayList<Loadable>();
+	public List<Detectable> load() {
+		List<Detectable> paintings = new ArrayList<Detectable>();
 		ResultSet rs = selectPaintings();
 		try {
 			while (rs.next()) {
