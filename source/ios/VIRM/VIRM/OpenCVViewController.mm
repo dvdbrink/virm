@@ -128,14 +128,15 @@ using namespace cv;
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
        fromConnection:(AVCaptureConnection *)connection {
     
-    UIImage* captureUI = [utils imageFromSampleBuffer:sampleBuffer];
+    captureUI = [utils imageFromSampleBuffer:sampleBuffer];
     int match = [recognizer recognize:captureUI];
     
-//    natural_t freemem = [self get_free_memory];
-//    printf("[System] Free memory: %u.\n", freemem);
+    natural_t freemem = [self get_free_memory];
+    printf("[System] Free memory: %u.\n", freemem);
     
     if(match > -1) {
         [self processMatch:match];
+        
     }
 }
 

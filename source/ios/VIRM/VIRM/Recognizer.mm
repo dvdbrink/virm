@@ -34,15 +34,17 @@ using namespace cv;
 
 - (int) recognize:(UIImage *)image {
 
-    capturedDescriptors = [self getDescriptors:image];
+    Mat capturedDescriptors = [self getDescriptors:image];
     imageId = [self match:capturedDescriptors];
-    
+    capturedDescriptors.release();
     return imageId;
 }
 
 - (Mat) getDescriptors:(UIImage *)image {   
     // Clear previous results.
-    keypoints.clear();
+    vector<KeyPoint>keypoints;
+    
+    Mat capturedDescriptors;
     
     Mat grayImage(appDelegate.imageDimensions, appDelegate.imageDimensions, CV_8UC1);
     Mat capture = [utils MatFromUIImage:image];

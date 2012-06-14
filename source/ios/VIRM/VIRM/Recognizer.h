@@ -15,10 +15,9 @@ using namespace cv;
 
 @interface Recognizer : NSObject {
     vector<Mat> dataSetDescriptors;
-    vector<KeyPoint> keypoints;
+//    vector<KeyPoint> keypoints;
     vector<DMatch> matches;
-    
-    Mat capturedDescriptors;    
+        
     
     OrbFeatureDetector featureDetector;
     OrbDescriptorExtractor featureExtractor;   
