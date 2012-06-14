@@ -12,23 +12,30 @@
 
 @implementation Camera
 
-@synthesize captureSession = _captureSession, viewController = _viewController, output = _output;
+@synthesize captureSession = _captureSession, viewController = _viewController, output = _output, isRunning = _isRunning;
 
 - (id)initWithViewController:(UIViewController *)viewController {
     if(self = [super init]) {
         self.viewController = viewController;
+        _isRunning = NO;
     }
     return self;
 }
 
 - (void)start {
-    printf("[OpenCV] Capturesession started.\n");
-    [self.captureSession startRunning];
+    if(_isRunning == NO) {
+        printf("[OpenCV] Capturesession started.\n");   
+        _isRunning = YES;
+        [self.captureSession startRunning];
+    }
 }
 
 - (void)stop {
-    printf("[OpenCV] Capturesession stopped.\n");
-    [self.captureSession stopRunning];
+    if(_isRunning == YES) {
+        printf("[OpenCV] Capturesession stopped.\n");   
+        _isRunning = NO;
+        [self.captureSession stopRunning];
+    }
 }
 
 - (AVCaptureVideoDataOutput *)getOutput {

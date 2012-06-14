@@ -55,7 +55,6 @@ using namespace cv;
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
-    printf("[OpenCV] Capturesession stopped.\n");
     [camera stop];
 }
 
@@ -127,16 +126,19 @@ using namespace cv;
 - (void)captureOutput:(AVCaptureOutput *)captureOutput 
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
        fromConnection:(AVCaptureConnection *)connection {
+
+    if([camera isRunning] == YES) {
+        UIImage *captureUI = [utils imageFromSampleBuffer:sampleBuffer];
+        int match = [recognizer recognize:captureUI];
     
-    captureUI = [utils imageFromSampleBuffer:sampleBuffer];
-    int match = [recognizer recognize:captureUI];
+        natural_t freemem = [self get_free_memory];
+        printf("[System] Free memory: %u.\n", freemem);
     
-    natural_t freemem = [self get_free_memory];
-    printf("[System] Free memory: %u.\n", freemem);
-    
-    if(match > -1) {
-        [self processMatch:match];
+        if(match > -1) {
+            [self processMatch:match];
         
+        }
+        [captureUI release];
     }
 }
 
@@ -159,9 +161,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void) processMatch: (int) imageId {
     printf("[OpenCV] Image %d recognized!\n", imageId);
-    
-    [camera stop];
-    printf("[OpenCV] Capturesession stopped.\n");
 
     NSString* fileName = fileNames[imageId];
     
@@ -170,6 +169,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     [appDelegate.historyItemDataController addHistoryItem:fileName painter:fileName image:img];
     
     [self performSelectorOnMainThread:@selector(switchToPaintingView) withObject:nil waitUntilDone:NO];
+    
+    [camera stop];    
 }
 
 -(void)switchToPaintingView{

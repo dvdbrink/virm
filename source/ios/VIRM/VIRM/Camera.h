@@ -21,5 +21,6 @@
 @property (nonatomic, retain) AVCaptureSession *captureSession;
 @property (nonatomic, retain) UIViewController *viewController;
 @property (nonatomic, retain) AVCaptureVideoDataOutput *output;
+@property (nonatomic, assign) BOOL isRunning;
 
 @end

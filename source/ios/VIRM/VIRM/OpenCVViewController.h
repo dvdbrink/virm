@@ -28,8 +28,6 @@ using namespace cv;
     Camera *camera;    
     NetworkHandler *networkHandler;
     
-    UIImage *captureUI;
-    
     vector<NSString*> fileNames;
     vector<Mat> dataSetDescriptors;    
 }
