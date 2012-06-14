@@ -63,6 +63,7 @@ using namespace cv;
 
 - (int) match:(cv::Mat)capturedMat {
     BFMatcher matcher(NORM_HAMMING);   
+    vector<DMatch> matches;
     
     imageId = -1;
     int bestMatch = 0;
