@@ -30,7 +30,6 @@
     printf("[History] Initializing Default Data List.\n");    
     NSMutableArray *list = [[NSMutableArray alloc] init];
     self.historyList = list;
-    [list release];
 }
 
 -(void)setHistoryList:(NSMutableArray *)historyList:(NSMutableArray *)newList{
@@ -58,9 +57,6 @@
     historyItem = [[HistoryItem alloc] initWithName:name painter:painter image:image date:today];
     [self.historyList addObject:historyItem];
     
-    [historyItem release];
-    [today release];
-    
     printf("[History] List count: %i\n", self.historyList.count);
     
 }
@@ -69,8 +65,6 @@
     printf("[History] Adding history item.\n");
     historyItem = [[HistoryItem alloc] initWithName:historyItem.name painter:historyItem.painter image:historyItem.image date:historyItem.date];
     [self.historyList addObject:historyItem];
-    
-    [historyItem release];
     
     printf("[History] List count: %i\n", self.historyList.count);
 }

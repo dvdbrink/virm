@@ -35,6 +35,7 @@ using namespace cv;
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     finishedLaunching = NO;
+    enableMatching = NO;
     
     HUD = [[MBProgressHUD alloc] initWithView:self.view];
 	[self.navigationController.view addSubview:HUD];     
@@ -52,10 +53,11 @@ using namespace cv;
         HUD.labelText = @"Loading camera..";
         [HUD showWhileExecuting:@selector(startCapture) onTarget:self withObject:nil animated:YES];
     }
+    enableMatching = YES;    
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
-    [camera stop];
+  //  [camera stop];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -126,20 +128,51 @@ using namespace cv;
 - (void)captureOutput:(AVCaptureOutput *)captureOutput 
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
        fromConnection:(AVCaptureConnection *)connection {
-
+    
     if([camera isRunning] == YES) {
+        NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];  
+        
         UIImage *captureUI = [utils imageFromSampleBuffer:sampleBuffer];
+        
         int match = [recognizer recognize:captureUI];
     
         natural_t freemem = [self get_free_memory];
         printf("[System] Free memory: %u.\n", freemem);
     
-        if(match > -1) {
+        if(match > -1 && enableMatching==YES) {
+            enableMatching = NO;
             [self processMatch:match];
         
         }
-        [captureUI release];
+        [pool drain];
     }
+    
+}
+
+- (void) processMatch: (int) imageId {
+    printf("[OpenCV] Image %d recognized!\n", imageId);
+
+    NSString* fileName = fileNames[imageId];
+       
+    UIImage *img = [UIImage imageNamed:fileName];
+    
+    [appDelegate.historyItemDataController addHistoryItem:fileName painter:fileName image:img];  
+    
+    [self performSelectorOnMainThread:@selector(switchToPaintingView) withObject:nil waitUntilDone:NO];    
+    
+//    [camera stop];      	
+}
+
+-(void)switchToPaintingView{
+    printf("[OpenCV] Switching to paintingview.\n");    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];   
+    
+    HistoryItemViewController *paintingViewController =[storyboard instantiateViewControllerWithIdentifier:@"paintingViewController"];   
+    
+    paintingViewController.historyItem = [appDelegate.historyItemDataController getLastAddedHistoryItem];   
+    
+    [self.navigationController pushViewController:paintingViewController animated:YES];   
 }
 
 -(natural_t) get_free_memory {
@@ -157,31 +190,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     /* Stats in bytes */
     natural_t mem_free = vm_stat.free_count * pagesize;
     return mem_free;
-}
-
-- (void) processMatch: (int) imageId {
-    printf("[OpenCV] Image %d recognized!\n", imageId);
-
-    NSString* fileName = fileNames[imageId];
-    
-    UIImage *img = [UIImage imageNamed:fileName];
-    
-    [appDelegate.historyItemDataController addHistoryItem:fileName painter:fileName image:img];
-    
-    [self performSelectorOnMainThread:@selector(switchToPaintingView) withObject:nil waitUntilDone:NO];
-    
-    [camera stop];    
-}
-
--(void)switchToPaintingView{
-    printf("[OpenCV] Switching to paintingview.\n");
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-    HistoryItemViewController *paintingViewController =[storyboard instantiateViewControllerWithIdentifier:@"paintingViewController"];
-    
-    paintingViewController.historyItem = [appDelegate.historyItemDataController getLastAddedHistoryItem];
-    
-    [self.navigationController pushViewController:paintingViewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

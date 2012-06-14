@@ -22,6 +22,8 @@ using namespace cv;
     AppDelegate *appDelegate;
     MBProgressHUD *HUD;   
     BOOL finishedLaunching;
+    BOOL enableMatching;
+
     
     Recognizer *recognizer;
     Utils *utils;
