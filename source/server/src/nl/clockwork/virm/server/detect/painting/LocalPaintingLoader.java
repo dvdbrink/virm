@@ -65,6 +65,7 @@ public class LocalPaintingLoader implements Loader {
 		return data;
 	}
 
+	// TODO util
 	public byte[] getBytesFromFile(File file) throws IOException {
 		InputStream is = new FileInputStream(file);
 

@@ -6,15 +6,18 @@ import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.PacketHeaders;
-import nl.clockwork.virm.server.Factory;
 import nl.clockwork.virm.server.detect.Detectable;
+import nl.clockwork.virm.server.detect.Detector;
 
 public class ConnectionHandler implements Runnable {
+	private Detector detector;
 	private Connection conn;
 	private boolean running;
 
-	public ConnectionHandler(Connection conn) {
+	public ConnectionHandler(Detector detector, Connection conn) {
+		this.detector = detector;
 		this.conn = conn;
+		
 		running = false;
 	}
 
@@ -41,28 +44,24 @@ public class ConnectionHandler implements Runnable {
 
 	private void handlePacket(byte command, DataPacket dp) throws IOException {
 		switch (command) {
-			case PacketHeaders.PING:
-				Log.d(conn.getSSID() + "", "Received PING");
-				sendPacket(PacketHeaders.PING);
-				Log.d(conn.getSSID() + "", "Send PING");
-				break;
-			case PacketHeaders.DETECT:
-				Log.d(conn.getSSID() + "", "Received DETECT");
-				handleMat(dp);
-				break;
-			case PacketHeaders.CLOSE:
-				running = false;
-				Log.d(conn.getSSID() + "", "Received CLOSE");
-				sendPacket(PacketHeaders.OK);
-				Log.d(conn.getSSID() + "", "Send OK");
-				break;
+			case PacketHeaders.PING: handlePing(); break;
+			case PacketHeaders.DETECT: handleMat(dp); break;
+			case PacketHeaders.CLOSE: handleClose(); break;
 		}
 	}
 
-	private void handleMat(DataPacket dp) throws IOException {		
+	private void handlePing() throws IOException {
+		Log.d(conn.getSSID() + "", "Received PING");
+		sendPacket(PacketHeaders.PING);
+		Log.d(conn.getSSID() + "", "Send PING");
+	}
+	
+	private void handleMat(DataPacket dp) throws IOException {
+		Log.d(conn.getSSID() + "", "Received DETECT");
+		
 		int[][] mat = readMat(dp);
 
-		Detectable result = Factory.getDetector().detect(mat);
+		Detectable result = detector.detect(mat);
 		if (result == null) {
 			sendPacket(PacketHeaders.NO_MATCH);
 			Log.d(conn.getSSID() + "", "Send NO_MATCH");
@@ -70,6 +69,11 @@ public class ConnectionHandler implements Runnable {
 			sendMatch(result);
 			Log.d(conn.getSSID() + "", "Send MATCH");
 		}
+	}
+	
+	private void handleClose() {
+		Log.d(conn.getSSID() + "", "Received CLOSE");
+		running = false;
 	}
 	
 	private int[][] readMat(DataPacket dp) {

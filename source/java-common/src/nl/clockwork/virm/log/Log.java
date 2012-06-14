@@ -8,10 +8,10 @@ import java.util.Map;
 public final class Log {
 	private static boolean initiated = false;
 	private static Map<String, Logger> loggers;
-	
+
 	public static void init(String[] loggerNames) {
 		loggers = new HashMap<String, Logger>();
-		
+
 		for (int i = 0; i < loggerNames.length; i++) {
 			try {
 				String name = loggerNames[i];
@@ -34,17 +34,17 @@ public final class Log {
 				e.printStackTrace();
 			}
 		}
-		
+
 		initiated = true;
 	}
-	
+
 	public static Logger get(String name) {
-		if (loggers.containsValue(name)) {
+		if (loggers.containsKey(name)) {
 			return loggers.get(name);
 		}
 		return null;
 	}
-	
+
 	public static void log(Level level, String message) {
 		if (initiated) {
 			for (Logger logger : loggers.values()) {
@@ -54,7 +54,7 @@ public final class Log {
 			System.err.println("Logger has not been initiated.");
 		}
 	}
-	
+
 	public static void log(String category, Level level, String message) {
 		if (initiated) {
 			for (Logger logger : loggers.values()) {
@@ -64,54 +64,44 @@ public final class Log {
 			System.err.println("Logger has not been initiated.");
 		}
 	}
-	
-	public static void i(String message)
-	{
+
+	public static void i(String message) {
 		log(Level.INFO, message);
 	}
 
-	public static void d(String message)
-	{
+	public static void d(String message) {
 		log(Level.DEBUG, message);
 	}
-	
-	public static void w(String message)
-	{
+
+	public static void w(String message) {
 		log(Level.WARN, message);
 	}
-	
-	public static void e(String message)
-	{
+
+	public static void e(String message) {
 		log(Level.ERROR, message);
 	}
-	
-	public static void f(String message)
-	{
+
+	public static void f(String message) {
 		log(Level.FATAL, message);
 	}
-	
-	public static void i(String category, String message)
-	{
+
+	public static void i(String category, String message) {
 		log(category, Level.INFO, message);
 	}
 
-	public static void d(String category, String message)
-	{
+	public static void d(String category, String message) {
 		log(category, Level.DEBUG, message);
 	}
-	
-	public static void w(String category, String message)
-	{
+
+	public static void w(String category, String message) {
 		log(category, Level.WARN, message);
 	}
-	
-	public static void e(String category, String message)
-	{
+
+	public static void e(String category, String message) {
 		log(category, Level.ERROR, message);
 	}
-	
-	public static void f(String category, String message)
-	{
+
+	public static void f(String category, String message) {
 		log(category, Level.FATAL, message);
 	}
 }

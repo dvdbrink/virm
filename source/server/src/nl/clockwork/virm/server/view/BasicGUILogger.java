@@ -7,7 +7,7 @@ import java.util.Observable;
 import nl.clockwork.virm.log.Level;
 import nl.clockwork.virm.log.Logger;
 
-public class ViewLogger extends Observable implements Logger {
+public class BasicGUILogger extends Observable implements Logger {
 	private static final String DATETIME_FORMAT = "HH:mm:ss";
 	
 	@Override
@@ -17,16 +17,8 @@ public class ViewLogger extends Observable implements Logger {
 
 	@Override
 	public void write(String category, Level level, String message) {
-		String levelString = "";
-		switch (level) {
-			case DEBUG: levelString += "Debug"; break;
-			case INFO:  levelString += "Info";  break;
-			case WARN: 	levelString += "Warn";  break;
-			case ERROR: levelString += "Error"; break;
-			case FATAL: levelString += "Fatal"; break;
-		}
 		setChanged();
-		notifyObservers(new String[] { now(), levelString, category, message });
+		notifyObservers(new String[] { now(), level.toString(), category, message });
 	}
 	
 	private String now() {

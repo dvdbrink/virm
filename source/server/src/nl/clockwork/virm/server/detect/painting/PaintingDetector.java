@@ -6,19 +6,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-import nl.clockwork.virm.server.Factory;
 import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Detector;
+import nl.clockwork.virm.server.detect.Loader;
 
 public final class PaintingDetector implements Detector {
-	private static PaintingDetector instance = null;
-	public static PaintingDetector get() {
-		if (instance == null) {
-			instance = new PaintingDetector();
-		}
-		return instance;
-	}
-	
 	static {
 		System.loadLibrary("recognize");
 	}
@@ -29,7 +21,7 @@ public final class PaintingDetector implements Detector {
 	
 	private List<Detectable> paintings;
 	
-	private PaintingDetector() {
+	public PaintingDetector(Loader loader) {
 		Properties prop = new Properties();
 		try {
 			prop.load(new FileInputStream("conf/default.properties"));
@@ -41,7 +33,7 @@ public final class PaintingDetector implements Detector {
 		int threshold = Integer.parseInt(prop.getProperty("detection_threshold"));
 		nativeInit(threshold);
 		
-		paintings = Factory.getLoader().load();
+		paintings = loader.load();
 		for (Detectable d : paintings) {
 			Painting p = (Painting)d;
 			nativeAddTrainedDescriptor(p.getData().length, p.getData()[0].length, p.getData());

@@ -1,5 +1,4 @@
 package nl.clockwork.virm.server;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -19,32 +19,22 @@ import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.util.Convert;
 
 public class RemotePaintingLoader implements Loader {
-	private static RemotePaintingLoader instance = null;
-	public static RemotePaintingLoader get() {
-		if (instance == null) {
+	private Connection conn;
+	
+	public RemotePaintingLoader() {		
+		try {
 			Properties prop = new Properties();
-			try {
-				prop.load(new FileInputStream("conf/default.properties"));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			prop.load(new FileInputStream("conf/default.properties"));
 			String host = prop.getProperty("db_host");
 			String user = prop.getProperty("db_user");
 			String pass = prop.getProperty("db_pass");
 			String name = prop.getProperty("db_name");
-			instance = new RemotePaintingLoader(host + name, user, pass);
-		}
-		return instance;
-	}
-	
-	private Connection conn;
-	
-	private RemotePaintingLoader(String url, String user, String password) {		
-		try {
-			conn = DriverManager.getConnection(url, user, password);
+			conn = DriverManager.getConnection(host + name, user, pass);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

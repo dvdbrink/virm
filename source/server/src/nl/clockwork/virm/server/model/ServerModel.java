@@ -1,32 +1,22 @@
 package nl.clockwork.virm.server.model;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
+import nl.clockwork.virm.server.Factory;
+import nl.clockwork.virm.server.detect.Detector;
+import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.server.net.Connection;
 import nl.clockwork.virm.server.net.ConnectionListener;
 import nl.clockwork.virm.server.net.Server;
 import nl.clockwork.virm.server.net.ServerListener;
 
 public class ServerModel extends Model implements ServerListener, ConnectionListener {
+	private Loader loader;
+	private Detector detector;
 	private Server server;
 	
 	public ServerModel() {
-		// TODO settings
-		Properties prop = new Properties();
-		try {
-			prop.load(new FileInputStream("conf/default.properties"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String host = prop.getProperty("server_host");
-		int port = Integer.parseInt(prop.getProperty("server_port"));
-		
-		server = new Server(host, port);
+		loader = Factory.createLoader();
+		detector = Factory.createDetector(loader);
+		server = new Server(detector);
 		server.addListener(this);
 	}
 
@@ -36,10 +26,12 @@ public class ServerModel extends Model implements ServerListener, ConnectionList
 	
 	@Override
 	public void onConnection(Connection c) {
+		c.addListener(this);
+		
 		setChanged();
 		notifyObservers(c);
 	}
-
+	
 	@Override
 	public void onStatusUpdate(Connection c) {
 		setChanged();

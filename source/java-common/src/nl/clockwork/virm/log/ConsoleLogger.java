@@ -13,20 +13,14 @@ public class ConsoleLogger implements Logger {
 
 	@Override
 	public void write(String category, Level level, String message) {
-		String out = "[" + now() + "]";
-		switch (level) {
-			case DEBUG: out += " [DEBUG]"; break;
-			case INFO:  out += " [INFO]";  break;
-			case WARN: 	out += " [WARN]";  break;
-			case ERROR: out += " [ERROR]"; break;
-			case FATAL: out += " [FATAL]"; break;
-		}
+		String out = String.format("[%s] [%s]", now(), level);
 		if (!category.isEmpty()) {
 			out += " [" + category + "]";
 		}
 		System.out.println(out + " " + message);
 	}
 	
+	// TODO util
 	private String now() {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(DATETIME_FORMAT);

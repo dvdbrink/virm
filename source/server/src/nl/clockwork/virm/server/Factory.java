@@ -6,11 +6,11 @@ import nl.clockwork.virm.server.detect.painting.PaintingDetector;
 import nl.clockwork.virm.server.detect.painting.RemotePaintingLoader;
 
 public final class Factory {
-	public static Loader getLoader() {
-		return RemotePaintingLoader.get();
+	public static Loader createLoader() {
+		return new RemotePaintingLoader();
 	}
 	
-	public static Detector getDetector() {
-		return PaintingDetector.get();
+	public static Detector createDetector(Loader loader) {
+		return new PaintingDetector(loader);
 	}
 }
