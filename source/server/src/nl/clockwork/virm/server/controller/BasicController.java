@@ -14,6 +14,7 @@ public class BasicController extends Controller {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO hardcoded basicgui & servermodel
 		if (e.getSource() == ((BasicGUI)view).startButton) {
 			((ServerModel)model).startServer();
 		}

@@ -26,7 +26,7 @@ public class ViewLogger extends Observable implements Logger {
 			case FATAL: levelString += "Fatal"; break;
 		}
 		setChanged();
-		notifyObservers(new String[] { now(), category, levelString, message });
+		notifyObservers(new String[] { now(), levelString, category, message });
 	}
 	
 	private String now() {

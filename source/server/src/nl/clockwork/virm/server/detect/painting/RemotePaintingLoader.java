@@ -63,7 +63,7 @@ public class RemotePaintingLoader implements Loader {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Log.i(RemotePaintingLoader.class.getSimpleName(), paintings.size() + " paintings loaded");
+		Log.i("Loader", paintings.size() + " paintings loaded");
 		return paintings;
 	}
 	

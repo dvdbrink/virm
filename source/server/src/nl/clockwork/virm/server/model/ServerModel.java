@@ -14,6 +14,7 @@ public class ServerModel extends Model implements ServerListener, ConnectionList
 	private Server server;
 	
 	public ServerModel() {
+		// TODO settings
 		Properties prop = new Properties();
 		try {
 			prop.load(new FileInputStream("conf/default.properties"));

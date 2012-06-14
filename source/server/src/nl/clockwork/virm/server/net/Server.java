@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.clockwork.virm.log.Log;
+import nl.clockwork.virm.server.Factory;
 
 public class Server implements Runnable {	
 	private String ip;
@@ -22,6 +23,9 @@ public class Server implements Runnable {
 		running = false;
 		serverSocket = null;
 		listeners = new ArrayList<ServerListener>();
+		
+		// TODO hack
+		Factory.getDetector();
 	}
 
 	@Override
@@ -29,7 +33,7 @@ public class Server implements Runnable {
 		try {
 			serverSocket = new ServerSocket();
 			serverSocket.bind(new InetSocketAddress(ip, port));
-			Log.i(Server.class.getSimpleName(), "Running on " + serverSocket.getInetAddress().getHostAddress() + ":" + serverSocket.getLocalPort());
+			Log.i("Server", String.format("Started on %s:%s", ip, port));
 
 			Socket socket = null;
 			running = true;
@@ -46,6 +50,7 @@ public class Server implements Runnable {
 		} finally {
 			try {
 				serverSocket.close();
+				Log.i("Server", String.format("Closed on %s:%s", ip, port));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -57,7 +62,10 @@ public class Server implements Runnable {
 	}
 	
 	private void onConnection(Socket s) {
-		Connection conn = new Connection(0, s);		
+		Connection conn = new Connection(0L, s);
+		conn.setStatus(Status.CONNECTED);
+		Log.i("Server", String.format("New connection %s:%s", conn.getHostAddress(), conn.getPort()));
+		
 		new Thread(new ConnectionHandler(conn)).start();
 		
 		for (ServerListener l : listeners) {

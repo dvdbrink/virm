@@ -1,6 +1,6 @@
 package nl.clockwork.virm.net;
 
-public final class Packets {
+public final class PacketHeaders {
 	public static final byte PING 		= 0x01;
 	public static final byte OK 		= 0x02;
 	public static final byte FAIL 		= 0x03;

@@ -33,9 +33,9 @@ public final class Factory {
 		return new MatLoader(context);
 	}
 
-	public static Scanner createScanner(DataSet dataSet) {
-		//return new AsyncLocalOpenCVScanner(dataSet);
-		return new RemoteOpenCVScanner();
+	public static Scanner createScanner(Context context, DataSet dataSet) {
+		//return new AsyncLocalOpenCVScanner(context, dataSet);
+		return new RemoteOpenCVScanner(context);
 	}
 
 	public static Preview createPreview(Context context) {

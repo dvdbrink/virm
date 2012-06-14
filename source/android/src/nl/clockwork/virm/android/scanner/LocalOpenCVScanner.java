@@ -7,13 +7,15 @@ import org.opencv.core.MatOfDMatch;
 import org.opencv.features2d.DMatch;
 import org.opencv.features2d.DescriptorMatcher;
 
+import android.content.Context;
+
 public class LocalOpenCVScanner extends BasicOpenCVScanner {
 	protected DataSet dataSet;
 	protected DescriptorMatcher matcher;
 	protected MatOfDMatch matches;
 
-	public LocalOpenCVScanner(DataSet dataSet) {
-		super();
+	public LocalOpenCVScanner(Context context, DataSet dataSet) {
+		super(context);
 		
 		this.dataSet = dataSet;
 		

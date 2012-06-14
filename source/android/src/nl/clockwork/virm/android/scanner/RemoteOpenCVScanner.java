@@ -5,22 +5,29 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import nl.clockwork.virm.android.C;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
-import nl.clockwork.virm.net.Packets;
+import nl.clockwork.virm.net.PacketHeaders;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private Socket socket;
 	private InputStream in;
 	private OutputStream out;
+	private boolean connected;
 	private boolean pause;
 	
-	public RemoteOpenCVScanner() {
-		super();
+	public RemoteOpenCVScanner(Context context) {
+		super(context);
+		
+		connected = false;
+		pause = false;
 		
 		connect();
 	}
@@ -29,28 +36,24 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	public void scan(byte[] data, int width, int height) {
 		super.scan(data, width, height);
 		
-		if (!pause) {
-			detector.detect(yuvResized, keypoints);
-			extractor.compute(yuvResized, keypoints, descriptor);
-			
-			byte[] raw = new byte[descriptor.rows() * descriptor.cols()];
-			descriptor.get(0, 0, raw);
-			sendMat(raw);
-			pause = true;
-			
-			new ListenTask().execute();
-		}
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (connected) {
+			if (!pause) {
+				detector.detect(yuvResized, keypoints);
+				extractor.compute(yuvResized, keypoints, descriptor);
+				
+				byte[] raw = new byte[descriptor.rows() * descriptor.cols()];
+				descriptor.get(0, 0, raw);
+				sendMat(raw);
+				pause = true;
+				
+				new ListenTask().execute();
+			}
 		}
 	}
 	
 	private void sendMat(byte[] data) {
 		Packet p = new Packet();
-		p.addByte(Packets.DETECT);
+		p.addByte(PacketHeaders.DETECT);
 		p.addInt(descriptor.rows());
 		p.addInt(descriptor.cols());
 		p.addBytes(data);
@@ -59,15 +62,14 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	
 	private void connect() {
 		try {
-			Log.d(C.TAG, "Trying to connect....");
-			
 			socket = new Socket();
-			socket.connect(new InetSocketAddress("172.19.2.30", 1337));
-
+			socket.connect(new InetSocketAddress("172.19.2.30", 1337), 5000);
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
-			
-			Log.d(C.TAG, "....connected");
+			connected = true;
+			Toast.makeText(context, "Connected", Toast.LENGTH_LONG).show();
+		} catch (SocketTimeoutException e) {
+			Toast.makeText(context, "Could not connect to server", Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +78,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	@Override
 	public void destroy() {		
 		Packet p = new Packet();
-		p.addByte(Packets.CLOSE);
+		p.addByte(PacketHeaders.CLOSE);
 		p.send(out);
 		
 		super.destroy();
@@ -84,21 +86,16 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	
 	private class ListenTask extends AsyncTask<Byte, Void, String> {
 		@Override
-		protected void onPreExecute() {
-			
-		}
-
-		@Override
 		protected String doInBackground(Byte... params) {
 			try {
 				while (pause) {
 					byte command = (byte) in.read();
 					if (command > -1) {
 						switch (command) {
-							case Packets.MATCH:
+							case PacketHeaders.MATCH:
 								pause = false;
 								return new DataPacket(in).readString();
-							case Packets.NO_MATCH:
+							case PacketHeaders.NO_MATCH:
 								pause = false;
 								return "";
 						}

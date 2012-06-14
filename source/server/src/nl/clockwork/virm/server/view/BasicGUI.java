@@ -13,6 +13,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
+import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.server.controller.Controller;
 import nl.clockwork.virm.server.net.Connection;
 
@@ -21,6 +22,11 @@ public class BasicGUI implements View {
 	public JButton startButton;
 
 	public BasicGUI() {
+		ViewLogger l = null;
+		if ((l = (ViewLogger) Log.get("nl.clockwork.virm.server.view.ViewLogger")) != null) { 
+			l.addObserver(this);
+		}
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
@@ -105,9 +111,10 @@ public class BasicGUI implements View {
 
 	@Override
 	public void update(Observable source, Object arg) {
+		// TODO obvious
 		if (arg instanceof Connection) {
 			Connection c = (Connection)arg;
-			connections.insertRow(0, new Object[] { c.getSSID(), c.getIp(), c.getPort(), c.getStatusAsString() });
+			connections.insertRow(0, new Object[] { c.getSSID(), c.getHostAddress(), c.getPort(), c.getStatus() });
 		} else if (arg instanceof String[]) {
 			String[] logMessage = (String[])arg;
 			log.insertRow(0, logMessage);

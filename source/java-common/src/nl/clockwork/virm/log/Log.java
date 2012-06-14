@@ -39,7 +39,10 @@ public final class Log {
 	}
 	
 	public static Logger get(String name) {
-		return loggers.get(name);
+		if (loggers.containsValue(name)) {
+			return loggers.get(name);
+		}
+		return null;
 	}
 	
 	public static void log(Level level, String message) {

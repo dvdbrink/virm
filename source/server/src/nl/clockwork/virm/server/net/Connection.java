@@ -1,44 +1,31 @@
 package nl.clockwork.virm.server.net;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Observable;
 
+import nl.clockwork.virm.net.DataPacket;
+import nl.clockwork.virm.net.Packet;
+
 public class Connection extends Observable {
-	private long ssid;
+	private Long ssid;
 	private Socket socket;
 	private Status status;
 	
-	public Connection(long ssid, Socket socket) {
+	public Connection(Long ssid, Socket socket) {
 		this.ssid = ssid;
 		this.socket = socket;
-		status = Status.UNINITIATED;
 	}
 	
-	public long getSSID() {
+	public Long getSSID() {
 		return ssid;
-	}
-	
-	public Socket getSocket() {
-		return socket;
 	}
 	
 	public Status getStatus() {
 		return status;
 	}
 	
-	public String getStatusAsString() {
-		switch (status) {
-			case UNINITIATED:	return "uninitiated";
-			case CONNECTED:		return "connected";
-			case DISCONNECTED:	return "disconnected";
-			default: 			return "";
-		}
-	}
-	
-	public String getIp() {
+	public String getHostAddress() {
 		return socket.getInetAddress().getHostAddress();
 	}
 	
@@ -46,17 +33,23 @@ public class Connection extends Observable {
 		return socket.getPort();
 	}
 	
-	public InputStream getInputStream() throws IOException {
-		return socket.getInputStream();
-	}
-	
-	public OutputStream getOutputStream() throws IOException {
-		return socket.getOutputStream();
-	}
-	
 	public void setStatus(Status status) {
 		this.status = status;
+		
+		setChanged();
 		notifyObservers();
+	}
+	
+	public byte readByte() throws IOException {
+		return (byte) socket.getInputStream().read();
+	}
+	
+	public DataPacket readPacket() throws IOException {
+		return new DataPacket(socket.getInputStream());
+	}
+	
+	public void send(Packet p) throws IOException {
+		p.send(socket.getOutputStream());
 	}
 	
 	public void close() throws IOException {

@@ -6,12 +6,13 @@ import nl.clockwork.virm.android.history.History;
 
 import org.opencv.features2d.DMatch;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 public class AsyncLocalOpenCVScanner extends LocalOpenCVScanner {
 
-	public AsyncLocalOpenCVScanner(final DataSet dataSet) {
-		super(dataSet);
+	public AsyncLocalOpenCVScanner(Context context, DataSet dataSet) {
+		super(context, dataSet);
 	}
 
 	@Override

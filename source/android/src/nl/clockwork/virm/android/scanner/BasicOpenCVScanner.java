@@ -14,14 +14,19 @@ import org.opencv.features2d.DescriptorExtractor;
 import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgproc.Imgproc;
 
+import android.content.Context;
+
 public abstract class BasicOpenCVScanner implements Scanner {
+	protected Context context;
 	protected List<ResultListener> listeners;
 	protected FeatureDetector detector;
 	protected DescriptorExtractor extractor;
 	protected MatOfKeyPoint keypoints;
 	protected Mat descriptor, yuv, yuvResized;
 	
-	public BasicOpenCVScanner() {
+	public BasicOpenCVScanner(Context context) {
+		this.context = context;
+		
 		listeners = new ArrayList<ResultListener>();
 		detector = FeatureDetector.create(C.OPENCV_DETECTOR_ALGORITHM);
 		extractor = DescriptorExtractor.create(C.OPENCV_EXTRACTOR_ALGORITHM);
