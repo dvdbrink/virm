@@ -45,6 +45,12 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 		super.onPause();
 		preview.setCapturing(false);
 	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		scanner.destroy();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
