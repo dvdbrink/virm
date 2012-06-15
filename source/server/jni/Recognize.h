@@ -9,7 +9,7 @@
 #include <jni.h>
 
 extern "C" {
-	static int threshold;
+	static int threshold, minGoodMatches;
 
 	static std::shared_ptr<cv::FeatureDetector> detector = std::make_shared<cv::OrbFeatureDetector>();
 	static std::shared_ptr<cv::DescriptorExtractor> extractor = std::make_shared<cv::OrbDescriptorExtractor>();
@@ -22,7 +22,7 @@ extern "C" {
 	static cv::Mat descriptor;
 
 	JNIEXPORT jboolean JNICALL
-	Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeInit(JNIEnv*, jobject, jint t);
+	Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeInit(JNIEnv*, jobject, jint t, jint mgm);
 
 	JNIEXPORT jboolean JNICALL
 	Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeAddTrainedDescriptor(JNIEnv*, jobject, jint rows, jint cols, jobjectArray mat);

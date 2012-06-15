@@ -1,8 +1,9 @@
 #include "Recognize.h"
 
 JNIEXPORT jboolean JNICALL
-Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeInit(JNIEnv* env, jobject obj, jint t) {
+Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeInit(JNIEnv* env, jobject obj, jint t, jint mgm) {
 	threshold = t;
+	minGoodMatches = mgm;
 	return true;
 }
 
@@ -44,7 +45,7 @@ Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeDetect(JNIE
 			}
 		}
 
-		if (bestMatch == -1 || goodMatches > bestMatchMatches) {
+		if ((bestMatch == -1 || goodMatches > bestMatchMatches) && goodMatches > minGoodMatches) {
 			bestMatch = position;
 			bestMatchMatches = goodMatches;
 		}

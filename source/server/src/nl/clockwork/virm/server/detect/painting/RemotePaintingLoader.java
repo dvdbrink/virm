@@ -47,7 +47,9 @@ public class RemotePaintingLoader implements Loader {
 			while (rs.next()) {
 				Painting painting = loadPainting(rs);
 				if (painting != null) {
-					paintings.add(painting);
+					//for (int i = 0; i < 20; i++) {
+						paintings.add(painting);
+					//}
 				}
 			}
 		} catch (SQLException e) {

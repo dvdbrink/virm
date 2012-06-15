@@ -57,17 +57,14 @@ public class ConnectionHandler implements Runnable {
 	}
 	
 	private void handleMat(DataPacket dp) throws IOException {
-		Log.d(conn.getSSID() + "", "Received DETECT");
-		
 		int[][] mat = readMat(dp);
 
 		Detectable result = detector.detect(mat);
 		if (result == null) {
 			sendPacket(PacketHeaders.NO_MATCH);
-			Log.d(conn.getSSID() + "", "Send NO_MATCH");
 		} else {
 			sendMatch(result);
-			Log.d(conn.getSSID() + "", "Send MATCH");
+			Log.d(conn.getSSID() + "", "Send MATCH (" + result.getName() + ")");
 		}
 	}
 	
@@ -79,12 +76,14 @@ public class ConnectionHandler implements Runnable {
 	private int[][] readMat(DataPacket dp) {
 		int rows = dp.readInt();
 		int cols = dp.readInt();
+		
 		int[][] matrix = new int[rows][cols];
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
 				matrix[row][col] = dp.readInt();
 			}
 		}
+		
 		return matrix;
 	}
 

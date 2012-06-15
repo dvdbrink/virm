@@ -22,7 +22,7 @@ public class Client {
 		Log.init(new String[] {"nl.clockwork.virm.log.ConsoleLogger"});
 		
 		socket = new Socket();
-		socket.connect(new InetSocketAddress("172.19.2.30", 1337));
+		socket.connect(new InetSocketAddress("192.168.178.23", 1337));
 		in = socket.getInputStream();
 		out = socket.getOutputStream();
 				
