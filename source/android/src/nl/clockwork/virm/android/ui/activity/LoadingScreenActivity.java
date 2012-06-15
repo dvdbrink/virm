@@ -58,7 +58,13 @@ public class LoadingScreenActivity extends BaseActivity {
 			progressDialog.dismiss();
 
 			LoadingScreenActivity.this.getVirm().setDataSet(dataSet);
-			LoadingScreenActivity.this.startActivity(new Intent(LoadingScreenActivity.this, CameraActivity.class));
+			
+			Intent intent = new Intent(LoadingScreenActivity.this, CameraActivity.class);
+        	Bundle b = new Bundle();
+        	b.putString("detection_method", "Local");
+        	intent.putExtras(b);
+        	startActivity(intent);
+			LoadingScreenActivity.this.startActivity(intent);
 		}
 	}
 }

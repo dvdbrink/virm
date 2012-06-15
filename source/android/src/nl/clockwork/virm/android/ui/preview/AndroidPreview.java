@@ -105,8 +105,6 @@ public class AndroidPreview extends SurfaceView implements Preview {
 		canvas.drawText("Min. distance: " + C.MIN_DISTANCE_THRESHOLD, 10, 35, paint);
 		canvas.drawText("Min. good matches: " + C.MIN_GOOD_MATCHES, 10, 50, paint);
 		canvas.drawText("Frame size: " + C.DESIRED_FRAME_MAT_WIDTH, 10, 65, paint);
-		
-		Log.d(C.TAG, "ondraw");
 	}
 
 	@Override
