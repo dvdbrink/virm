@@ -24,7 +24,11 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		scanner = Factory.createScanner(this, getVirm().getDataSet());
+		if (getIntent().getExtras().getString("detection_method").equals("Local")) {
+			scanner = Factory.createLocalScanner(this, getVirm().getDataSet());
+		} else {
+			scanner = Factory.createRemoteScanner(this);
+		}
 		scanner.addResultListener(this);
 
 		preview = Factory.createPreview(this);

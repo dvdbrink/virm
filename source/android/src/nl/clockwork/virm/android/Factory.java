@@ -8,6 +8,7 @@ import nl.clockwork.virm.android.history.History;
 import nl.clockwork.virm.android.loader.Loader;
 import nl.clockwork.virm.android.loader.MatLoader;
 import nl.clockwork.virm.android.scanner.AsyncLocalOpenCVScanner;
+import nl.clockwork.virm.android.scanner.RemoteOpenCVScanner;
 import nl.clockwork.virm.android.scanner.Scanner;
 import nl.clockwork.virm.android.ui.preview.AndroidPreview;
 import nl.clockwork.virm.android.ui.preview.Preview;
@@ -33,9 +34,12 @@ public final class Factory {
 		return new MatLoader(context);
 	}
 
-	public static Scanner createScanner(Context context, DataSet dataSet) {
+	public static Scanner createLocalScanner(Context context, DataSet dataSet) {
 		return new AsyncLocalOpenCVScanner(context, dataSet);
-		//return new RemoteOpenCVScanner(context);
+	}
+	
+	public static Scanner createRemoteScanner(Context context) {
+		return new RemoteOpenCVScanner(context);
 	}
 
 	public static Preview createPreview(Context context) {
