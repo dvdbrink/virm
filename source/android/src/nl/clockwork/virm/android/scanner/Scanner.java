@@ -6,4 +6,6 @@ public interface Scanner {
 	void addResultListener(ResultListener listener);
 
 	void removeResultListener(ResultListener listener);
+	
+	void destroy();
 }

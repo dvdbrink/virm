@@ -27,8 +27,16 @@ public class Packet {
 		}
 	}
 	
+	public void addShort(short s) {
+		addBytes(Convert.shortToByteArray(s));
+	}
+	
 	public void addInt(int i) {
 		addBytes(Convert.intToByteArray(i));
+	}
+	
+	public void addLong(long l) {
+		addBytes(Convert.longToByteArray(l));
 	}
 	
 	public void addString(String s) {

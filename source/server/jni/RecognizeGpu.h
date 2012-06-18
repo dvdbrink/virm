@@ -16,10 +16,10 @@ extern "C" {
 	static std::vector<cv::gpu::GpuMat> trainedDescriptors;
 	static cv::vector<cv::DMatch> matches;
 
-	JNIEXPORT jboolean JNICALL Java_nl_clockwork_virm_logic_Recognizer_nativeInit(JNIEnv*, jobject, jobjectArray);
+	JNIEXPORT jboolean JNICALL Java_nl_clockwork_virm_server_Recognizer_nativeInit(JNIEnv*, jobject, jobjectArray);
 
-	JNIEXPORT jint JNICALL Java_nl_clockwork_virm_logic_Recognizer_nativeDetect(JNIEnv*, jobject, jstring);
-	JNIEXPORT jint JNICALL Java_nl_clockwork_virm_logic_Recognizer_nativeDetectMat(JNIEnv* env, jobject obj, jint rows, jint cols, jobjectArray mat);
+	JNIEXPORT jint JNICALL Java_nl_clockwork_virm_server_Recognizer_nativeDetect(JNIEnv*, jobject, jstring);
+	JNIEXPORT jint JNICALL Java_nl_clockwork_virm_server_Recognizer_nativeDetectMat(JNIEnv* env, jobject obj, jint rows, jint cols, jobjectArray mat);
 
 	cv::gpu::GpuMat cvMatfromMatFile(const std::string&);
 }

@@ -1,10 +1,7 @@
-// g++ -fPIC -shared -I/usr/lib/jvm/java-7-openjdk-i386/include Recognize.cpp -L/usr/local/lib -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_features2d -o ../librecognize.so
-
 #ifndef VIRM_RECOGNIZE_H
 #define VIRM_RECOGNIZE_H
 
 #include <memory>
-#include <string>
 #include <vector>
 
 #include <opencv2/opencv.hpp>
@@ -12,7 +9,7 @@
 #include <jni.h>
 
 extern "C" {
-	static const int THRESHOLD = 35;
+	static int threshold, minGoodMatches;
 
 	static std::shared_ptr<cv::FeatureDetector> detector = std::make_shared<cv::OrbFeatureDetector>();
 	static std::shared_ptr<cv::DescriptorExtractor> extractor = std::make_shared<cv::OrbDescriptorExtractor>();
@@ -24,12 +21,14 @@ extern "C" {
 	static cv::vector<cv::DMatch> matches;
 	static cv::Mat descriptor;
 
-	JNIEXPORT jboolean JNICALL Java_nl_clockwork_virm_logic_Recognizer_nativeInit(JNIEnv*, jobject, jobjectArray);
+	JNIEXPORT jboolean JNICALL
+	Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeInit(JNIEnv*, jobject, jint t, jint mgm);
 
-	JNIEXPORT jint JNICALL Java_nl_clockwork_virm_logic_Recognizer_nativeDetect(JNIEnv*, jobject, jstring);
-	JNIEXPORT jint JNICALL Java_nl_clockwork_virm_logic_Recognizer_nativeDetectMat(JNIEnv* env, jobject obj, jint rows, jint cols, jobjectArray mat);
+	JNIEXPORT jboolean JNICALL
+	Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeAddTrainedDescriptor(JNIEnv*, jobject, jint rows, jint cols, jobjectArray mat);
 
-	cv::Mat cvMatfromMatFile(const std::string&);
+	JNIEXPORT jint JNICALL
+	Java_nl_clockwork_virm_server_detect_painting_PaintingDetector_nativeDetect(JNIEnv*, jobject, jint rows, jint cols, jobjectArray mat);
 }
 
 #endif // VIRM_RECOGNIZE_H
