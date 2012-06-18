@@ -19,11 +19,11 @@ using namespace cv;
 }
 
 - (void) initializeImageList;
+- (natural_t) get_free_memory;
 - (vector<Mat>) getDescriptorsFromMatFiles;
 - (vector<Mat>) getDescriptorsFromImageFiles: (BOOL) saveToMat;
 - (vector<NSString*>) getFileNames;
 - (Mat)MatFromUIImage:(UIImage *)image;
-- (IplImage *)IplImageFromUIImage:(UIImage *)image;
 - (UIImage *) imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer;
 
 @end

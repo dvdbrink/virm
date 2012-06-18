@@ -7,6 +7,8 @@
 //
 
 #import "Utils.h"
+#import <mach/mach.h>
+#import <mach/mach_host.h>
 
 using namespace std;
 using namespace cv;
@@ -24,6 +26,23 @@ using namespace cv;
     return fileNames;
 }
 
+-(natural_t) get_free_memory {
+    mach_port_t host_port;
+    mach_msg_type_number_t host_size;
+    vm_size_t pagesize;
+    host_port = mach_host_self();
+    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+    host_page_size(host_port, &pagesize);
+    vm_statistics_data_t vm_stat;
+    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
+        NSLog(@"Failed to fetch vm statistics");
+        return 0;
+    }
+    /* Stats in bytes */
+    natural_t mem_free = vm_stat.free_count * pagesize;
+    return mem_free;
+}
+
 - (vector<Mat>)getDescriptorsFromImageFiles:(BOOL)saveToMat {
     vector<Mat> dataSetDescriptors;
     
@@ -37,17 +56,14 @@ using namespace cv;
         keypoints.clear();
     
         UIImage* imageUI = [UIImage imageNamed:filename];
-        IplImage* imageColored = [self IplImageFromUIImage:imageUI]; 
-        IplImage* imageResized = cvCreateImage(cvSize(appDelegate.imageDimensions,appDelegate.imageDimensions),imageColored->depth,imageColored->nChannels);
-        cvResize(imageColored, imageResized);
+        
+        Mat grayImage(appDelegate.imageDimensions, appDelegate.imageDimensions, CV_8UC1);
+        Mat capture = [self MatFromUIImage:imageUI];
+        
+        cv::resize(capture, grayImage, grayImage.size());        
     
-        Mat image(imageResized);
-        Mat imageGray;
-    
-        cvtColor(image, imageGray, CV_RGB2GRAY);
-    
-        featureDetector.detect(imageGray, keypoints);
-        featureExtractor.compute(imageGray, keypoints, descriptors); 
+        featureDetector.detect(grayImage, keypoints);
+        featureExtractor.compute(grayImage, keypoints, descriptors); 
     
         // Save the image as .mat file
         if(saveToMat) {
@@ -184,59 +200,59 @@ using namespace cv;
     imageList = [[NSMutableArray alloc] init];
     
     [imageList addObject:@"IMG_20120328_133650.jpg"];
-//    [imageList addObject:@"IMG_20120328_133717.jpg"];
-//    [imageList addObject:@"IMG_20120328_133800.jpg"];
-//    [imageList addObject:@"IMG_20120328_133813.jpg"];
-//    [imageList addObject:@"IMG_20120328_133844.jpg"];
-//    [imageList addObject:@"IMG_20120328_133855.jpg"];
-//    [imageList addObject:@"IMG_20120328_133903.jpg"];
-//    [imageList addObject:@"IMG_20120328_134104.jpg"];
-//    [imageList addObject:@"IMG_20120328_134112.jpg"];
-//    [imageList addObject:@"IMG_20120328_134125.jpg"];
-//    [imageList addObject:@"IMG_20120328_134135.jpg"];
-//    [imageList addObject:@"IMG_20120328_134143.jpg"];
-//    [imageList addObject:@"IMG_20120328_134152.jpg"];
-//    [imageList addObject:@"IMG_20120328_134208.jpg"];
-//    [imageList addObject:@"IMG_20120328_134301.jpg"];
-//    [imageList addObject:@"IMG_20120328_134320.jpg"];
-//    [imageList addObject:@"IMG_20120328_134432.jpg"];
-//    [imageList addObject:@"IMG_20120328_134446.jpg"];
-//    [imageList addObject:@"IMG_20120328_134503.jpg"];
-//    [imageList addObject:@"IMG_20120328_134513.jpg"];
-//    [imageList addObject:@"IMG_20120328_134521.jpg"];
-//    [imageList addObject:@"IMG_20120328_134529.jpg"];
-//    [imageList addObject:@"IMG_20120328_134544.jpg"];
-//    [imageList addObject:@"IMG_20120328_134551.jpg"];
-//    [imageList addObject:@"IMG_20120328_134601.jpg"];
-//    [imageList addObject:@"IMG_20120328_134610.jpg"];
-//    [imageList addObject:@"IMG_20120328_134621.jpg"];
-//    [imageList addObject:@"IMG_20120328_134629.jpg"];
-//    [imageList addObject:@"IMG_20120328_134705.jpg"];
-//    [imageList addObject:@"IMG_20120328_134719.jpg"];
-//    [imageList addObject:@"IMG_20120328_134727.jpg"];
-//    [imageList addObject:@"IMG_20120328_134750.jpg"];
-//    [imageList addObject:@"IMG_20120328_134801.jpg"];
-//    [imageList addObject:@"IMG_20120328_134811.jpg"];
-//    [imageList addObject:@"IMG_20120328_134823.jpg"];
-//    [imageList addObject:@"IMG_20120328_134832.jpg"];
-//    [imageList addObject:@"IMG_20120328_134840.jpg"];
-//    [imageList addObject:@"IMG_20120328_134849.jpg"];
-//    [imageList addObject:@"IMG_20120328_134934.jpg"];
-//    [imageList addObject:@"IMG_20120328_134948.jpg"];
-//    [imageList addObject:@"IMG_20120328_134955.jpg"];
-//    [imageList addObject:@"IMG_20120328_135004.jpg"];
-//    [imageList addObject:@"IMG_20120328_135012.jpg"];
-//    [imageList addObject:@"IMG_20120328_135021.jpg"];
-//    [imageList addObject:@"IMG_20120328_135036.jpg"];
-//    [imageList addObject:@"IMG_20120328_135059.jpg"];
-//    [imageList addObject:@"IMG_20120328_135112.jpg"];
-//    [imageList addObject:@"IMG_20120328_135135.jpg"];
-//    [imageList addObject:@"IMG_20120328_135226.jpg"];
-//    [imageList addObject:@"IMG_20120328_135601.jpg"];
-//    [imageList addObject:@"IMG_20120328_135613.jpg"];
-//    [imageList addObject:@"IMG_20120328_135628.jpg"];
-//    [imageList addObject:@"IMG_20120328_135646.jpg"];
-//    [imageList addObject:@"IMG_20120328_135941.jpg"];
+    [imageList addObject:@"IMG_20120328_133717.jpg"];
+    [imageList addObject:@"IMG_20120328_133800.jpg"];
+    [imageList addObject:@"IMG_20120328_133813.jpg"];
+    [imageList addObject:@"IMG_20120328_133844.jpg"];
+    [imageList addObject:@"IMG_20120328_133855.jpg"];
+    [imageList addObject:@"IMG_20120328_133903.jpg"];
+    [imageList addObject:@"IMG_20120328_134104.jpg"];
+    [imageList addObject:@"IMG_20120328_134112.jpg"];
+    [imageList addObject:@"IMG_20120328_134125.jpg"];
+    [imageList addObject:@"IMG_20120328_134135.jpg"];
+    [imageList addObject:@"IMG_20120328_134143.jpg"];
+    [imageList addObject:@"IMG_20120328_134152.jpg"];
+    [imageList addObject:@"IMG_20120328_134208.jpg"];
+    [imageList addObject:@"IMG_20120328_134301.jpg"];
+    [imageList addObject:@"IMG_20120328_134320.jpg"];
+    [imageList addObject:@"IMG_20120328_134432.jpg"];
+    [imageList addObject:@"IMG_20120328_134446.jpg"];
+    [imageList addObject:@"IMG_20120328_134503.jpg"];
+    [imageList addObject:@"IMG_20120328_134513.jpg"];
+    [imageList addObject:@"IMG_20120328_134521.jpg"];
+    [imageList addObject:@"IMG_20120328_134529.jpg"];
+    [imageList addObject:@"IMG_20120328_134544.jpg"];
+    [imageList addObject:@"IMG_20120328_134551.jpg"];
+    [imageList addObject:@"IMG_20120328_134601.jpg"];
+    [imageList addObject:@"IMG_20120328_134610.jpg"];
+    [imageList addObject:@"IMG_20120328_134621.jpg"];
+    [imageList addObject:@"IMG_20120328_134629.jpg"];
+    [imageList addObject:@"IMG_20120328_134705.jpg"];
+    [imageList addObject:@"IMG_20120328_134719.jpg"];
+    [imageList addObject:@"IMG_20120328_134727.jpg"];
+    [imageList addObject:@"IMG_20120328_134750.jpg"];
+    [imageList addObject:@"IMG_20120328_134801.jpg"];
+    [imageList addObject:@"IMG_20120328_134811.jpg"];
+    [imageList addObject:@"IMG_20120328_134823.jpg"];
+    [imageList addObject:@"IMG_20120328_134832.jpg"];
+    [imageList addObject:@"IMG_20120328_134840.jpg"];
+    [imageList addObject:@"IMG_20120328_134849.jpg"];
+    [imageList addObject:@"IMG_20120328_134934.jpg"];
+    [imageList addObject:@"IMG_20120328_134948.jpg"];
+    [imageList addObject:@"IMG_20120328_134955.jpg"];
+    [imageList addObject:@"IMG_20120328_135004.jpg"];
+    [imageList addObject:@"IMG_20120328_135012.jpg"];
+    [imageList addObject:@"IMG_20120328_135021.jpg"];
+    [imageList addObject:@"IMG_20120328_135036.jpg"];
+    [imageList addObject:@"IMG_20120328_135059.jpg"];
+    [imageList addObject:@"IMG_20120328_135112.jpg"];
+    [imageList addObject:@"IMG_20120328_135135.jpg"];
+    [imageList addObject:@"IMG_20120328_135226.jpg"];
+    [imageList addObject:@"IMG_20120328_135601.jpg"];
+    [imageList addObject:@"IMG_20120328_135613.jpg"];
+    [imageList addObject:@"IMG_20120328_135628.jpg"];
+    [imageList addObject:@"IMG_20120328_135646.jpg"];
+    [imageList addObject:@"IMG_20120328_135941.jpg"];
     
 //    // Museum #2
 //    [imageList addObject:@"IMG_20120502_134328.jpg"]; 

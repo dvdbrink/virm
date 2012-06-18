@@ -4,8 +4,6 @@
 #import "HistoryItem.h"
 #import "Recognizer.h"
 #import "Camera.h"
-#import <mach/mach.h>
-#import <mach/mach_host.h>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -34,7 +32,6 @@ using namespace cv;
     printf("[OpenCV] View loaded.\n");
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    finishedLaunching = NO;
     enableMatching = NO;
     
     HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -44,33 +41,6 @@ using namespace cv;
     [HUD showWhileExecuting:@selector(setupApplication) onTarget:self withObject:nil animated:YES];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    
-    if (finishedLaunching && [camera getCaptureSession].isRunning == FALSE) { 
-        HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.navigationController.view addSubview:HUD];    
-        
-        HUD.labelText = @"Loading camera..";
-        [HUD showWhileExecuting:@selector(startCapture) onTarget:self withObject:nil animated:YES];
-    }
-    enableMatching = YES;    
-}
-
-- (void) viewDidDisappear:(BOOL)animated {
-  //  [camera stop];
-}
-
-- (void) viewWillAppear:(BOOL)animated
-{
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [super viewWillAppear:animated];
-}
-
-- (void) viewWillDisappear:(BOOL)animated
-{
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    [super viewWillDisappear:animated];
-}
 
 - (void) setupApplication {   
     
@@ -84,16 +54,26 @@ using namespace cv;
     [camera setup];
     [self setCameraDelegate];
     [self addCameraView];
-    [self startCapture];
+    [camera start];
     
-//    networkHandler = [[NetworkHandler alloc] init];
-//    [self setupNetwork]; 
-    
-    finishedLaunching = YES;   
+    //    networkHandler = [[NetworkHandler alloc] init];
+    //    [self setupNetwork];  
 }
 
-- (void) startCapture {
-    [camera start];
+- (void) viewDidAppear:(BOOL)animated {
+    enableMatching = YES;    
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 
 - (void) addCameraView {
@@ -136,7 +116,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         
         int match = [recognizer recognize:captureUI];
     
-        natural_t freemem = [self get_free_memory];
+        natural_t freemem = [utils get_free_memory];
         printf("[System] Free memory: %u.\n", freemem);
     
         if(match > -1 && enableMatching==YES) {
@@ -173,23 +153,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     paintingViewController.historyItem = [appDelegate.historyItemDataController getLastAddedHistoryItem];   
     
     [self.navigationController pushViewController:paintingViewController animated:YES];   
-}
-
--(natural_t) get_free_memory {
-    mach_port_t host_port;
-    mach_msg_type_number_t host_size;
-    vm_size_t pagesize;
-    host_port = mach_host_self();
-    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
-    host_page_size(host_port, &pagesize);
-    vm_statistics_data_t vm_stat;
-    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
-        NSLog(@"Failed to fetch vm statistics");
-        return 0;
-    }
-    /* Stats in bytes */
-    natural_t mem_free = vm_stat.free_count * pagesize;
-    return mem_free;
 }
 
 - (void)didReceiveMemoryWarning {
