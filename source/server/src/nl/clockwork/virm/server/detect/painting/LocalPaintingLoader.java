@@ -24,9 +24,9 @@ public class LocalPaintingLoader implements Loader {
 			String path = prop.getProperty("local_db_path");
 			this.path = path;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.e(LocalPaintingLoader.class.getSimpleName(), "FileNotFoundException", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(LocalPaintingLoader.class.getSimpleName(), "IOException", e);
 		}
 	}
 

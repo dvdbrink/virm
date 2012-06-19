@@ -69,4 +69,9 @@ public class Connection extends Observable {
 			l.onStatusUpdate(this);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "SSID:" + this.getSSID();
+	}
 }

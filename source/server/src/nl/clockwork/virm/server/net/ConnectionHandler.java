@@ -23,6 +23,7 @@ public class ConnectionHandler implements Runnable {
 
 	@Override
 	public void run() {
+		Log.i(conn.toString(), String.format("Connected on %s:%s", conn.getHostAddress(), conn.getPort()));
 		try {
 			running = true;
 			while (running) {
@@ -32,13 +33,13 @@ public class ConnectionHandler implements Runnable {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(conn.toString(), "IOException", e);
 		} finally {
 			try {
 				conn.close();
-				Log.d(conn.getSSID() + "", String.format("Closed on %s:%s", conn.getHostAddress(), conn.getPort()));
+				Log.i(conn.toString(), String.format("Closed on %s:%s", conn.getHostAddress(), conn.getPort()));
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.e(conn.toString(), "", e);
 			}
 		}
 	}
@@ -52,9 +53,9 @@ public class ConnectionHandler implements Runnable {
 	}
 
 	private void handlePing() throws IOException {
-		Log.d(conn.getSSID() + "", "Received PING");
+		Log.d(conn.toString(), "Received PING");
 		sendPacket(PacketHeaders.PING);
-		Log.d(conn.getSSID() + "", "Send PING");
+		Log.d(conn.toString(), "Send PING");
 	}
 	
 	private void handleMat(DataPacket dp) throws IOException {
@@ -63,15 +64,16 @@ public class ConnectionHandler implements Runnable {
 		Detectable result = detector.detect(mat);
 		if (result == null) {
 			sendPacket(PacketHeaders.NO_MATCH);
-			Log.d(conn.getSSID() + "", "Send NO_MATCH");
+			Log.d(conn.toString(), "Send NO_MATCH");
 		} else {
+			Log.i(conn.toString(), "Matched " + result.getName());
 			sendMatch(result);
-			Log.d(conn.getSSID() + "", "Send MATCH (" + result.getName() + ")");
+			Log.d(conn.toString(), "Send MATCH");
 		}
 	}
 	
 	private void handleClose() {
-		Log.d(conn.getSSID() + "", "Received CLOSE");
+		Log.d(conn.toString(), "Received CLOSE");
 		running = false;
 	}
 	

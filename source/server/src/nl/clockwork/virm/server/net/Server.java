@@ -57,7 +57,6 @@ public class Server implements Runnable {
 					socket = serverSocket.accept();
 					conn = new Connection(lastSSID++, socket);
 					conn.setStatus(Status.CONNECTED);
-					Log.i("Server", String.format("New connection %s:%s", conn.getHostAddress(), conn.getPort()));
 					
 					onConnection(conn);
 					
