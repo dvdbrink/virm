@@ -49,6 +49,7 @@ using namespace cv;
     
     fileNames = [utils getFileNames];
     recognizer = [[Recognizer alloc] initWithDataSet:[utils getDescriptorsFromMatFiles]];
+//    recognizer = [[Recognizer alloc] initWithDataSet:[utils getDescriptorsFromImageFiles:YES]];
     
     camera = [[Camera alloc] init];
     [camera setup];
