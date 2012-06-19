@@ -58,14 +58,15 @@ public class LocalPaintingLoader implements Loader {
 
 		try {
 			byte[] raw = getBytesFromFile(file);
-			int offset = 0;
-			int rows = Convert.byteArrayToInt(raw, offset);
-			int cols = Convert.byteArrayToInt(raw, offset+=4);
+			int rows = Convert.byteArrayToInt(raw, 0);
+			int cols = Convert.byteArrayToInt(raw, 4);
 			if (rows > 0 && cols > 0) {
 				data = new int[rows][cols];
+				int offset = 8;
 				for (int i = 0; i < rows; i++) {
 					for (int j = 0; j < cols; j++) {
-						data[i][j] = raw[offset++] & 0xFF;
+						data[i][j] = raw[offset] & 0xFF;
+						offset++;
 					}
 				}
 			}

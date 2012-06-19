@@ -1,6 +1,6 @@
 package nl.clockwork.virm.android.scanner;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.dataset.DataSet;
 import nl.clockwork.virm.android.history.History;
 
@@ -23,7 +23,7 @@ public class AsyncLocalOpenCVScanner extends LocalOpenCVScanner {
 		//super.scan(data, width, height);
 		if (yuv == null || yuvResized == null) {
 			yuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
-			yuvResized = new Mat(C.DESIRED_FRAME_MAT_HEIGHT, C.DESIRED_FRAME_MAT_WIDTH, CvType.CV_8UC1);
+			yuvResized = new Mat(Settings.DESIRED_FRAME_MAT_HEIGHT, Settings.DESIRED_FRAME_MAT_WIDTH, CvType.CV_8UC1);
 		}
 
 		yuv.put(0, 0, data);
@@ -48,12 +48,12 @@ public class AsyncLocalOpenCVScanner extends LocalOpenCVScanner {
 
 				int goodMatches = 0;
 				for (DMatch m : matches.toList()) {
-					if (m.distance < C.MIN_DISTANCE_THRESHOLD) {
+					if (m.distance < Settings.MIN_DISTANCE_THRESHOLD) {
 						goodMatches++;
 					}
 				}
 
-				if ((bestMatch == null || goodMatches > bestMatchMatches) && goodMatches > C.MIN_GOOD_MATCHES) {
+				if ((bestMatch == null || goodMatches > bestMatchMatches) && goodMatches > Settings.MIN_GOOD_MATCHES) {
 					bestMatch = item;
 					bestMatchMatches = goodMatches;
 				}

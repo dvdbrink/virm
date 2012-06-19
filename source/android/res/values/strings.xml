@@ -23,6 +23,6 @@ Ut enim nunc, fermentum ut bibendum vitae, faucibus et neque. Ut egestas tellus 
 	
 	<string name="preference_server_ip">server_ip</string>
 	<string name="preference_server_port">server_port</string>
-	<string name="preference_default_server_ip">127.0.0.1</string>
+	<string name="preference_default_server_ip">50.17.57.182</string>
 	<string name="preference_default_server_port">1337</string>
 </resources>

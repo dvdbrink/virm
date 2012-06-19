@@ -13,7 +13,8 @@ import java.util.Properties;
 import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.server.detect.Detector;
 
-public class Server implements Runnable {	
+public class Server implements Runnable {
+	private long lastSSID;
 	private Detector detector;
 	private String ip;
 	private int port;
@@ -47,13 +48,14 @@ public class Server implements Runnable {
 			serverSocket.bind(new InetSocketAddress(ip, port));
 			Log.i("Server", String.format("Started on %s:%s", ip, port));
 
+			lastSSID = 0;
 			Socket socket = null;
 			Connection conn = null;
 			running = true;
 			while (running) {
 				try {
 					socket = serverSocket.accept();
-					conn = new Connection(0L, socket);
+					conn = new Connection(lastSSID++, socket);
 					conn.setStatus(Status.CONNECTED);
 					Log.i("Server", String.format("New connection %s:%s", conn.getHostAddress(), conn.getPort()));
 					

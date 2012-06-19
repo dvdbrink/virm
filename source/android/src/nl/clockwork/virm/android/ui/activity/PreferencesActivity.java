@@ -1,6 +1,6 @@
 package nl.clockwork.virm.android.ui.activity;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.R;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,18 +52,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
 				.unregisterOnSharedPreferenceChangeListener(this);
 
 		if (preferencesChanged) {
-			C.MIN_DISTANCE_THRESHOLD = getIntPreference(
-					R.string.preference_min_distance_threshold,
-					R.string.preference_default_min_distance_threshold);
-			C.MIN_GOOD_MATCHES = getIntPreference(
-					R.string.preference_min_good_matches,
-					R.string.preference_default_min_good_matches);
-			C.DESIRED_FRAME_MAT_WIDTH = getIntPreference(
-					R.string.preference_desired_frame_mat_size,
-					R.string.preference_default_desired_frame_mat_size);
-			C.DESIRED_FRAME_MAT_HEIGHT = getIntPreference(
-					R.string.preference_desired_frame_mat_size,
-					R.string.preference_default_desired_frame_mat_size);
+			Settings.load(this);
 			Toast.makeText(this, "Preferences saved", Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -80,6 +69,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
 		switch (item.getItemId()) {
 		case R.id.restore_defaults:
 			PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
+			Settings.load(this);
 			restart();
 			Toast.makeText(this, "Defaults restored", Toast.LENGTH_SHORT).show();
 			break;
@@ -97,15 +87,6 @@ public class PreferencesActivity extends PreferenceActivity implements OnSharedP
 			EditTextPreference editTextPref = (EditTextPreference) p;
 			editTextPref.setSummary(editTextPref.getText());
 		}
-	}
-
-	private int getIntPreference(int preference, int preferenceDefault) {
-		return Integer.parseInt(getStringPreference(preference, preferenceDefault));
-	}
-
-	private String getStringPreference(int preference, int preferenceDefault) {
-		return PreferenceManager.getDefaultSharedPreferences(this).getString(
-				this.getString(preference), this.getString(preferenceDefault));
 	}
 
 	private void restart() {

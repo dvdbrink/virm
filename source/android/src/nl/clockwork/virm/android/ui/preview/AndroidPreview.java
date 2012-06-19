@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -80,7 +80,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 			camera = Camera.open();
 			camera.setPreviewDisplay(holder);
 		} catch (IOException e) {
-			Log.e(C.TAG, "Failed to set preview display", e);
+			Log.e(Settings.TAG, "Failed to set preview display", e);
 		}
 	}
 
@@ -102,9 +102,9 @@ public class AndroidPreview extends SurfaceView implements Preview {
 		paint.setColor(Color.RED);
 		paint.setTextSize(15);
 		
-		canvas.drawText("Min. distance: " + C.MIN_DISTANCE_THRESHOLD, 10, 35, paint);
-		canvas.drawText("Min. good matches: " + C.MIN_GOOD_MATCHES, 10, 50, paint);
-		canvas.drawText("Frame size: " + C.DESIRED_FRAME_MAT_WIDTH, 10, 65, paint);
+		canvas.drawText("Min. distance: " + Settings.MIN_DISTANCE_THRESHOLD, 10, 35, paint);
+		canvas.drawText("Min. good matches: " + Settings.MIN_GOOD_MATCHES, 10, 50, paint);
+		canvas.drawText("Frame size: " + Settings.DESIRED_FRAME_MAT_WIDTH, 10, 65, paint);
 	}
 
 	@Override
@@ -194,7 +194,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 						}
 					});
 				} catch (Exception e) {
-					Log.w(C.TAG, "Unable to auto-focus", e);
+					Log.w(Settings.TAG, "Unable to auto-focus", e);
 					handler.postDelayed(AutoFocusRunnable.this, AUTO_FOCUS_INTERVAL);
 				}
 			}

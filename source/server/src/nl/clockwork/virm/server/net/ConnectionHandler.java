@@ -36,6 +36,7 @@ public class ConnectionHandler implements Runnable {
 		} finally {
 			try {
 				conn.close();
+				Log.d(conn.getSSID() + "", String.format("Closed on %s:%s", conn.getHostAddress(), conn.getPort()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -62,6 +63,7 @@ public class ConnectionHandler implements Runnable {
 		Detectable result = detector.detect(mat);
 		if (result == null) {
 			sendPacket(PacketHeaders.NO_MATCH);
+			Log.d(conn.getSSID() + "", "Send NO_MATCH");
 		} else {
 			sendMatch(result);
 			Log.d(conn.getSSID() + "", "Send MATCH (" + result.getName() + ")");

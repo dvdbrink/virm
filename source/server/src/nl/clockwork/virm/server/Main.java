@@ -12,11 +12,11 @@ public class Main {
 	public static void main(String[] args) {
 		Log.init(new String[] { "nl.clockwork.virm.log.ConsoleLogger"/*, "nl.clockwork.virm.server.view.BasicGUILogger"*/ });
 
-		View view = new BasicGUI();		
+		//View view = new BasicGUI();
 		Model model = new ServerModel();
-		Controller controller = new BasicController(model, view);
+		//Controller controller = new BasicController(model, view);
 
-		model.addObserver(view);
-		view.addController(controller);
+		//model.addObserver(view);
+		//view.addController(controller);
 	}
 }
