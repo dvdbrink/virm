@@ -21,9 +21,7 @@ using namespace cv;
     
     AppDelegate *appDelegate;
     MBProgressHUD *HUD;   
-    BOOL enableMatching;
 
-    
     Recognizer *recognizer;
     Utils *utils;
     Camera *camera;    
@@ -34,5 +32,9 @@ using namespace cv;
 }
 
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, assign) BOOL enableMatching;
+@property (nonatomic, assign) BOOL connected;
+
+- (void) processMatch: (NSString *) matchName;
 
 @end

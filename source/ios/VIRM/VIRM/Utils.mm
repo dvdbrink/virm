@@ -199,9 +199,9 @@ using namespace cv;
 - (void) initializeImageList {
     imageList = [[NSMutableArray alloc] init];
     
-    [imageList addObject:@"DeNachtwacht.jpg"];
-    [imageList addObject:@"MonaLisa.jpg"];    
-    [imageList addObject:@"VanGogh.jpg"];    
+//    [imageList addObject:@"DeNachtwacht.jpg"];
+//    [imageList addObject:@"MonaLisa.jpg"];    
+//    [imageList addObject:@"VanGogh.jpg"];    
     
 //    [imageList addObject:@"IMG_20120328_133650.jpg"];
 //    [imageList addObject:@"IMG_20120328_133717.jpg"];

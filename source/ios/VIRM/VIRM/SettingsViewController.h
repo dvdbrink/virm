@@ -19,6 +19,7 @@
 @property (retain, nonatomic) IBOutlet UISlider *setMaxDistance;
 @property (retain, nonatomic) IBOutlet UISlider *setMatchesNeeded;
 @property (retain, nonatomic) IBOutlet UISlider *setImageDimensions;
+@property (retain, nonatomic) IBOutlet UISwitch *switchRemote;
 
 - (IBAction)applyChanges:(id)sender;
 - (IBAction)resetToDefaults:(id)sender;

@@ -17,6 +17,8 @@ using namespace cv;
 @implementation OpenCVViewController
 
 @synthesize previewLayer = _previewLayer;
+@synthesize enableMatching = _enableMatching;
+@synthesize connected = _connected;
 
 #pragma mark -
 #pragma mark Initialization
@@ -32,12 +34,13 @@ using namespace cv;
     printf("[OpenCV] View loaded.\n");
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    enableMatching = NO;
+    
+    _connected = NO;
     
     HUD = [[MBProgressHUD alloc] initWithView:self.view];
 	[self.navigationController.view addSubview:HUD];     
     
-    HUD.labelText = @"Loading images..";
+    HUD.labelText = @"Initializing..";
     [HUD showWhileExecuting:@selector(setupApplication) onTarget:self withObject:nil animated:YES];
 }
 
@@ -49,20 +52,23 @@ using namespace cv;
     
     fileNames = [utils getFileNames];
     recognizer = [[Recognizer alloc] initWithDataSet:[utils getDescriptorsFromMatFiles]];
-//    recognizer = [[Recognizer alloc] initWithDataSet:[utils getDescriptorsFromImageFiles:YES]];
     
     camera = [[Camera alloc] init];
     [camera setup];
     [self setCameraDelegate];
     [self addCameraView];
     [camera start];
-    
-    //    networkHandler = [[NetworkHandler alloc] init];
-    //    [self setupNetwork];  
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-    enableMatching = YES;    
+    printf("[OpenCV] Matching enabled.\n");
+    _enableMatching = YES;
+    
+    if(appDelegate.remote == YES && _connected == NO) {
+        printf("[Network] Setting up network.\n");
+        networkHandler = [[NetworkHandler alloc] initWithOpenCvViewController:self];
+        [self setupNetwork];  
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -100,9 +106,7 @@ using namespace cv;
 - (void)setupNetwork {
     printf("[Network] Setting up connection.\n");
     
-    [networkHandler connect:@"172.19.2.30" :1337];
-//    [networkHandler sendPing];
-    [networkHandler sendMat:[recognizer getTestMat]];
+    [networkHandler connect:@"50.17.57.182" :1337];
 }
 
 // Delegate routine that is called when a sample buffer was written
@@ -110,41 +114,48 @@ using namespace cv;
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
        fromConnection:(AVCaptureConnection *)connection {
     
-    if([camera isRunning] == YES) {
-        NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];  
+    if(_enableMatching == YES) {
+        NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+        UIImage *captureUI = [utils imageFromSampleBuffer:sampleBuffer];        
         
-        UIImage *captureUI = [utils imageFromSampleBuffer:sampleBuffer];
-        
-        int match = [recognizer recognize:captureUI];
-    
-        natural_t freemem = [utils get_free_memory];
-        printf("[System] Free memory: %u.\n", freemem);
-    
-        if(match > -1 && enableMatching==YES) {
-            enableMatching = NO;
-            [self processMatch:match];
-        
+        if(appDelegate.remote == YES && _connected == YES) {
+            Mat descriptors = [recognizer getDescriptors:captureUI];
+            [networkHandler sendMat:descriptors];
+            
+            printf("[OpenCV] Matching disabled.\n");    
+            _enableMatching = NO;            
         }
-        [pool drain];
+        
+        if(appDelegate.remote == NO) {
+            int match = [recognizer recognize:captureUI];
+            if(match > -1) {
+                printf("[OpenCV] Matching disabled.\n");    
+                _enableMatching = NO;                 
+                
+                NSString* matchName = fileNames[match];
+                [self processMatch:matchName];
+        
+            }
+        }
+        [pool drain];        
     }
     
+//    natural_t freemem = [utils get_free_memory];
+//    printf("[System] Free memory: %u.\n", freemem);    
 }
 
-- (void) processMatch: (int) imageId {
-    printf("[OpenCV] Image %d recognized!\n", imageId);
-
-    NSString* fileName = fileNames[imageId];
+- (void) processMatch: (NSString *) matchName {
+    printf("[OpenCV] Image %s recognized!\n", [matchName UTF8String]);
        
-    UIImage *img = [UIImage imageNamed:fileName];
+    UIImage *img = [UIImage imageNamed:@"MonaLisa.jpg"];
     
-    [appDelegate.historyItemDataController addHistoryItem:fileName painter:fileName image:img];  
+    [appDelegate.historyItemDataController addHistoryItem:matchName painter:matchName image:img];  
     
     [self performSelectorOnMainThread:@selector(switchToPaintingView) withObject:nil waitUntilDone:NO];    
-    
-//    [camera stop];      	
 }
 
--(void)switchToPaintingView{
+-(void)switchToPaintingView{   
+    
     printf("[OpenCV] Switching to paintingview.\n");    
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];   

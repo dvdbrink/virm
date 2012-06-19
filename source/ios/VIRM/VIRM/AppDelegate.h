@@ -15,6 +15,8 @@
 @property (nonatomic, assign) int matchesNeeded;
 @property (nonatomic, assign) int imageDimensions;
 
+@property (nonatomic, assign) BOOL remote;
+
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) HistoryItemDataController *historyItemDataController;
 
