@@ -16,9 +16,21 @@ public class BasicGUILogger extends Observable implements Logger {
 	}
 
 	@Override
+	public void write(Level level, String message, Throwable t) {
+		write(level, message);
+		write(Level.ERROR, "An exception has occured");
+	}
+
+	@Override
 	public void write(String category, Level level, String message) {
 		setChanged();
 		notifyObservers(new String[] { now(), level.toString(), category, message });
+	}
+
+	@Override
+	public void write(String category, Level level, String message, Throwable t) {
+		write(category, level, message);
+		write(Level.ERROR, "An exception has occured");
 	}
 	
 	private String now() {

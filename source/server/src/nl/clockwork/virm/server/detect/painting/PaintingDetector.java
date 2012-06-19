@@ -45,9 +45,11 @@ public final class PaintingDetector implements Detector {
 	public synchronized Detectable detect(Object arg) {
 		if (arg instanceof int[][]) {
 			int[][] mat = (int[][])arg;
-			int loc = nativeDetect(mat.length, mat[0].length, mat);
-			if (loc > -1 && loc < paintings.size()) {
-				return paintings.get(loc);
+			if (mat.length > 0 && mat[0].length > 0) {
+				int loc = nativeDetect(mat.length, mat[0].length, mat);
+				if (loc > -1 && loc < paintings.size()) {
+					return paintings.get(loc);
+				}
 			}
 		}
 		return null;

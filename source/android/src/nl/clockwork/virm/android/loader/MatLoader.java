@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.Factory;
 import nl.clockwork.virm.android.dataset.DataSet;
 import nl.clockwork.virm.net.DataPacket;
@@ -26,14 +26,14 @@ public class MatLoader implements Loader {
 	public DataSet load(OnProgressUpdateCallback onProgressUpdateCallback) {
 		DataSet dataset = Factory.createDataSet();
 		try {
-			String[] fileNames = context.getAssets().list(C.PATH);
+			String[] fileNames = context.getAssets().list(Settings.PATH);
 			int count = 0;
 			for (String fileName : fileNames) {
-				Mat descriptor = loadMat(C.PATH + File.separator + fileName);
+				Mat descriptor = loadMat(Settings.PATH + File.separator + fileName);
 				dataset.add(Factory.createDataSetItem(fileName, descriptor));
 				onProgressUpdateCallback.onProgressUpdate((int) ((++count / (float) fileNames.length) * 100));
 			}
-			Log.i(C.TAG, count + " assets loaded");
+			Log.i(Settings.TAG, count + " assets loaded");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +51,7 @@ public class MatLoader implements Loader {
 			descriptor = new Mat(rows, cols, CvType.CV_8UC1);
 			for (int row = 0; row < rows; row++) {
 				for (int col = 0; col < cols; col++) {
-					descriptor.put(row, col, dp.readInt());
+					descriptor.put(row, col, dp.readByte() & 0xFF); // byte to unsigned byte hack
 				}
 			}
 		} catch (IOException e) {

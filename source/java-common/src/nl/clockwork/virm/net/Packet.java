@@ -3,7 +3,9 @@ package nl.clockwork.virm.net;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.SocketException;
 
+import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.util.Convert;
 
 public class Packet {
@@ -48,8 +50,10 @@ public class Packet {
 		try {
 			out.write(buffer.toByteArray());
 			out.flush();
+		} catch (SocketException e) {
+			Log.w("Packet not send. Connection lost.");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e("IOException", e);
 		}
 	}
 }

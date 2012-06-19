@@ -45,7 +45,7 @@ public final class Log {
 		return null;
 	}
 
-	public static void log(Level level, String message) {
+	private static void log(Level level, String message) {
 		if (initiated) {
 			for (Logger logger : loggers.values()) {
 				logger.write(level, message);
@@ -54,11 +54,31 @@ public final class Log {
 			System.err.println("Logger has not been initiated.");
 		}
 	}
+	
+	private static void log(Level level, String message, Throwable t) {
+		if (initiated) {
+			for (Logger logger : loggers.values()) {
+				logger.write(level, message, t);
+			}
+		} else {
+			System.err.println("Logger has not been initiated.");
+		}
+	}
 
-	public static void log(String category, Level level, String message) {
+	private static void log(String category, Level level, String message) {
 		if (initiated) {
 			for (Logger logger : loggers.values()) {
 				logger.write(category, level, message);
+			}
+		} else {
+			System.err.println("Logger has not been initiated.");
+		}
+	}
+	
+	private static void log(String category, Level level, String message, Throwable t) {
+		if (initiated) {
+			for (Logger logger : loggers.values()) {
+				logger.write(category, level, message, t);
 			}
 		} else {
 			System.err.println("Logger has not been initiated.");
@@ -80,6 +100,10 @@ public final class Log {
 	public static void e(String message) {
 		log(Level.ERROR, message);
 	}
+	
+	public static void e(String message, Throwable t) {
+		log(Level.ERROR, message, t);
+	}
 
 	public static void f(String message) {
 		log(Level.FATAL, message);
@@ -99,6 +123,10 @@ public final class Log {
 
 	public static void e(String category, String message) {
 		log(category, Level.ERROR, message);
+	}
+	
+	public static void e(String category, String message, Throwable t) {
+		log(category, Level.ERROR, message, t);
 	}
 
 	public static void f(String category, String message) {

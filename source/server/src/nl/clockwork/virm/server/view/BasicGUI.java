@@ -36,13 +36,13 @@ public class BasicGUI implements View {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Log.e(BasicGUI.class.getSimpleName(), "SQLException", e);
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			Log.e(BasicGUI.class.getSimpleName(), "InstantiationException", e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			Log.e(BasicGUI.class.getSimpleName(), "IllegalAccessException", e);
 		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			Log.e(BasicGUI.class.getSimpleName(), "UnsupportedLookAndFeelException", e);
 		}
 
 		initializeGUI();

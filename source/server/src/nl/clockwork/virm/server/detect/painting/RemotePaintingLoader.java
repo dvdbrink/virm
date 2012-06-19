@@ -31,11 +31,11 @@ public class RemotePaintingLoader implements Loader {
 			String name = prop.getProperty("db_name");
 			conn = DriverManager.getConnection(host + name, user, pass);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "FileNotFoundException", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "IOException", e);
 		}
 	}
 	
@@ -47,13 +47,11 @@ public class RemotePaintingLoader implements Loader {
 			while (rs.next()) {
 				Painting painting = loadPainting(rs);
 				if (painting != null) {
-					//for (int i = 0; i < 20; i++) {
-						paintings.add(painting);
-					//}
+					paintings.add(painting);
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		Log.i("Loader", paintings.size() + " paintings loaded");
 		return paintings;
@@ -70,7 +68,7 @@ public class RemotePaintingLoader implements Loader {
 					rs.getString(3));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		return painter;
 	}
@@ -87,13 +85,13 @@ public class RemotePaintingLoader implements Loader {
 					data = new int[rows][cols];
 					for (int i = 0; i < rows; i++) {
 						for (int j = 0; j < cols; j++) {
-							data[i][j] = Convert.byteArrayToInt(raw, offset+=4);
+							data[i][j] = raw[offset++] & 0xFF;
 						}
 					}
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		return data;
 	}
@@ -111,7 +109,7 @@ public class RemotePaintingLoader implements Loader {
 					loadPainter(rs.getLong(5)));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		return painting;
 	}
@@ -123,13 +121,13 @@ public class RemotePaintingLoader implements Loader {
 		try {
 			pstmt = conn.prepareStatement(query);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		} finally {
 			if (pstmt != null) {
 				try {
 					rs = pstmt.executeQuery();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 				}
 			}
 		}
@@ -144,13 +142,13 @@ public class RemotePaintingLoader implements Loader {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setLong(1, id);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		} finally {
 			if (pstmt != null) {
 				try {
 					rs = pstmt.executeQuery();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 				}
 			}
 		}

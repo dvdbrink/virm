@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.history.History;
 
 import org.opencv.core.CvType;
@@ -28,8 +28,8 @@ public abstract class BasicOpenCVScanner implements Scanner {
 		this.context = context;
 		
 		listeners = new ArrayList<ResultListener>();
-		detector = FeatureDetector.create(C.OPENCV_DETECTOR_ALGORITHM);
-		extractor = DescriptorExtractor.create(C.OPENCV_EXTRACTOR_ALGORITHM);
+		detector = FeatureDetector.create(Settings.OPENCV_DETECTOR_ALGORITHM);
+		extractor = DescriptorExtractor.create(Settings.OPENCV_EXTRACTOR_ALGORITHM);
 		keypoints = new MatOfKeyPoint();
 		descriptor = new Mat();
 	}
@@ -38,7 +38,7 @@ public abstract class BasicOpenCVScanner implements Scanner {
 	public void scan(byte[] data, int width, int height) {
 		if (yuv == null || yuvResized == null) {
 			yuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
-			yuvResized = new Mat(C.DESIRED_FRAME_MAT_HEIGHT, C.DESIRED_FRAME_MAT_WIDTH, CvType.CV_8UC1);
+			yuvResized = new Mat(Settings.DESIRED_FRAME_MAT_HEIGHT, Settings.DESIRED_FRAME_MAT_WIDTH, CvType.CV_8UC1);
 		}
 
 		yuv.put(0, 0, data);

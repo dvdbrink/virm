@@ -8,11 +8,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.PacketHeaders;
-import nl.clockwork.virm.util.Convert;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -46,14 +45,10 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 
 				int rows = descriptor.rows();
 				int cols = descriptor.cols();
-				ByteArrayOutputStream bytes = new ByteArrayOutputStream((rows * cols) * 4);
+				ByteArrayOutputStream bytes = new ByteArrayOutputStream(rows * cols);
 				for (int i = 0; i < rows; i++) {
 					for (int j = 0; j < cols; j++) {
-						try {
-							bytes.write(Convert.intToByteArray((int) descriptor.get(i, j)[0]));
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+						bytes.write((byte) ((int) descriptor.get(i, j)[0]));
 					}
 				}
 				
@@ -78,7 +73,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private void connect() {
 		try {
 			socket = new Socket();
-			socket.connect(new InetSocketAddress("192.168.178.23", 1337), 5000);
+			socket.connect(new InetSocketAddress(Settings.SERVER_HOST_ADDRESS, Settings.SERVER_PORT), 5000);
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 			connected = true;
@@ -123,7 +118,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 		@Override
 		protected void onPostExecute(String result) {
 			if (result == null) {
-				Log.w(C.TAG, "Something went wrong, result == null");
+				Log.w(Settings.TAG, "Something went wrong, result == null");
 			} else if (result.isEmpty()) {
 				fireNoMatchEvent();
 			} else {

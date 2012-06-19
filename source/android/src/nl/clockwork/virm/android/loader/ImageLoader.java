@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.Factory;
 import nl.clockwork.virm.android.dataset.DataSet;
 
@@ -32,14 +32,14 @@ public class ImageLoader implements Loader {
 	public DataSet load(Loader.OnProgressUpdateCallback onProgressUpdateCallback) {
 		DataSet dataset = Factory.createDataSet();
 		try {
-			String[] fileNames = context.getAssets().list(C.PATH);
+			String[] fileNames = context.getAssets().list(Settings.PATH);
 			int count = 0;
 			for (String fileName : fileNames) {
-				Mat descriptor = loadAssetDescriptor(C.PATH + File.separator + fileName);
+				Mat descriptor = loadAssetDescriptor(Settings.PATH + File.separator + fileName);
 				dataset.add(Factory.createDataSetItem(fileName, descriptor));
 				onProgressUpdateCallback.onProgressUpdate((int) ((++count / (float) fileNames.length) * 100));
 			}
-			Log.i(C.TAG, count + " assets loaded");
+			Log.i(Settings.TAG, count + " assets loaded");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,11 +56,11 @@ public class ImageLoader implements Loader {
 			Bitmap bmp = b.copy(Bitmap.Config.ARGB_8888, false);
 			Mat data = new Mat();
 			Utils.bitmapToMat(bmp, data);
-			Mat dataResized = new Mat(C.DESIRED_REF_MAT_HEIGHT, C.DESIRED_REF_MAT_WIDTH, CvType.CV_8UC1);
+			Mat dataResized = new Mat(Settings.DESIRED_REF_MAT_HEIGHT, Settings.DESIRED_REF_MAT_WIDTH, CvType.CV_8UC1);
 			Imgproc.resize(data, dataResized, dataResized.size());
 
-			FeatureDetector detector = FeatureDetector.create(C.OPENCV_DETECTOR_ALGORITHM);
-			DescriptorExtractor extractor = DescriptorExtractor.create(C.OPENCV_EXTRACTOR_ALGORITHM);
+			FeatureDetector detector = FeatureDetector.create(Settings.OPENCV_DETECTOR_ALGORITHM);
+			DescriptorExtractor extractor = DescriptorExtractor.create(Settings.OPENCV_EXTRACTOR_ALGORITHM);
 			MatOfKeyPoint keypoints = new MatOfKeyPoint();
 
 			detector.detect(dataResized, keypoints);

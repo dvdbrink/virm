@@ -1,6 +1,6 @@
 package nl.clockwork.virm.android.scanner;
 
-import nl.clockwork.virm.android.C;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.dataset.DataSet;
 
 import org.opencv.core.MatOfDMatch;
@@ -19,7 +19,7 @@ public class LocalOpenCVScanner extends BasicOpenCVScanner {
 		
 		this.dataSet = dataSet;
 		
-		matcher = DescriptorMatcher.create(C.OPENCV_MATCHER_ALGORITHM);
+		matcher = DescriptorMatcher.create(Settings.OPENCV_MATCHER_ALGORITHM);
 		matches = new MatOfDMatch();
 	}
 
@@ -51,12 +51,12 @@ public class LocalOpenCVScanner extends BasicOpenCVScanner {
 
 			int goodMatches = 0;
 			for (DMatch m : matches.toList()) {
-				if (m.distance < C.MIN_DISTANCE_THRESHOLD) {
+				if (m.distance < Settings.MIN_DISTANCE_THRESHOLD) {
 					goodMatches++;
 				}
 			}
 
-			if ((bestMatch == null || goodMatches > bestMatchMatches) && goodMatches > C.MIN_GOOD_MATCHES) {
+			if ((bestMatch == null || goodMatches > bestMatchMatches) && goodMatches > Settings.MIN_GOOD_MATCHES) {
 				bestMatch = item;
 				bestMatchMatches = goodMatches;
 			}

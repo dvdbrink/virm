@@ -20,4 +20,9 @@ Ut enim nunc, fermentum ut bibendum vitae, faucibus et neque. Ut egestas tellus 
 	<string name="preference_default_min_good_matches">5</string>
 	<string name="preference_desired_frame_mat_size">frame size</string>
 	<string name="preference_default_desired_frame_mat_size">150</string>
+	
+	<string name="preference_server_ip">server_ip</string>
+	<string name="preference_server_port">server_port</string>
+	<string name="preference_default_server_ip">50.17.57.182</string>
+	<string name="preference_default_server_port">1337</string>
 </resources>
