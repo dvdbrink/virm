@@ -10,7 +10,7 @@ import nl.clockwork.virm.server.view.View;
 
 public class Main {
 	public static void main(String[] args) {
-		Log.init(new String[] { "nl.clockwork.virm.server.view.BasicGUILogger" });
+		Log.init(new String[] { "nl.clockwork.virm.log.ConsoleLogger"/*, "nl.clockwork.virm.server.view.BasicGUILogger"*/ });
 
 		View view = new BasicGUI();		
 		Model model = new ServerModel();

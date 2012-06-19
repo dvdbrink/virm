@@ -44,9 +44,9 @@ public class ConnectionHandler implements Runnable {
 
 	private void handlePacket(byte command, DataPacket dp) throws IOException {
 		switch (command) {
-			case PacketHeaders.PING: handlePing(); break;
-			case PacketHeaders.DETECT: handleMat(dp); break;
-			case PacketHeaders.CLOSE: handleClose(); break;
+			case PacketHeaders.PING: 	handlePing(); 	break;
+			case PacketHeaders.DETECT: 	handleMat(dp); 	break;
+			case PacketHeaders.CLOSE: 	handleClose(); 	break;
 		}
 	}
 
@@ -80,7 +80,7 @@ public class ConnectionHandler implements Runnable {
 		int[][] matrix = new int[rows][cols];
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				matrix[row][col] = dp.readInt();
+				matrix[row][col] = dp.readByte() & 0xFF;
 			}
 		}
 		

@@ -51,7 +51,7 @@ public class MatLoader implements Loader {
 			descriptor = new Mat(rows, cols, CvType.CV_8UC1);
 			for (int row = 0; row < rows; row++) {
 				for (int col = 0; col < cols; col++) {
-					descriptor.put(row, col, dp.readInt());
+					descriptor.put(row, col, dp.readByte() & 0xFF); // byte to unsigned byte hack
 				}
 			}
 		} catch (IOException e) {

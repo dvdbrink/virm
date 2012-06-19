@@ -18,6 +18,8 @@ public class ServerModel extends Model implements ServerListener, ConnectionList
 		detector = Factory.createDetector(loader);
 		server = new Server(detector);
 		server.addListener(this);
+		
+		startServer();
 	}
 
 	public void startServer() {

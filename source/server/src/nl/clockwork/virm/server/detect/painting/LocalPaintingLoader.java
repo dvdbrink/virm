@@ -2,10 +2,12 @@ package nl.clockwork.virm.server.detect.painting;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.server.detect.Detectable;
@@ -15,8 +17,17 @@ import nl.clockwork.virm.util.Convert;
 public class LocalPaintingLoader implements Loader {
 	private String path;
 
-	public LocalPaintingLoader(String path) {
-		this.path = path;
+	public LocalPaintingLoader() {
+		try {
+			Properties prop = new Properties();
+			prop.load(new FileInputStream("conf/default.properties"));
+			String path = prop.getProperty("local_db_path");
+			this.path = path;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -54,7 +65,7 @@ public class LocalPaintingLoader implements Loader {
 				data = new int[rows][cols];
 				for (int i = 0; i < rows; i++) {
 					for (int j = 0; j < cols; j++) {
-						data[i][j] = Convert.byteArrayToInt(raw, offset+=4);
+						data[i][j] = raw[offset++] & 0xFF;
 					}
 				}
 			}

@@ -12,7 +12,6 @@ import nl.clockwork.virm.android.C;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.PacketHeaders;
-import nl.clockwork.virm.util.Convert;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -46,14 +45,11 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 
 				int rows = descriptor.rows();
 				int cols = descriptor.cols();
-				ByteArrayOutputStream bytes = new ByteArrayOutputStream((rows * cols) * 4);
+				ByteArrayOutputStream bytes = new ByteArrayOutputStream(rows * cols);
 				for (int i = 0; i < rows; i++) {
 					for (int j = 0; j < cols; j++) {
-						try {
-							bytes.write(Convert.intToByteArray((int) descriptor.get(i, j)[0]));
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+						byte[] b = new byte[1];
+						bytes.write((byte) descriptor.get(i, j, b));
 					}
 				}
 				
@@ -78,7 +74,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private void connect() {
 		try {
 			socket = new Socket();
-			socket.connect(new InetSocketAddress("192.168.178.23", 1337), 5000);
+			socket.connect(new InetSocketAddress("10.203.81.62", 1337), 5000);
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 			connected = true;

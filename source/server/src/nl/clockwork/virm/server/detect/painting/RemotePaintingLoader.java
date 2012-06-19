@@ -87,7 +87,7 @@ public class RemotePaintingLoader implements Loader {
 					data = new int[rows][cols];
 					for (int i = 0; i < rows; i++) {
 						for (int j = 0; j < cols; j++) {
-							data[i][j] = Convert.byteArrayToInt(raw, offset+=4);
+							data[i][j] = raw[offset++] & 0xFF;
 						}
 					}
 				}
