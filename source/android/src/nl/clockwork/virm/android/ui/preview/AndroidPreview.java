@@ -7,9 +7,6 @@ import java.util.List;
 
 import nl.clockwork.virm.android.Settings;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -44,8 +41,6 @@ public class AndroidPreview extends SurfaceView implements Preview {
 		frameHeight = 0;
 		capturing = false;
 		autoPause = false;
-		
-		this.setWillNotDraw(false);
 	}
 
 	@Override
@@ -77,8 +72,10 @@ public class AndroidPreview extends SurfaceView implements Preview {
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		try {
-			camera = Camera.open();
-			camera.setPreviewDisplay(holder);
+			if (camera == null) {
+				camera = Camera.open();
+				camera.setPreviewDisplay(holder);
+			}
 		} catch (IOException e) {
 			Log.e(Settings.TAG, "Failed to set preview display", e);
 		}
@@ -86,25 +83,17 @@ public class AndroidPreview extends SurfaceView implements Preview {
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		camera.setPreviewCallbackWithBuffer(null);
-		camera.stopPreview();
-		camera.release();
-		camera = null;
+		if (camera != null) {
+			camera.setPreviewCallbackWithBuffer(null);
+			camera.stopPreview();
+			camera.release();
+			camera = null;
+		}
 	}
 	
 	@Override
-	protected void onDraw(Canvas canvas)
-	{
-		super.onDraw(canvas);
-
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.FILL);
-		paint.setColor(Color.RED);
-		paint.setTextSize(15);
+	public void destroy() {
 		
-		canvas.drawText("Min. distance: " + Settings.MIN_DISTANCE_THRESHOLD, 10, 35, paint);
-		canvas.drawText("Min. good matches: " + Settings.MIN_GOOD_MATCHES, 10, 50, paint);
-		canvas.drawText("Frame size: " + Settings.DESIRED_FRAME_MAT_WIDTH, 10, 65, paint);
 	}
 
 	@Override

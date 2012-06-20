@@ -57,9 +57,15 @@ public abstract class BasicOpenCVScanner implements Scanner {
 	
 	@Override
 	public void destroy() {
-		descriptor.release();
-		yuv.release();
-		yuvResized.release();
+		if (descriptor != null) {
+			descriptor.release();
+		}
+		if (yuv != null) {
+			yuv.release();
+		}
+		if (yuvResized != null) {
+			yuvResized.release();
+		}
 	}
 	
 	protected void fireMatchEvent(History.Item result) {

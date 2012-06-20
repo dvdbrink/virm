@@ -53,6 +53,7 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		preview.destroy();
 		scanner.destroy();
 	}
 

@@ -64,7 +64,6 @@ public class LoadingScreenActivity extends BaseActivity {
         	b.putString("detection_method", "Local");
         	intent.putExtras(b);
         	startActivity(intent);
-			LoadingScreenActivity.this.startActivity(intent);
 		}
 	}
 }
