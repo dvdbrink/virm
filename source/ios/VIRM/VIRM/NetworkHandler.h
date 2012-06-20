@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class OpenCVViewController;
+
 using namespace cv;
 
 @interface NetworkHandler : NSObject <NSStreamDelegate> {
@@ -15,7 +17,11 @@ using namespace cv;
     NSOutputStream *outputStream;
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
+    
+    OpenCVViewController *viewController;
 }
+
+- (id) initWithOpenCvViewController:(OpenCVViewController *)OpenCvViewController;
 
 - (NSOutputStream *) getOutputStream;
 - (NSInputStream *) getInputStream;
@@ -25,5 +31,6 @@ using namespace cv;
 - (void) handleMatch;
 - (void) sendMat: (Mat) mat;
 - (void) sendPing;
+- (void) sendClose;
 
 @end

@@ -7,11 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "NetworkHandler.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize historyItemDataController = _historyItemDataController;
+@synthesize remote = _remote;
 
 @synthesize matchesNeeded = _matchesNeeded;
 @synthesize maxDistance = _maxDistance;
@@ -22,6 +24,8 @@
     printf("[Application] Finished launching.\n");
     
     _historyItemDataController = [[HistoryItemDataController alloc] init];
+    
+    _remote = NO;
     
     [self setDefaultValues];
     
@@ -43,8 +47,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [[[NetworkHandler alloc] init] sendClose];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

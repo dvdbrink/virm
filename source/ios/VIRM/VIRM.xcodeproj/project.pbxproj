@@ -12,7 +12,7 @@
 		D717236F15341F2B00F1F63E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D717236E15341F2B00F1F63E /* CoreGraphics.framework */; };
 		D717237515341F2B00F1F63E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D717237315341F2B00F1F63E /* InfoPlist.strings */; };
 		D717237715341F2B00F1F63E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D717237615341F2B00F1F63E /* main.m */; };
-		D717237B15341F2B00F1F63E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D717237A15341F2B00F1F63E /* AppDelegate.m */; };
+		D717237B15341F2B00F1F63E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D717237A15341F2B00F1F63E /* AppDelegate.mm */; };
 		D717237E15341F2B00F1F63E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D717237C15341F2B00F1F63E /* MainStoryboard.storyboard */; };
 		D717238115341F2B00F1F63E /* OpenCVViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D717238015341F2B00F1F63E /* OpenCVViewController.mm */; };
 		D71724531534207C00F1F63E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71724521534207C00F1F63E /* CoreMedia.framework */; };
@@ -181,7 +181,7 @@
 		D717237615341F2B00F1F63E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D717237815341F2B00F1F63E /* VIRM-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VIRM-Prefix.pch"; sourceTree = "<group>"; };
 		D717237915341F2B00F1F63E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D717237A15341F2B00F1F63E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D717237A15341F2B00F1F63E /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		D717237D15341F2B00F1F63E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		D717237F15341F2B00F1F63E /* OpenCVViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVViewController.h; sourceTree = "<group>"; };
 		D717238015341F2B00F1F63E /* OpenCVViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVViewController.mm; sourceTree = "<group>"; };
@@ -555,7 +555,7 @@
 				D7C8220415359C040051A4C8 /* History */,
 				D717238B15341FE900F1F63E /* OpenCV */,
 				D717237915341F2B00F1F63E /* AppDelegate.h */,
-				D717237A15341F2B00F1F63E /* AppDelegate.m */,
+				D717237A15341F2B00F1F63E /* AppDelegate.mm */,
 				D717237C15341F2B00F1F63E /* MainStoryboard.storyboard */,
 				D717237F15341F2B00F1F63E /* OpenCVViewController.h */,
 				D717238015341F2B00F1F63E /* OpenCVViewController.mm */,
@@ -1261,7 +1261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D717237715341F2B00F1F63E /* main.m in Sources */,
-				D717237B15341F2B00F1F63E /* AppDelegate.m in Sources */,
+				D717237B15341F2B00F1F63E /* AppDelegate.mm in Sources */,
 				D717238115341F2B00F1F63E /* OpenCVViewController.mm in Sources */,
 				D7C8220D15359C1F0051A4C8 /* HistoryItem.m in Sources */,
 				D7C8220E15359C1F0051A4C8 /* HistoryItemDataController.m in Sources */,

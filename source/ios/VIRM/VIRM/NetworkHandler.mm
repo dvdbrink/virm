@@ -7,8 +7,17 @@
 //
 
 #import "NetworkHandler.h"
+#import "OpenCVViewController.h"
 
 @implementation NetworkHandler
+
+- (id) initWithOpenCvViewController:(OpenCVViewController *)OpenCvViewController {
+    if (self = [super init]) {
+        
+        viewController = OpenCvViewController;
+    }
+    return self;
+}
 
 - (void) connect:(NSString *)ip :(int)port {
     printf("[Network] Connecting.\n");
@@ -63,13 +72,11 @@
         }
         case NSStreamEventOpenCompleted: {
             printf("[Network] Open completed.\n");
+            viewController.connected = YES;
             break;
         }
         case NSStreamEventHasSpaceAvailable: {
             printf("[Network] Space available.\n");
-            if(stream == outputStream) {
-//                [self sendMat];
-            }
             break;
         }
         case NSStreamEventErrorOccurred: {
@@ -111,7 +118,9 @@
             break;
         }
         case 0x07 : {
-            printf("[Network] NO_MATCH received.\n");            
+            printf("[Network] NO_MATCH received.\n");
+            printf("[OpenCV] Matching enabled.\n");    
+            viewController.enableMatching = YES;            
             break;
         }            
     }
@@ -135,15 +144,27 @@
     NSString *imageId = [[NSString alloc] initWithBytes:stringBuffer length:length encoding:NSUTF8StringEncoding];
     
     printf("[Network] ID Received: %s\n", [imageId UTF8String]);
+    [viewController processMatch:imageId];
 }
 
 - (void) sendPing {
     Byte buffer[1];
-    buffer[0] = 0x00;                    
+    buffer[0] = 0x01;                    
     NSMutableData *data = [NSMutableData dataWithCapacity:0];
     [data appendBytes:buffer length:1];
     
     [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];
+    printf("[Network] PING sent.\n");    
+}
+
+- (void) sendClose {
+    Byte buffer[1];
+    buffer[0] = 0x04;                    
+    NSMutableData *data = [NSMutableData dataWithCapacity:0];
+    [data appendBytes:buffer length:1];
+    
+    [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];
+    printf("[Network] CLOSE sent.\n");    
 }
 
 - (void) sendMat: (Mat) mat {
@@ -157,13 +178,13 @@
         
     for(int i=0; i < mat.rows; i++) {
         for(int j=0; j < mat.cols; j++) {
-            int value =  mat.at<unsigned char>(i, j);            
+            unsigned char value =  mat.at<unsigned char>(i, j);            
             [data appendBytes:&value length:sizeof(value)]; 
         }
     }
         
     [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];   
-    printf("[Network] Mat sent.\n");
+    printf("[Network] MAT sent.\n");
 }
 
 - (NSInputStream *) getInputStream {

@@ -20,6 +20,7 @@
 @synthesize setMaxDistance;
 @synthesize setMatchesNeeded;
 @synthesize setImageDimensions;
+@synthesize switchRemote;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +48,7 @@
     [self setMaxDistanceLabel:nil];
     [self setMatchesNeededLabel:nil];
     [self setImageDimensionsLabel:nil];
+    [self setSwitchRemote:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -63,6 +65,7 @@
     [maxDistanceLabel release];
     [matchesNeededLabel release];
     [imageDimensionsLabel release];
+    [switchRemote release];
     [super dealloc];
 }
 - (IBAction)applyChanges:(id)sender {
@@ -73,7 +76,9 @@
     matchesNeededLabel.text = [NSString stringWithFormat:@"%i", (int) setMatchesNeeded.value];
 
     imageDimensionsLabel.text = [NSString stringWithFormat:@"%i * %i", (int) setImageDimensions.value, (int) setImageDimensions.value];    
-    appDelegate.imageDimensions = (int) setImageDimensions.value;     
+    appDelegate.imageDimensions = (int) setImageDimensions.value;  
+    
+    appDelegate.remote = switchRemote.isOn;
 }
 
 - (IBAction)resetToDefaults:(id)sender {
