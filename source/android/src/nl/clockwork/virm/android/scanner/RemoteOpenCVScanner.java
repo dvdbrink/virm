@@ -6,16 +6,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.PacketHeaders;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private Socket socket;
@@ -53,6 +52,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 				}
 				
 				sendMat(bytes.toByteArray());
+				Log.d(Settings.TAG, "Send DETECT");
 
 				new ListenTask().execute();
 			} else {
@@ -73,15 +73,16 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private void connect() {
 		try {
 			socket = new Socket();
-			socket.connect(new InetSocketAddress(Settings.SERVER_HOST_ADDRESS, Settings.SERVER_PORT), 5000);
+			socket.connect(new InetSocketAddress(Settings.SERVER_HOST_ADDRESS, Settings.SERVER_PORT));
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 			connected = true;
-			Toast.makeText(context, "Connected", Toast.LENGTH_LONG).show();
-		} catch (SocketTimeoutException e) {
-			Toast.makeText(context, "Could not connect to server", Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(Settings.TAG, "IOException", e);
+			AlertDialog.Builder builder = new AlertDialog.Builder(context);
+			builder.setMessage("Could not connect to server");
+			AlertDialog alert = builder.create();
+			alert.show();
 		}
 	}
 
@@ -91,6 +92,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 			Packet p = new Packet();
 			p.addByte(PacketHeaders.CLOSE);
 			p.send(out);
+			Log.d(Settings.TAG, "Send CLOSE");
 		}
 
 		super.destroy();
@@ -104,13 +106,17 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 					byte command = (byte) in.read();
 					if (command > -1) {
 						switch (command) {
-							case PacketHeaders.MATCH: 	 return new DataPacket(in).readString();
-							case PacketHeaders.NO_MATCH: return "";
+							case PacketHeaders.MATCH: 	 
+								Log.d(Settings.TAG, "Received MATCH");
+								return new DataPacket(in).readString();
+							case PacketHeaders.NO_MATCH:
+								Log.d(Settings.TAG, "Received NO_MATCH");
+								return "";
 						}
 					}
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.e(Settings.TAG, "IOException", e);
 			}
 			return null;
 		}

@@ -59,6 +59,7 @@ public class ConnectionHandler implements Runnable {
 	}
 	
 	private void handleMat(DataPacket dp) throws IOException {
+		Log.d(conn.toString(), "Received DETECT");
 		int[][] mat = readMat(dp);
 
 		Detectable result = detector.detect(mat);

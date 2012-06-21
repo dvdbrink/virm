@@ -131,8 +131,8 @@ public class BasicGUI implements View {
 	}
 	
 	private int connectionExists(Connection c) {
-		if (connections.getRowCount() > 0) {
-			for (int row = 0; row <= connections.getRowCount(); row++) {
+		if (connections.getRowCount() > 0 && connections.getColumnCount() > 0) {
+			for (int row = 0; row < connections.getRowCount(); row++) {
 				if (c.getSSID() == (Long) connections.getValueAt(row, 0)) {
 					return row;
 				}
