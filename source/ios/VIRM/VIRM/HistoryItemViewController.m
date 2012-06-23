@@ -140,10 +140,4 @@
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
 }
-
-- (void)dealloc {
-    [_textView release];
-    [_historyItem release];
-    [super dealloc];
-}
 @end

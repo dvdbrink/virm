@@ -30,6 +30,9 @@
     printf("[History] Initializing Default Data List.\n");    
     NSMutableArray *list = [[NSMutableArray alloc] init];
     self.historyList = list;
+    
+//    UIImage *img = [UIImage imageNamed:@"MonaLisa.jpg"];
+//    [self addHistoryItem:@"Test" painter:@"Test" image:img];
 }
 
 -(void)setHistoryList:(NSMutableArray *)historyList:(NSMutableArray *)newList{

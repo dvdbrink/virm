@@ -79,6 +79,7 @@ using namespace cv;
 
 - (void) viewWillDisappear:(BOOL)animated
 {
+    _enableMatching = NO;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
 }
