@@ -6,10 +6,12 @@ import nl.clockwork.virm.server.detect.painting.LocalPaintingLoader;
 import nl.clockwork.virm.server.detect.painting.PaintingDetector;
 
 public final class Factory {
+	// TODO config
+
 	public static Loader createLoader() {
 		return new LocalPaintingLoader();
 	}
-	
+
 	public static Detector createDetector(Loader loader) {
 		return new PaintingDetector(loader);
 	}
