@@ -14,13 +14,15 @@ public final class PaintingDetector implements Detector {
 	static {
 		System.loadLibrary("recognize");
 	}
-	
+
 	private native int nativeInit(int threshold, int minGoodMatches);
+
 	private native boolean nativeAddTrainedDescriptor(int rows, int cols, int[][] mat);
+
 	private native int nativeDetect(int rows, int cols, int[][] mat);
-	
+
 	private List<Detectable> paintings;
-	
+
 	public PaintingDetector(Loader loader) {
 		Properties prop = new Properties();
 		try {
@@ -32,19 +34,20 @@ public final class PaintingDetector implements Detector {
 		}
 		int threshold = Integer.parseInt(prop.getProperty("detection_threshold"));
 		int minGoodMatches = Integer.parseInt(prop.getProperty("detection_min_good_distance"));
-		nativeInit(threshold, minGoodMatches);
 		
+		nativeInit(threshold, minGoodMatches);
+
 		paintings = loader.load();
 		for (Detectable d : paintings) {
-			Painting p = (Painting)d;
+			Painting p = (Painting) d;
 			nativeAddTrainedDescriptor(p.getData().length, p.getData()[0].length, p.getData());
 		}
 	}
-	
+
 	@Override
 	public synchronized Detectable detect(Object arg) {
 		if (arg instanceof int[][]) {
-			int[][] mat = (int[][])arg;
+			int[][] mat = (int[][]) arg;
 			if (mat.length > 0 && mat[0].length > 0) {
 				int loc = nativeDetect(mat.length, mat[0].length, mat);
 				if (loc > -1 && loc < paintings.size()) {

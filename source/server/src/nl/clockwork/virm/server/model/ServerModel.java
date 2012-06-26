@@ -22,7 +22,7 @@ public class ServerModel extends Model implements ServerListener, ConnectionList
 		startServer();
 	}
 
-	public void startServer() {
+	private void startServer() {
 		new Thread(server).start();
 	}
 	

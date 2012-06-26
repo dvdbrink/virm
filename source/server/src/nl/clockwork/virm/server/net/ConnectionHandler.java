@@ -17,7 +17,6 @@ public class ConnectionHandler implements Runnable {
 	public ConnectionHandler(Detector detector, Connection conn) {
 		this.detector = detector;
 		this.conn = conn;
-		
 		running = false;
 	}
 
@@ -59,17 +58,17 @@ public class ConnectionHandler implements Runnable {
 	}
 	
 	private void handleMat(DataPacket dp) throws IOException {
-		Log.d(conn.toString(), "Received DETECT");
+		//Log.d(conn.toString(), "Received DETECT");
 		int[][] mat = readMat(dp);
 
 		Detectable result = detector.detect(mat);
 		if (result == null) {
 			sendPacket(PacketHeaders.NO_MATCH);
-			Log.d(conn.toString(), "Send NO_MATCH");
+			//Log.d(conn.toString(), "Send NO_MATCH");
 		} else {
 			Log.i(conn.toString(), "Matched " + result.getName());
 			sendMatch(result);
-			Log.d(conn.toString(), "Send MATCH");
+			//Log.d(conn.toString(), "Send MATCH");
 		}
 	}
 	

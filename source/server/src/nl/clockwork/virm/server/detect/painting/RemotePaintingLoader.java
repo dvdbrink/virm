@@ -16,12 +16,12 @@ import java.util.Properties;
 import nl.clockwork.virm.log.Log;
 import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Loader;
-import nl.clockwork.virm.util.Convert;
+import nl.clockwork.virm.util.Detect;
 
 public class RemotePaintingLoader implements Loader {
 	private Connection conn;
-	
-	public RemotePaintingLoader() {		
+
+	public RemotePaintingLoader() {
 		try {
 			Properties prop = new Properties();
 			prop.load(new FileInputStream("conf/default.properties"));
@@ -38,7 +38,7 @@ public class RemotePaintingLoader implements Loader {
 			Log.e(RemotePaintingLoader.class.getSimpleName(), "IOException", e);
 		}
 	}
-	
+
 	@Override
 	public List<Detectable> load() {
 		List<Detectable> paintings = new ArrayList<Detectable>();
@@ -56,64 +56,47 @@ public class RemotePaintingLoader implements Loader {
 		Log.i("Loader", paintings.size() + " paintings loaded");
 		return paintings;
 	}
-	
+
 	private Painter loadPainter(long id) {
 		Painter painter = null;
 		ResultSet rs = selectPainter(id);
 		try {
 			if (rs.next()) {
-				painter = new Painter(
-					rs.getLong(1),
-					rs.getString(2),
-					rs.getString(3));
+				painter = new Painter(rs.getLong(1), rs.getString(2), rs.getString(3));
 			}
 		} catch (SQLException e) {
 			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		return painter;
 	}
-	
+
 	private int[][] loadData(Blob b) {
 		int[][] data = null;
 		try {
 			if (b.length() > 0) {
-				byte[] raw = b.getBytes(1, (int)b.length());
-				int offset = 0;
-				int rows = Convert.byteArrayToInt(raw, offset);
-				int cols = Convert.byteArrayToInt(raw, offset+=4);
-				if (rows > 0 && cols > 0) {
-					data = new int[rows][cols];
-					for (int i = 0; i < rows; i++) {
-						for (int j = 0; j < cols; j++) {
-							data[i][j] = raw[offset++] & 0xFF;
-						}
-					}
-				}
+				byte[] raw = b.getBytes(1, (int) b.length());
+				data = Detect.matFromBytes(raw);
 			}
 		} catch (SQLException e) {
 			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		return data;
 	}
-	
+
 	private Painting loadPainting(ResultSet rs) {
 		Painting painting = null;
 		try {
 			int[][] data = loadData(rs.getBlob(4));
 			if (data != null) {
-				painting = new Painting(
-					rs.getLong(1),
-					rs.getString(2),
-					rs.getString(3),
-					data,
-					loadPainter(rs.getLong(5)));
+				painting = new Painting(rs.getLong(1), rs.getString(2),
+						rs.getString(3), data, loadPainter(rs.getLong(5)));
 			}
 		} catch (SQLException e) {
 			Log.e(RemotePaintingLoader.class.getSimpleName(), "SQLException", e);
 		}
 		return painting;
 	}
-	
+
 	private ResultSet selectPaintings() {
 		String query = "SELECT * FROM painting";
 		PreparedStatement pstmt = null;
@@ -133,7 +116,7 @@ public class RemotePaintingLoader implements Loader {
 		}
 		return rs;
 	}
-	
+
 	private ResultSet selectPainter(long id) {
 		String query = "SELECT * FROM painter WHERE id=?";
 		PreparedStatement pstmt = null;

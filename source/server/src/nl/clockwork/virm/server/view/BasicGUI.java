@@ -59,18 +59,8 @@ public class BasicGUI implements View {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.add(tabbedPane, BorderLayout.CENTER);
 
-		initializeControlTab(tabbedPane);
 		initializeConnectionsTab(tabbedPane);
 		initializeLogTab(tabbedPane);
-	}
-
-	private void initializeControlTab(JTabbedPane tabbedPane) {
-		JPanel controlPanel = new JPanel();
-		tabbedPane.addTab("Control", null, controlPanel, null);
-		controlPanel.setLayout(new BorderLayout());
-
-		startButton = new JButton("Start");
-		controlPanel.add(startButton);
 	}
 
 	private void initializeConnectionsTab(JTabbedPane tabbedPane) {
@@ -126,10 +116,12 @@ public class BasicGUI implements View {
 		if ((duplicateRow = connectionExists(c)) > -1) {
 			connections.setValueAt(c.getStatus(), duplicateRow, 3);
 		} else {
-			connections.insertRow(0, new Object[] { c.getSSID(), c.getHostAddress(), c.getPort(), c.getStatus() });
+			connections.insertRow(0,
+					new Object[] { c.getSSID(), c.getHostAddress(),
+							c.getPort(), c.getStatus() });
 		}
 	}
-	
+
 	private int connectionExists(Connection c) {
 		if (connections.getRowCount() > 0 && connections.getColumnCount() > 0) {
 			for (int row = 0; row < connections.getRowCount(); row++) {
@@ -140,7 +132,7 @@ public class BasicGUI implements View {
 		}
 		return -1;
 	}
-	
+
 	private void addLogMessage(String[] msg) {
 		log.insertRow(0, msg);
 	}
