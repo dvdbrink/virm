@@ -28,9 +28,6 @@ public class Result implements Parcelable, History.Item {
 		return this.scanTime;
 	}
 	
-	////////////////////
-	///// Parceble /////
-	////////////////////
 	public static final Parcelable.Creator<Result> CREATOR = new Parcelable.Creator<Result>() {
 		@Override
 		public Result createFromParcel(Parcel in) {

@@ -9,11 +9,11 @@ public class Virm extends Application {
 	private History history;
 
 	@Override
-	public void onCreate() {		
+	public void onCreate() {
 		super.onCreate();
 
 		Settings.load(this);
-		
+
 		dataSet = Factory.createDataSet();
 		history = Factory.createHistory();
 	}

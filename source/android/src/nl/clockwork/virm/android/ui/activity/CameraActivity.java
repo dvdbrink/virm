@@ -24,11 +24,7 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getIntent().getExtras().getString("detection_method").equals("Local")) {
-			scanner = Factory.createLocalScanner(this, getVirm().getDataSet());
-		} else {
-			scanner = Factory.createRemoteScanner(this);
-		}
+		scanner = Factory.createScanner(this);
 		scanner.addResultListener(this);
 
 		preview = Factory.createPreview(this);
@@ -70,7 +66,7 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 		case R.id.open_history:
 			startActivity(new Intent(this, HistoryActivity.class));
 			break;
-		case R.id.open_perferences:
+		case R.id.open_preferences:
 			startActivity(new Intent(this, PreferencesActivity.class));
 			break;
 		}

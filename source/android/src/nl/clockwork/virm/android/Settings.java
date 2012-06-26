@@ -9,19 +9,18 @@ import android.preference.PreferenceManager;
 
 public final class Settings {
 	public static final String TAG = "virm";
+	
+	public static final Mode MODE = Mode.REMOTE;
 
-	public static final String PATH = "mats";
+	public static String PATH = "mats";
 
-	public static final int OPENCV_DETECTOR_ALGORITHM = FeatureDetector.ORB;
-	public static final int OPENCV_EXTRACTOR_ALGORITHM = DescriptorExtractor.ORB;
-	public static final int OPENCV_MATCHER_ALGORITHM = DescriptorMatcher.BRUTEFORCE_HAMMING;
-
+	public static int OPENCV_DETECTOR_ALGORITHM = FeatureDetector.ORB;
+	public static int OPENCV_EXTRACTOR_ALGORITHM = DescriptorExtractor.ORB;
+	public static int OPENCV_MATCHER_ALGORITHM = DescriptorMatcher.BRUTEFORCE_HAMMING;
 	public static int MIN_DISTANCE_THRESHOLD;
 	public static int MIN_GOOD_MATCHES;
-
 	public static int DESIRED_FRAME_MAT_WIDTH;
 	public static int DESIRED_FRAME_MAT_HEIGHT;
-
 	public static int DESIRED_REF_MAT_WIDTH;
 	public static int DESIRED_REF_MAT_HEIGHT;
 
@@ -56,14 +55,12 @@ public final class Settings {
 		return true;
 	}
 
-	private static int getIntPreference(Context context, int preference,
-			int preferenceDefault) {
+	private static int getIntPreference(Context context, int preference, int preferenceDefault) {
 		return Integer.parseInt(getStringPreference(context, preference,
 				preferenceDefault));
 	}
 
-	private static String getStringPreference(Context context, int preference,
-			int preferenceDefault) {
+	private static String getStringPreference(Context context, int preference, int preferenceDefault) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
 				.getString(context.getString(preference),
 						context.getString(preferenceDefault));
