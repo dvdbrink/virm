@@ -2,8 +2,11 @@
 //  SettingsViewController.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 5/1/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// A Viewcontroller containing some settings to tweak the recognition.
 //
 
 #import "SettingsViewController.h"

@@ -2,8 +2,13 @@
 //  NetworkHandler.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 5/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This class is responsible for all network traffic.
+// It's a delegate of NSStream. 
+// The handleEvent method is called automatically.
 //
 
 #import <Foundation/Foundation.h>

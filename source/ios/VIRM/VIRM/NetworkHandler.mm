@@ -2,8 +2,13 @@
 //  NetworkHandler.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 5/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This class is responsible for all network traffic.
+// It's a delegate of NSStream. 
+// The handleEvent method is called automatically.
 //
 
 #import "NetworkHandler.h"
@@ -20,7 +25,6 @@
 }
 
 - (void) connect:(NSString *)ip :(int)port {
-    printf("[Network] Connecting.\n");
     
     CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
                                        (CFStringRef) ip,
@@ -52,9 +56,7 @@
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
     switch(eventCode) {
-        case NSStreamEventHasBytesAvailable: {
-            printf("[Network] Bytes available.\n");
-            
+        case NSStreamEventHasBytesAvailable: {      
             if(stream == inputStream) {            
                 NSMutableData *data = [[NSMutableData alloc] init];                
                 uint8_t buffer[1];                
@@ -67,16 +69,13 @@
             break;
         }
         case NSStreamEventNone: {
-            printf("[Network] No event occured.\n");
             break;
         }
         case NSStreamEventOpenCompleted: {
-            printf("[Network] Open completed.\n");
             viewController.connected = YES;
             break;
         }
         case NSStreamEventHasSpaceAvailable: {
-            printf("[Network] Space available.\n");
             break;
         }
         case NSStreamEventErrorOccurred: {
@@ -85,7 +84,6 @@
             break;
         }
         case NSStreamEventEndEncountered: {
-            printf("[Network] End of stream encountered.\n");
             break;            
         }
     }
@@ -118,8 +116,7 @@
             break;
         }
         case 0x07 : {
-            printf("[Network] NO_MATCH received.\n");
-            printf("[OpenCV] Matching enabled.\n");    
+            printf("[Network] NO_MATCH received.\n");   
             viewController.enableMatching = YES;            
             break;
         }            
@@ -127,8 +124,6 @@
 }
 
 - (void) handleMatch {
-    printf("[Network] Handling match.\n");
-    
     uint8_t buffer[4];                
     
     [inputStream read:buffer maxLength:4];
@@ -143,7 +138,6 @@
     
     NSString *imageId = [[NSString alloc] initWithBytes:stringBuffer length:length encoding:NSUTF8StringEncoding];
     
-    printf("[Network] ID Received: %s\n", [imageId UTF8String]);
     [viewController processMatch:imageId];
 }
 
@@ -153,8 +147,7 @@
     NSMutableData *data = [NSMutableData dataWithCapacity:0];
     [data appendBytes:buffer length:1];
     
-    [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];
-    printf("[Network] PING sent.\n");    
+    [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];   
 }
 
 - (void) sendClose {
@@ -163,8 +156,7 @@
     NSMutableData *data = [NSMutableData dataWithCapacity:0];
     [data appendBytes:buffer length:1];
     
-    [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];
-    printf("[Network] CLOSE sent.\n");    
+    [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];   
 }
 
 - (void) sendMat: (Mat) mat {
@@ -184,7 +176,6 @@
     }
         
     [outputStream write:(const uint8_t *)[data bytes] maxLength:[data length]];   
-    printf("[Network] MAT sent.\n");
 }
 
 - (NSInputStream *) getInputStream {

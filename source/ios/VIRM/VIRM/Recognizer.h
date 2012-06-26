@@ -2,8 +2,14 @@
 //  Recognizer.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 5/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This class contains the recognition logic of the application.
+// It can be initiated with a dataset of Mat types.
+// Goes through the three steps needed by OpenCV to recognize an image.
+// Detection, then extraction of features. Then matching with the dataset.
 //
 
 #import <AVFoundation/AVFoundation.h>

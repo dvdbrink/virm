@@ -2,8 +2,11 @@
 //  AppDelegate.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 4/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// The appDelegate contains a few variables used throughout the application.
 //
 
 #import "AppDelegate.h"
@@ -21,8 +24,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    printf("[Application] Finished launching.\n");
-    
     _historyItemDataController = [[HistoryItemDataController alloc] init];
     
     _remote = NO;

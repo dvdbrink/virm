@@ -1,3 +1,15 @@
+//
+//  OpenCVViewController.m
+//  VIRM
+//
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This is the main ViewController, which sets up recognition, the camera and the networkhandler.
+// It handles the cameraoutput and any possible matches.
+//
+
 #import "OpenCVViewController.h"
 #import "AppDelegate.h"
 #import "HistoryItemViewController.h"
@@ -30,8 +42,8 @@ using namespace cv;
 	return self;
 }
 
+// When the view is first loaded, the application will be set up while the HUD shows a progress icon.
 - (void)viewDidLoad {
-    printf("[OpenCV] View loaded.\n");
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -44,7 +56,7 @@ using namespace cv;
     [HUD showWhileExecuting:@selector(setupApplication) onTarget:self withObject:nil animated:YES];
 }
 
-
+// A seperate setup method to facilitate the progress icon.
 - (void) setupApplication {   
     
     utils = [[Utils alloc] init];
@@ -60,12 +72,12 @@ using namespace cv;
     [camera start];
 }
 
+// Loaded everytime the view (re)appears. This method checks if remote was enabled through the settings.
+// If it has been enabled, it will set up the networkhandler.
 - (void) viewDidAppear:(BOOL)animated {
-    printf("[OpenCV] Matching enabled.\n");
     _enableMatching = YES;
     
     if(appDelegate.remote == YES && _connected == NO) {
-        printf("[Network] Setting up network.\n");
         networkHandler = [[NetworkHandler alloc] initWithOpenCvViewController:self];
         [self setupNetwork];  
     }
@@ -77,6 +89,7 @@ using namespace cv;
     [super viewWillAppear:animated];
 }
 
+// When the view disappears, matching has to be disabled.
 - (void) viewWillDisappear:(BOOL)animated
 {
     _enableMatching = NO;
@@ -84,6 +97,7 @@ using namespace cv;
     [super viewWillDisappear:animated];
 }
 
+// This method adds the cameraview to the ViewController.
 - (void) addCameraView {
     [self setPreviewLayer:[[AVCaptureVideoPreviewLayer alloc] initWithSession:[camera getCaptureSession]]];
     self.previewLayer.orientation = UIInterfaceOrientationPortrait;
@@ -91,10 +105,10 @@ using namespace cv;
     CGRect layerRect = [[self view] bounds];
 	[self.previewLayer setBounds:layerRect];
     [self.previewLayer setPosition:CGPointMake(CGRectGetMidX(layerRect), CGRectGetMidY(layerRect))];    
-    
     [self.view.layer addSublayer: self.previewLayer]; 
 }
 
+// This method sets 'self' as the CameraDelegate.
 - (void) setCameraDelegate {
     // Configure output.
     AVCaptureVideoDataOutput *output = [camera getOutput];    
@@ -104,8 +118,9 @@ using namespace cv;
     dispatch_release(queue); 
 }
 
+// Method to connect to the server.
+// (Should be handled through settings view).
 - (void)setupNetwork {
-    printf("[Network] Setting up connection.\n");
     
     [networkHandler connect:@"50.17.57.182" :1337];
 }
@@ -119,18 +134,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
         UIImage *captureUI = [utils imageFromSampleBuffer:sampleBuffer];        
         
+        // Remote handling. Retrieves descriptors from image and sends it through network.
         if(appDelegate.remote == YES && _connected == YES) {
             Mat descriptors = [recognizer getDescriptors:captureUI];
             [networkHandler sendMat:descriptors];
-            
-            printf("[OpenCV] Matching disabled.\n");    
             _enableMatching = NO;            
         }
         
+        // Local handling. Uses recognizer to recognize. In case of a match, it calls processMatch.
         if(appDelegate.remote == NO) {
             int match = [recognizer recognize:captureUI];
-            if(match > -1) {
-                printf("[OpenCV] Matching disabled.\n");    
+            if(match > -1) {  
                 _enableMatching = NO;                 
                 
                 NSString* matchName = fileNames[match];
@@ -139,25 +153,28 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             }
         }
         [pool drain];        
-    }
-    
-//    natural_t freemem = [utils get_free_memory];
-//    printf("[System] Free memory: %u.\n", freemem);    
+    }   
 }
 
+// Method to process a match. The matchName is currently a NSString containing the image filename.
+// A thumbnail is created using this filename.
+// Then a HistoryItem is created using the matchName as paintingname and paintername.
+// Lastly, the method calls SwitchToPaintingView to display the information.
 - (void) processMatch: (NSString *) matchName {
-    printf("[OpenCV] Image %s recognized!\n", [matchName UTF8String]);
        
-    UIImage *img = [UIImage imageNamed:@"MonaLisa.jpg"];
+    // Remote thumbnail - needs fixing
+//    UIImage *img = [UIImage imageNamed:@"MonaLisa.jpg"];
+    
+    // Local thumbnail - needs fixing
+    UIImage *img = [UIImage imageNamed:matchName];
     
     [appDelegate.historyItemDataController addHistoryItem:matchName painter:matchName image:img];  
     
     [self performSelectorOnMainThread:@selector(switchToPaintingView) withObject:nil waitUntilDone:NO];    
 }
 
+// Method responsible for switching the view to the HistoryItemViewController.
 -(void)switchToPaintingView{   
-    
-    printf("[OpenCV] Switching to paintingview.\n");    
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];   
     
@@ -166,10 +183,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     paintingViewController.historyItem = [appDelegate.historyItemDataController getLastAddedHistoryItem];   
     
     [self.navigationController pushViewController:paintingViewController animated:YES];   
-}
-
-- (void)didReceiveMemoryWarning {
-    printf("[OpenCV] Memory warning!\n");
 }
 
 - (void)viewDidUnload {
