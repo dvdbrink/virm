@@ -17,6 +17,8 @@
 @synthesize window = _window;
 @synthesize historyItemDataController = _historyItemDataController;
 @synthesize remote = _remote;
+@synthesize serverIp = _serverIp;
+@synthesize serverPort = _serverPort;
 
 @synthesize matchesNeeded = _matchesNeeded;
 @synthesize maxDistance = _maxDistance;
@@ -38,6 +40,8 @@
     self.maxDistance = 35;
     self.matchesNeeded = 12;
     self.imageDimensions = 150;
+    self.serverIp = @"127.0.0.1";
+    self.serverPort = 1337;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -48,7 +52,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[[NetworkHandler alloc] init] sendClose];
+    if(_remote == YES) {
+        [[[NetworkHandler alloc] init] sendClose];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

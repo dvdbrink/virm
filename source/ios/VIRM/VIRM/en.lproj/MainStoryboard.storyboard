@@ -70,49 +70,56 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="35" minValue="5" maxValue="75" id="mWU-1y-LO0">
-                                <rect key="frame" x="21" y="49" width="278" height="23"/>
+                                <rect key="frame" x="21" y="37" width="278" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="valueChanged" id="7th-4B-ggc"/>
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="12" minValue="0.0" maxValue="100" id="2sK-rK-BBJ">
-                                <rect key="frame" x="21" y="131" width="278" height="23"/>
+                                <rect key="frame" x="21" y="96" width="278" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="valueChanged" id="Fjm-KL-EJg"/>
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="150" minValue="25" maxValue="500" id="8lK-ll-nH0">
-                                <rect key="frame" x="21" y="210" width="278" height="23"/>
+                                <rect key="frame" x="21" y="155" width="278" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="valueChanged" id="REM-BS-fiV"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Max distance:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="SQV-kz-TJm">
-                                <rect key="frame" x="23" y="20" width="104" height="21"/>
+                                <rect key="frame" x="23" y="8" width="104" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Matches needed:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ZMc-qr-OyT">
-                                <rect key="frame" x="23" y="102" width="132" height="21"/>
+                                <rect key="frame" x="23" y="67" width="132" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Image dimensions:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="l7u-gL-u0c">
-                                <rect key="frame" x="23" y="181" width="149" height="21"/>
+                                <rect key="frame" x="23" y="126" width="149" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Remote:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="YEG-Ft-O0d">
-                                <rect key="frame" x="20" y="266" width="149" height="21"/>
+                                <rect key="frame" x="23" y="212" width="149" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Address:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="xWM-db-rsv">
+                                <rect key="frame" x="23" y="264" width="149" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -134,44 +141,70 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="9Xr-Hm-7ih">
-                                <rect key="frame" x="135" y="20" width="42" height="21"/>
+                                <rect key="frame" x="135" y="8" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="iTZ-KU-9T4">
-                                <rect key="frame" x="163" y="102" width="42" height="21"/>
+                                <rect key="frame" x="163" y="67" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="hky-Fb-Ig2">
-                                <rect key="frame" x="180" y="181" width="117" height="21"/>
+                                <rect key="frame" x="180" y="126" width="117" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="F2f-xd-4JV">
-                                <rect key="frame" x="221" y="266" width="79" height="27"/>
+                                <rect key="frame" x="224" y="212" width="79" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="valueChanged" id="POD-1o-Oca"/>
                                 </connections>
                             </switch>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="IP" textAlignment="center" minimumFontSize="17" id="4IF-lv-VzM">
+                                <rect key="frame" x="116" y="254" width="117" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" keyboardAppearance="alert" returnKeyType="done"/>
+                                <connections>
+                                    <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="editingDidEnd" id="n8g-Rp-AhI"/>
+                                    <outlet property="delegate" destination="Rvw-WP-jjZ" id="bHK-Ij-Sex"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Port" textAlignment="center" minimumFontSize="17" id="8I5-gL-vUB">
+                                <rect key="frame" x="245" y="254" width="55" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
+                                <connections>
+                                    <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="editingDidEnd" id="mWV-hX-Iwn"/>
+                                    <outlet property="delegate" destination="Rvw-WP-jjZ" id="CVw-Ym-RGt"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="E4N-6z-piP"/>
                     <connections>
+                        <outlet property="addressTextLabel" destination="xWM-db-rsv" id="TVh-yV-xd7"/>
                         <outlet property="imageDimensionsLabel" destination="hky-Fb-Ig2" id="ZmW-jT-R6b"/>
+                        <outlet property="imageDimensionsTextLabel" destination="l7u-gL-u0c" id="2FP-LM-Tlo"/>
                         <outlet property="matchesNeededLabel" destination="iTZ-KU-9T4" id="hIK-f5-fAS"/>
+                        <outlet property="matchesNeededTextLabel" destination="ZMc-qr-OyT" id="nSf-Ml-Pv4"/>
                         <outlet property="maxDistanceLabel" destination="9Xr-Hm-7ih" id="PnC-9W-Tpw"/>
+                        <outlet property="maxDistanceTextLabel" destination="SQV-kz-TJm" id="acr-Rr-5SF"/>
                         <outlet property="setImageDimensions" destination="8lK-ll-nH0" id="wBS-Ma-uCm"/>
                         <outlet property="setMatchesNeeded" destination="2sK-rK-BBJ" id="kTx-kn-AZa"/>
                         <outlet property="setMaxDistance" destination="mWU-1y-LO0" id="LCV-YB-ewn"/>
+                        <outlet property="setServerIp" destination="4IF-lv-VzM" id="XuC-KZ-uAY"/>
+                        <outlet property="setServerPort" destination="8I5-gL-vUB" id="bEC-FW-3Uf"/>
                         <outlet property="switchRemote" destination="F2f-xd-4JV" id="hhI-Os-yJV"/>
                     </connections>
                 </viewController>
@@ -348,34 +381,6 @@
         <image name="IMG_20120328_133650.jpg" width="192" height="256"/>
         <image name="IMG_20120328_135941.jpg" width="192" height="256"/>
     </resources>
-    <classes>
-        <class className="HistoryItemViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HistoryItemViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="HistoryViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HistoryViewController.h"/>
-        </class>
-        <class className="OpenCVViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/OpenCVViewController.h"/>
-        </class>
-        <class className="SettingsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="applyChanges:"/>
-                <relationship kind="action" name="resetToDefaults:"/>
-                <relationship kind="outlet" name="imageDimensionsLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="matchesNeededLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="maxDistanceLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="setImageDimensions" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="setMatchesNeeded" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="setMaxDistance" candidateClass="UISlider"/>
-                <relationship kind="outlet" name="switchRemote" candidateClass="UISwitch"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

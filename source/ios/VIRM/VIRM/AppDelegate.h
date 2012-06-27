@@ -19,6 +19,8 @@
 @property (nonatomic, assign) int imageDimensions;
 
 @property (nonatomic, assign) BOOL remote;
+@property (nonatomic, assign) NSString *serverIp;
+@property (nonatomic, assign) int serverPort;
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) HistoryItemDataController *historyItemDataController;

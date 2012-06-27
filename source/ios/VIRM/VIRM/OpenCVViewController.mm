@@ -119,10 +119,9 @@ using namespace cv;
 }
 
 // Method to connect to the server.
-// (Should be handled through settings view).
 - (void)setupNetwork {
     
-    [networkHandler connect:@"50.17.57.182" :1337];
+    [networkHandler connect:appDelegate.serverIp :appDelegate.serverPort];
 }
 
 // Delegate routine that is called when a sample buffer was written
