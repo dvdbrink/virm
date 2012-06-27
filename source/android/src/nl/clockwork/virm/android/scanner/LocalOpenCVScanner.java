@@ -19,7 +19,7 @@ public class LocalOpenCVScanner extends BasicOpenCVScanner {
 		
 		this.dataSet = dataSet;
 		
-		matcher = DescriptorMatcher.create(Settings.OPENCV_MATCHER_ALGORITHM);
+		matcher = DescriptorMatcher.create(Settings.OPENCV_MATCHER);
 		matches = new MatOfDMatch();
 	}
 

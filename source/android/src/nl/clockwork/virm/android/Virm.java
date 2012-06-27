@@ -5,15 +5,15 @@ import nl.clockwork.virm.android.history.History;
 import android.app.Application;
 
 public class Virm extends Application {
+	public static final String TAG = "virm";
+	
 	private DataSet dataSet;
 	private History history;
 
 	@Override
-	public void onCreate() {		
+	public void onCreate() {
 		super.onCreate();
 
-		Settings.load(this);
-		
 		dataSet = Factory.createDataSet();
 		history = Factory.createHistory();
 	}

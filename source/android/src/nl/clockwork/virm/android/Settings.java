@@ -1,71 +1,73 @@
 package nl.clockwork.virm.android;
 
-import org.opencv.features2d.DescriptorExtractor;
-import org.opencv.features2d.DescriptorMatcher;
-import org.opencv.features2d.FeatureDetector;
-
 import android.content.Context;
 import android.preference.PreferenceManager;
 
 public final class Settings {
-	public static final String TAG = "virm";
+	public static int MODE;
 
-	public static final String PATH = "mats";
-
-	public static final int OPENCV_DETECTOR_ALGORITHM = FeatureDetector.ORB;
-	public static final int OPENCV_EXTRACTOR_ALGORITHM = DescriptorExtractor.ORB;
-	public static final int OPENCV_MATCHER_ALGORITHM = DescriptorMatcher.BRUTEFORCE_HAMMING;
-
+	// Local detection settings
+	public static String DESCRIPTOR_PATH = "descriptors";
+	public static int OPENCV_DETECTOR;
+	public static int OPENCV_EXTRACTOR;
+	public static int OPENCV_MATCHER;
 	public static int MIN_DISTANCE_THRESHOLD;
 	public static int MIN_GOOD_MATCHES;
+	public static int FRAME_WIDTH;
+	public static int FRAME_HEIGHT;
 
-	public static int DESIRED_FRAME_MAT_WIDTH;
-	public static int DESIRED_FRAME_MAT_HEIGHT;
-
-	public static int DESIRED_REF_MAT_WIDTH;
-	public static int DESIRED_REF_MAT_HEIGHT;
-
-	public static String SERVER_HOST_ADDRESS;
+	// Remote server settings
+	public static String SERVER_IP;
 	public static int SERVER_PORT;
 
-	public static boolean load(Context context) {
+	public static void load(Context context) {
+		MODE = getIntPreference(context,
+				R.string.preference_mode,
+				R.string.preference_default_mode);
+		
+		loadLocalDetectionSettings(context);
+		loadServerSettings(context);
+	}
+	
+	private static void loadLocalDetectionSettings(Context context) {
+		OPENCV_DETECTOR = getIntPreference(context,
+				R.string.preference_opencv_detector,
+				R.string.preference_default_opencv_detector);
+		OPENCV_EXTRACTOR = getIntPreference(context,
+				R.string.preference_opencv_extractor,
+				R.string.preference_default_opencv_extractor);
+		OPENCV_MATCHER = getIntPreference(context,
+				R.string.preference_opencv_matcher,
+				R.string.preference_default_opencv_matcher);
 		MIN_DISTANCE_THRESHOLD = getIntPreference(context,
 				R.string.preference_min_distance_threshold,
 				R.string.preference_default_min_distance_threshold);
-
 		MIN_GOOD_MATCHES = getIntPreference(context,
 				R.string.preference_min_good_matches,
 				R.string.preference_default_min_good_matches);
-
-		DESIRED_FRAME_MAT_WIDTH = getIntPreference(context,
-				R.string.preference_desired_frame_mat_size,
-				R.string.preference_default_desired_frame_mat_size);
-
-		DESIRED_FRAME_MAT_HEIGHT = getIntPreference(context,
-				R.string.preference_desired_frame_mat_size,
-				R.string.preference_default_desired_frame_mat_size);
-
-		SERVER_HOST_ADDRESS = getStringPreference(context,
+		FRAME_WIDTH = getIntPreference(context,
+				R.string.preference_frame_size,
+				R.string.preference_default_frame_size);
+		FRAME_HEIGHT = getIntPreference(context,
+				R.string.preference_frame_size,
+				R.string.preference_default_frame_size);
+	}
+	
+	private static void loadServerSettings(Context context) {
+		SERVER_IP = getStringPreference(context,
 				R.string.preference_server_ip,
 				R.string.preference_default_server_ip);
-
 		SERVER_PORT = getIntPreference(context,
 				R.string.preference_server_port,
 				R.string.preference_default_server_port);
-
-		return true;
 	}
 
-	private static int getIntPreference(Context context, int preference,
-			int preferenceDefault) {
-		return Integer.parseInt(getStringPreference(context, preference,
-				preferenceDefault));
+	private static int getIntPreference(Context context, int preference, int preferenceDefault) {
+		return Integer.parseInt(getStringPreference(context, preference, preferenceDefault));
 	}
 
-	private static String getStringPreference(Context context, int preference,
-			int preferenceDefault) {
+	private static String getStringPreference(Context context, int preference, int preferenceDefault) {
 		return PreferenceManager.getDefaultSharedPreferences(context)
-				.getString(context.getString(preference),
-						context.getString(preferenceDefault));
+				.getString(context.getString(preference), context.getString(preferenceDefault));
 	}
 }

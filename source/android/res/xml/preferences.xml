@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory android:title="Settings">
+	    <ListPreference
+	        android:title="Mode"
+	        android:key="@string/preference_mode"
+	        android:defaultValue="@string/preference_default_mode"
+	        android:entries="@array/mode_entries"
+	        android:entryValues="@array/mode_entryValues" />
+    </PreferenceCategory>
+    
     <PreferenceCategory android:title="Local recognition">
+        <EditTextPreference
+           	android:title="OpenCV detector"
+	        android:key="@string/preference_opencv_detector"
+	        android:defaultValue="@string/preference_default_opencv_detector"
+	        android:inputType="number" />
+        <EditTextPreference
+           	android:title="OpenCV extractor"
+	        android:key="@string/preference_opencv_extractor"
+	        android:defaultValue="@string/preference_default_opencv_extractor"
+	        android:inputType="number" />
+        <EditTextPreference
+           	android:title="OpenCV matcher"
+	        android:key="@string/preference_opencv_matcher"
+	        android:defaultValue="@string/preference_default_opencv_matcher"
+	        android:inputType="number" />
         <EditTextPreference
            	android:title="Min. distance threshold"
 	        android:key="@string/preference_min_distance_threshold"
@@ -13,10 +38,11 @@
 	        android:inputType="number" />
         <EditTextPreference
            	android:title="Frame size"
-	        android:key="@string/preference_desired_frame_mat_size"
-	        android:defaultValue="@string/preference_default_desired_frame_mat_size"
+	        android:key="@string/preference_frame_size"
+	        android:defaultValue="@string/preference_default_frame_size"
 	        android:inputType="number" />
     </PreferenceCategory>
+    
     <PreferenceCategory android:title="Server">
         <EditTextPreference
            	android:title="IP address"
@@ -29,4 +55,5 @@
 	        android:defaultValue="@string/preference_default_server_port"
 	        android:inputType="number" />
     </PreferenceCategory>
+    
 </PreferenceScreen>

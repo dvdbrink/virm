@@ -20,10 +20,10 @@ public class AsyncLocalOpenCVScanner extends LocalOpenCVScanner {
 
 	@Override
 	public void scan(byte[] data, int width, int height) {
-		//super.scan(data, width, height);
+		// TODO duplicate code
 		if (yuv == null || yuvResized == null) {
 			yuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
-			yuvResized = new Mat(Settings.DESIRED_FRAME_MAT_HEIGHT, Settings.DESIRED_FRAME_MAT_WIDTH, CvType.CV_8UC1);
+			yuvResized = new Mat(Settings.FRAME_HEIGHT, Settings.FRAME_WIDTH, CvType.CV_8UC1);
 		}
 
 		yuv.put(0, 0, data);

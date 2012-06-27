@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.Factory;
+import nl.clockwork.virm.android.Virm;
 import nl.clockwork.virm.android.dataset.DataSet;
 import nl.clockwork.virm.net.DataPacket;
 
@@ -26,14 +27,14 @@ public class MatLoader implements Loader {
 	public DataSet load(OnProgressUpdateCallback onProgressUpdateCallback) {
 		DataSet dataset = Factory.createDataSet();
 		try {
-			String[] fileNames = context.getAssets().list(Settings.PATH);
+			String[] fileNames = context.getAssets().list(Settings.DESCRIPTOR_PATH);
 			int count = 0;
 			for (String fileName : fileNames) {
-				Mat descriptor = loadMat(Settings.PATH + File.separator + fileName);
+				Mat descriptor = loadMat(Settings.DESCRIPTOR_PATH + File.separator + fileName);
 				dataset.add(Factory.createDataSetItem(fileName, descriptor));
 				onProgressUpdateCallback.onProgressUpdate((int) ((++count / (float) fileNames.length) * 100));
 			}
-			Log.i(Settings.TAG, count + " assets loaded");
+			Log.i(Virm.TAG, count + " assets loaded");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
