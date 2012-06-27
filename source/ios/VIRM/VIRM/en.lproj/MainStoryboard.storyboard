@@ -172,7 +172,7 @@
                                 <rect key="frame" x="116" y="254" width="117" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" keyboardAppearance="alert" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" returnKeyType="done"/>
                                 <connections>
                                     <action selector="applyChanges:" destination="Rvw-WP-jjZ" eventType="editingDidEnd" id="n8g-Rp-AhI"/>
                                     <outlet property="delegate" destination="Rvw-WP-jjZ" id="bHK-Ij-Sex"/>
@@ -381,6 +381,40 @@
         <image name="IMG_20120328_133650.jpg" width="192" height="256"/>
         <image name="IMG_20120328_135941.jpg" width="192" height="256"/>
     </resources>
+    <classes>
+        <class className="HistoryItemViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HistoryItemViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="HistoryViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HistoryViewController.h"/>
+        </class>
+        <class className="OpenCVViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/OpenCVViewController.h"/>
+        </class>
+        <class className="SettingsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="applyChanges:"/>
+                <relationship kind="action" name="resetToDefaults:"/>
+                <relationship kind="outlet" name="addressTextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imageDimensionsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imageDimensionsTextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="matchesNeededLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="matchesNeededTextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="maxDistanceLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="maxDistanceTextLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="setImageDimensions" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="setMatchesNeeded" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="setMaxDistance" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="setServerIp" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="setServerPort" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="switchRemote" candidateClass="UISwitch"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
