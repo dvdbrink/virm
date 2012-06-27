@@ -12,9 +12,9 @@
 	</string-array>
     
     <string name="preference_mode">mode</string>
-    
     <string name="preference_default_mode">0</string>
     
+    <string name="preference_dataset_location">dataset_location</string>
     <string name="preference_opencv_detector">opencv_detector</string>
     <string name="preference_opencv_extractor">opencv_extractor</string>
     <string name="preference_opencv_matcher">opencv_matcher</string>
@@ -22,6 +22,7 @@
 	<string name="preference_min_good_matches">min_good_matches</string>
 	<string name="preference_frame_size">frame size</string>
 	
+	<string name="preference_default_dataset_location">descriptors</string>
 	<string name="preference_default_opencv_detector">5</string> 	<!-- FeatureDetector.ORB -->
     <string name="preference_default_opencv_extractor">3</string>	<!-- DescriptorExtractor.ORB -->
     <string name="preference_default_opencv_matcher">4</string>     <!-- DescriptorMatcher.BRUTEFORCE_HAMMING -->

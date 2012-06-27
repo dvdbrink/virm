@@ -7,7 +7,7 @@ public final class Settings {
 	public static int MODE;
 
 	// Local detection settings
-	public static String DESCRIPTOR_PATH = "descriptors";
+	public static String DATASET_LOCATION;
 	public static int OPENCV_DETECTOR;
 	public static int OPENCV_EXTRACTOR;
 	public static int OPENCV_MATCHER;
@@ -30,6 +30,9 @@ public final class Settings {
 	}
 	
 	private static void loadLocalDetectionSettings(Context context) {
+		DATASET_LOCATION = getStringPreference(context,
+				R.string.preference_dataset_location,
+				R.string.preference_default_dataset_location);
 		OPENCV_DETECTOR = getIntPreference(context,
 				R.string.preference_opencv_detector,
 				R.string.preference_default_opencv_detector);

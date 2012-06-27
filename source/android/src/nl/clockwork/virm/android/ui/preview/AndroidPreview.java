@@ -31,11 +31,13 @@ public class AndroidPreview extends SurfaceView implements Preview {
 
 	public AndroidPreview(Context context) {
 		super(context);
+		Log.d(Virm.TAG, "AndroidPreview");
 		handler = new Handler();
 		listeners = new ArrayList<FrameListener>();
 		holder = getHolder();
 		holder.addCallback(this);
 		holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		camera = null;
 		lastFrame = null;
 		frameWidth = 0;
 		frameHeight = 0;
@@ -45,6 +47,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		Log.d(Virm.TAG, "surfaceChanged");
 		if (camera != null) {
 			int previewBufferSize = initializePreview(width, height);
 			lastFrame = new byte[previewBufferSize];
@@ -71,6 +74,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
+		Log.d(Virm.TAG, "surfaceCreated");
 		try {
 			if (camera == null) {
 				camera = Camera.open();
@@ -83,6 +87,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
+		Log.d(Virm.TAG, "surfaceDestroyed");
 		if (camera != null) {
 			camera.setPreviewCallbackWithBuffer(null);
 			camera.stopPreview();
@@ -93,7 +98,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 	
 	@Override
 	public void destroy() {
-		surfaceDestroyed(holder);
+		Log.d(Virm.TAG, "destroy");
 	}
 
 	@Override

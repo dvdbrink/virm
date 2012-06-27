@@ -12,6 +12,11 @@
     
     <PreferenceCategory android:title="Local recognition">
         <EditTextPreference
+           	android:title="Dataset location"
+	        android:key="@string/preference_dataset_location"
+	        android:defaultValue="@string/preference_default_dataset_location"
+	        android:inputType="text" />
+        <EditTextPreference
            	android:title="OpenCV detector"
 	        android:key="@string/preference_opencv_detector"
 	        android:defaultValue="@string/preference_default_opencv_detector"

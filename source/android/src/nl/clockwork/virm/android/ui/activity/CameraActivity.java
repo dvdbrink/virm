@@ -4,6 +4,7 @@ import nl.clockwork.virm.android.Factory;
 import nl.clockwork.virm.android.Mode;
 import nl.clockwork.virm.android.R;
 import nl.clockwork.virm.android.Settings;
+import nl.clockwork.virm.android.Virm;
 import nl.clockwork.virm.android.history.History;
 import nl.clockwork.virm.android.scanner.Result;
 import nl.clockwork.virm.android.scanner.ResultListener;
@@ -14,6 +15,7 @@ import nl.clockwork.virm.android.ui.preview.FrameListener;
 import nl.clockwork.virm.android.ui.preview.Preview;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,7 +27,8 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Log.d(Virm.TAG, "onCreate");
+		
 		if (Settings.MODE == Mode.LOCAL) {
 			scanner = Factory.createLocalScanner(this, getVirm().getDataSet());
 		} else { // Mode.REMOTE
@@ -55,6 +58,7 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Log.d(Virm.TAG, "onDestroy");
 		preview.destroy();
 		scanner.destroy();
 	}

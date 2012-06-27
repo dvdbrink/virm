@@ -27,10 +27,10 @@ public class MatLoader implements Loader {
 	public DataSet load(OnProgressUpdateCallback onProgressUpdateCallback) {
 		DataSet dataset = Factory.createDataSet();
 		try {
-			String[] fileNames = context.getAssets().list(Settings.DESCRIPTOR_PATH);
+			String[] fileNames = context.getAssets().list(Settings.DATASET_LOCATION);
 			int count = 0;
 			for (String fileName : fileNames) {
-				Mat descriptor = loadMat(Settings.DESCRIPTOR_PATH + File.separator + fileName);
+				Mat descriptor = loadMat(Settings.DATASET_LOCATION + File.separator + fileName);
 				dataset.add(Factory.createDataSetItem(fileName, descriptor));
 				onProgressUpdateCallback.onProgressUpdate((int) ((++count / (float) fileNames.length) * 100));
 			}

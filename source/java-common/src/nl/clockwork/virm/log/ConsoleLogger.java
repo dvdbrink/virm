@@ -32,7 +32,6 @@ public class ConsoleLogger implements Logger {
 		t.printStackTrace();
 	}
 	
-	// TODO util
 	private String now() {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(DATETIME_FORMAT);

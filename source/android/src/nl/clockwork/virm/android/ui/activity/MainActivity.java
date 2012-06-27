@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		}
 		
 		if (intent != null) {
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(intent);
 		}
 	}
