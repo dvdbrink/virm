@@ -2,8 +2,13 @@
 //  HistoryItemViewController.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This ViewController is responsible for showing all the information about a HistoryItem.
+// Currently this uses the paintingname, paintername and image thumbnail given in OpenCVViewController.
+// The 'informationtext' is still hardcoded and must be supplied by the museum.
 //
 
 #import "HistoryItemViewController.h"
@@ -24,8 +29,6 @@
 
 - (void)setHistoryItem:(HistoryItem *)newHistoryItem
 {
-    printf("[History] Setting new history item.\n");
-    
     if (_historyItem != newHistoryItem) {
         _historyItem = newHistoryItem;
     
@@ -139,11 +142,5 @@
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
-}
-
-- (void)dealloc {
-    [_textView release];
-    [_historyItem release];
-    [super dealloc];
 }
 @end

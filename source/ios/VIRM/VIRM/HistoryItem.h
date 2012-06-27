@@ -2,8 +2,11 @@
 //  HistoryItem.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// A historyItem contains all the information a user needs about a painting.
 //
 
 #import <UIKit/UIKit.h>

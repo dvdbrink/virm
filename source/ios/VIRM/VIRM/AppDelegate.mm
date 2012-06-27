@@ -2,8 +2,11 @@
 //  AppDelegate.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 4/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// The appDelegate contains a few variables used throughout the application.
 //
 
 #import "AppDelegate.h"
@@ -14,6 +17,8 @@
 @synthesize window = _window;
 @synthesize historyItemDataController = _historyItemDataController;
 @synthesize remote = _remote;
+@synthesize serverIp = _serverIp;
+@synthesize serverPort = _serverPort;
 
 @synthesize matchesNeeded = _matchesNeeded;
 @synthesize maxDistance = _maxDistance;
@@ -21,8 +26,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    printf("[Application] Finished launching.\n");
-    
     _historyItemDataController = [[HistoryItemDataController alloc] init];
     
     _remote = NO;
@@ -37,6 +40,8 @@
     self.maxDistance = 35;
     self.matchesNeeded = 12;
     self.imageDimensions = 150;
+    self.serverIp = @"127.0.0.1";
+    self.serverPort = 1337;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -47,7 +52,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[[NetworkHandler alloc] init] sendClose];
+    if(_remote == YES) {
+        [[[NetworkHandler alloc] init] sendClose];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

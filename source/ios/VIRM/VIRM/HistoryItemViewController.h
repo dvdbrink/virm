@@ -2,8 +2,13 @@
 //  HistoryItemViewController.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This ViewController is responsible for showing all the information about a HistoryItem.
+// Currently this uses the paintingname, paintername and image thumbnail given in OpenCVViewController.
+// The 'informationtext' is still hardcoded and must be supplied by the museum.
 //
 
 #import <UIKit/UIKit.h>

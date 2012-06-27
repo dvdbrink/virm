@@ -2,8 +2,13 @@
 //  Utils.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 5/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This class contains several 'util' methods that are used throughout the app.
+// Most of the methods deal with Mat/Image conversion.
+// A (hardcoded) list of images that is used in this prototype is also made here.
 //
 
 #import "Utils.h"
@@ -26,6 +31,8 @@ using namespace cv;
     return fileNames;
 }
 
+
+// This method retrieves and returns the amount of free memory on the device.
 -(natural_t) get_free_memory {
     mach_port_t host_port;
     mach_msg_type_number_t host_size;
@@ -43,6 +50,10 @@ using namespace cv;
     return mem_free;
 }
 
+// This method uses the initial imagelist and turns them all into descriptors (type: Mat).
+// This step is necessary to speed up recognition later.
+// The saveToMat BOOL can be used to convert images into Mats and save them to disk.
+// The Mats are saved in .jpg format, so renaming remains to be done.
 - (vector<Mat>)getDescriptorsFromImageFiles:(BOOL)saveToMat {
     vector<Mat> dataSetDescriptors;
     
@@ -75,6 +86,9 @@ using namespace cv;
     return dataSetDescriptors;
 }
 
+
+// A method that retrieves descriptors from .mat files and stores them in a list.
+// Return the list of necessary descriptors for recognition.
 - (vector<Mat>)getDescriptorsFromMatFiles {
     
     vector<Mat> dataSetDescriptors;
@@ -110,6 +124,8 @@ using namespace cv;
     return dataSetDescriptors;
 }
 
+
+// Method that saved a Mat file to disk. Is called from getDescriptorsFromImageFiles if saveToMat is YES. 
 - (void)saveDescriptorsToFile: (Mat)descriptors fileName:(NSString *)filename {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -131,6 +147,8 @@ using namespace cv;
     printf("[OpenCV] Saved image: %s.\n", [filename UTF8String]);
 }
 
+
+// Method that converts UIImage to Mat.
 - (Mat)MatFromUIImage:(UIImage *)image
 {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
@@ -155,7 +173,7 @@ using namespace cv;
 }
 
 
-// Create a UIImage from sample buffer data
+// Create a UIImage from sample buffer (Camera) data
 - (UIImage *) imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer 
 {
     // Get a CMSampleBuffer's Core Video image buffer for the media data
@@ -196,12 +214,15 @@ using namespace cv;
     return (image);
 }
 
+
+// This method initializes the imageList. The imagelist is the dataset that is used for recognition.
+// Also stores all filenames in a list that is used later. (LOCAL only)
 - (void) initializeImageList {
     imageList = [[NSMutableArray alloc] init];
     
-//    [imageList addObject:@"DeNachtwacht.jpg"];
-//    [imageList addObject:@"MonaLisa.jpg"];    
-//    [imageList addObject:@"VanGogh.jpg"];    
+    [imageList addObject:@"DeNachtwacht.jpg"];
+    [imageList addObject:@"MonaLisa.jpg"];    
+    [imageList addObject:@"VanGogh.jpg"];    
     
 //    [imageList addObject:@"IMG_20120328_133650.jpg"];
 //    [imageList addObject:@"IMG_20120328_133717.jpg"];
@@ -257,58 +278,56 @@ using namespace cv;
 //    [imageList addObject:@"IMG_20120328_135628.jpg"];
 //    [imageList addObject:@"IMG_20120328_135646.jpg"];
 //    [imageList addObject:@"IMG_20120328_135941.jpg"];
-    
-//    // Museum #2
-    [imageList addObject:@"IMG_20120502_134328.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134336.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134349.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134358.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134407.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134418.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134433.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134440.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134447.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134455.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134526.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134534.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134541.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134547.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134557.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134605.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134612.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134619.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134626.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134647.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134653.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134700.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134707.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134713.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134720.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134755.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134803.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134812.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134822.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134834.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134842.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134850.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134859.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134907.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134914.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134939.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134948.jpg"]; 
-    [imageList addObject:@"IMG_20120502_134957.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135009.jpg"];
-    [imageList addObject:@"IMG_20120502_135018.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135027.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135050.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135057.jpg"];    
-    [imageList addObject:@"IMG_20120502_135126.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135140.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135152.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135200.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135207.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135215.jpg"]; 
-    [imageList addObject:@"IMG_20120502_135224.jpg"];    
+//    [imageList addObject:@"IMG_20120502_134328.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134336.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134349.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134358.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134407.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134418.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134433.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134440.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134447.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134455.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134526.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134534.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134541.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134547.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134557.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134605.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134612.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134619.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134626.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134647.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134653.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134700.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134707.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134713.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134720.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134755.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134803.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134812.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134822.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134834.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134842.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134850.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134859.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134907.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134914.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134939.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134948.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_134957.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135009.jpg"];
+//    [imageList addObject:@"IMG_20120502_135018.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135027.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135050.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135057.jpg"];    
+//    [imageList addObject:@"IMG_20120502_135126.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135140.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135152.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135200.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135207.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135215.jpg"]; 
+//    [imageList addObject:@"IMG_20120502_135224.jpg"];    
     
     for(NSString *filename in imageList) {
         fileNames.push_back(filename);        

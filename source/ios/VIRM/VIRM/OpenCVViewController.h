@@ -2,9 +2,14 @@
 //  OpenCVViewController.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 4/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
 //
+// ==============================================
+// This is the main ViewController, which sets up recognition, the camera and the networkhandler.
+// It handles the cameraoutput and any possible matches.
+//
+
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "AppDelegate.h"

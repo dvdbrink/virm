@@ -2,8 +2,11 @@
 //  HistoryItemDataController.m
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// The HistoryItemDataController is responsible for managing the list of HistoryItems.
 //
 
 #import "HistoryItemDataController.h"
@@ -19,17 +22,18 @@
 
 -(id)init {
     if(self = [super init]) {
-        printf("[History] Initializing.\n");
         [self initializeDefaultDataList];
         return self;
     }
     return nil;
 }
 
--(void)initializeDefaultDataList {
-    printf("[History] Initializing Default Data List.\n");    
+-(void)initializeDefaultDataList {   
     NSMutableArray *list = [[NSMutableArray alloc] init];
     self.historyList = list;
+    
+//    UIImage *img = [UIImage imageNamed:@"MonaLisa.jpg"];
+//    [self addHistoryItem:@"Test" painter:@"Test" image:img];
 }
 
 -(void)setHistoryList:(NSMutableArray *)historyList:(NSMutableArray *)newList{
@@ -51,22 +55,15 @@
 }
 
 -(void)addHistoryItem:(NSString *)name painter:(NSString *)painter image:(UIImage *)image {
-    printf("[History] Adding history item.\n");
     HistoryItem *historyItem;
     NSDate *today = [[NSDate alloc] init];
     historyItem = [[HistoryItem alloc] initWithName:name painter:painter image:image date:today];
     [self.historyList addObject:historyItem];
-    
-    printf("[History] List count: %i\n", self.historyList.count);
-    
 }
 
 -(void)addHistoryItem:(HistoryItem *) historyItem {
-    printf("[History] Adding history item.\n");
     historyItem = [[HistoryItem alloc] initWithName:historyItem.name painter:historyItem.painter image:historyItem.image date:historyItem.date];
     [self.historyList addObject:historyItem];
-    
-    printf("[History] List count: %i\n", self.historyList.count);
 }
 
 @end

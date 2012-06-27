@@ -2,8 +2,11 @@
 //  HistoryViewController.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 3/20/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This ViewController shows an interactive list of all the HistoryItems.
 //
 
 #import <UIKit/UIKit.h>

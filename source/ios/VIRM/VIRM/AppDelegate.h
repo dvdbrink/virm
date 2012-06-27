@@ -2,8 +2,11 @@
 //  AppDelegate.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 4/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// The appDelegate contains a few variables used throughout the application.
 //
 
 #import <UIKit/UIKit.h>
@@ -16,6 +19,8 @@
 @property (nonatomic, assign) int imageDimensions;
 
 @property (nonatomic, assign) BOOL remote;
+@property (nonatomic, assign) NSString *serverIp;
+@property (nonatomic, assign) int serverPort;
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) HistoryItemDataController *historyItemDataController;

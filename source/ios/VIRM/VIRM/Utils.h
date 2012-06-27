@@ -2,8 +2,13 @@
 //  Utils.h
 //  VIRM
 //
-//  Created by Clockwork Clockwork on 5/10/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Steven Elzinga on 5/10/12.
+//  Copyright (c) Clockwork. All rights reserved.
+//
+// ==============================================
+// This class contains several 'util' methods that are used throughout the app.
+// Most of the methods deal with Mat/Image conversion.
+// A (hardcoded) list of images that is used in this prototype is also made here.
 //
 
 #import <AVFoundation/AVFoundation.h>
