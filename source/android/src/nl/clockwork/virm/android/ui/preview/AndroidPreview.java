@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import nl.clockwork.virm.android.Settings;
+import nl.clockwork.virm.android.Virm;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -77,7 +77,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 				camera.setPreviewDisplay(holder);
 			}
 		} catch (IOException e) {
-			Log.e(Settings.TAG, "Failed to set preview display", e);
+			Log.e(Virm.TAG, "Failed to set preview display", e);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 	
 	@Override
 	public void destroy() {
-		
+		surfaceDestroyed(holder);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class AndroidPreview extends SurfaceView implements Preview {
 						}
 					});
 				} catch (Exception e) {
-					Log.w(Settings.TAG, "Unable to auto-focus", e);
+					Log.w(Virm.TAG, "Unable to auto-focus", e);
 					handler.postDelayed(AutoFocusRunnable.this, AUTO_FOCUS_INTERVAL);
 				}
 			}

@@ -1,7 +1,9 @@
 package nl.clockwork.virm.android.ui.activity;
 
 import nl.clockwork.virm.android.Factory;
+import nl.clockwork.virm.android.Mode;
 import nl.clockwork.virm.android.R;
+import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.history.History;
 import nl.clockwork.virm.android.scanner.Result;
 import nl.clockwork.virm.android.scanner.ResultListener;
@@ -24,7 +26,11 @@ public class CameraActivity extends BaseActivity implements ResultListener, Fram
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		scanner = Factory.createScanner(this);
+		if (Settings.MODE == Mode.LOCAL) {
+			scanner = Factory.createLocalScanner(this, getVirm().getDataSet());
+		} else { // Mode.REMOTE
+			scanner = Factory.createRemoteScanner(this);
+		}
 		scanner.addResultListener(this);
 
 		preview = Factory.createPreview(this);

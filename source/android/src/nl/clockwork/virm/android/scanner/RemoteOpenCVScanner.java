@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import nl.clockwork.virm.android.Settings;
+import nl.clockwork.virm.android.Virm;
 import nl.clockwork.virm.net.DataPacket;
 import nl.clockwork.virm.net.Packet;
 import nl.clockwork.virm.net.PacketHeaders;
@@ -52,7 +53,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 				}
 				
 				sendMat(bytes.toByteArray());
-				Log.d(Settings.TAG, "Send DETECT");
+				Log.d(Virm.TAG, "Send DETECT");
 
 				new ListenTask().execute();
 			} else {
@@ -73,12 +74,12 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private void connect() {
 		try {
 			socket = new Socket();
-			socket.connect(new InetSocketAddress(Settings.SERVER_HOST_ADDRESS, Settings.SERVER_PORT));
+			socket.connect(new InetSocketAddress(Settings.SERVER_IP, Settings.SERVER_PORT));
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 			connected = true;
 		} catch (IOException e) {
-			Log.e(Settings.TAG, "IOException", e);
+			Log.e(Virm.TAG, "IOException", e);
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setMessage("Could not connect to server");
 			AlertDialog alert = builder.create();
@@ -92,7 +93,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 			Packet p = new Packet();
 			p.addByte(PacketHeaders.CLOSE);
 			p.send(out);
-			Log.d(Settings.TAG, "Send CLOSE");
+			Log.d(Virm.TAG, "Send CLOSE");
 		}
 
 		super.destroy();
@@ -107,16 +108,16 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 					if (command > -1) {
 						switch (command) {
 							case PacketHeaders.MATCH: 	 
-								Log.d(Settings.TAG, "Received MATCH");
+								Log.d(Virm.TAG, "Received MATCH");
 								return new DataPacket(in).readString();
 							case PacketHeaders.NO_MATCH:
-								Log.d(Settings.TAG, "Received NO_MATCH");
+								Log.d(Virm.TAG, "Received NO_MATCH");
 								return "";
 						}
 					}
 				}
 			} catch (IOException e) {
-				Log.e(Settings.TAG, "IOException", e);
+				Log.e(Virm.TAG, "IOException", e);
 			}
 			return null;
 		}
@@ -124,7 +125,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 		@Override
 		protected void onPostExecute(String result) {
 			if (result == null) {
-				Log.w(Settings.TAG, "Something went wrong, result == null");
+				Log.w(Virm.TAG, "Something went wrong, result == null");
 			} else if (result.isEmpty()) {
 				fireNoMatchEvent();
 			} else {

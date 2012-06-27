@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="mode_entries">
+ 		<item>Local</item>
+ 		<item>Remote</item>
+	</string-array>
+	
+	<string-array name="mode_entryValues">
+ 		<item>0</item>
+ 		<item>1</item>
+	</string-array>
+    
+    <string name="preference_mode">mode</string>
+    
+    <string name="preference_default_mode">0</string>
+    
+    <string name="preference_opencv_detector">opencv_detector</string>
+    <string name="preference_opencv_extractor">opencv_extractor</string>
+    <string name="preference_opencv_matcher">opencv_matcher</string>
+    <string name="preference_min_distance_threshold">min_distance_threshold</string>
+	<string name="preference_min_good_matches">min_good_matches</string>
+	<string name="preference_frame_size">frame size</string>
+	
+	<string name="preference_default_opencv_detector">5</string> 	<!-- FeatureDetector.ORB -->
+    <string name="preference_default_opencv_extractor">3</string>	<!-- DescriptorExtractor.ORB -->
+    <string name="preference_default_opencv_matcher">4</string>     <!-- DescriptorMatcher.BRUTEFORCE_HAMMING -->
+	<string name="preference_default_min_distance_threshold">35</string>
+	<string name="preference_default_min_good_matches">8</string>
+	<string name="preference_default_frame_size">150</string>
+	
+	<string name="preference_server_ip">server_ip</string>
+	<string name="preference_server_port">server_port</string>
+	
+	<string name="preference_default_server_ip">50.17.57.182</string>
+	<string name="preference_default_server_port">1337</string>
+	
+</resources>

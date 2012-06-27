@@ -11,10 +11,19 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (Settings.MODE == Mode.REMOTE) {
-			startActivity(new Intent(MainActivity.this, CameraActivity.class));
-		} else if (Settings.MODE == Mode.LOCAL) {
-			startActivity(new Intent(MainActivity.this, LoadingScreenActivity.class));
+		Settings.load(this);
+		
+		Intent intent = null;
+		
+		if (Settings.MODE == Mode.LOCAL) {
+			intent = new Intent(this, LoadingScreenActivity.class);
+		} else if (Settings.MODE == Mode.REMOTE) {
+			intent = new Intent(this, CameraActivity.class);
+		}
+		
+		if (intent != null) {
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 		}
 	}
 }
