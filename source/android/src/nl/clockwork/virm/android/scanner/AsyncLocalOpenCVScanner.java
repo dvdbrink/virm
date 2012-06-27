@@ -4,15 +4,12 @@ import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.dataset.DataSet;
 import nl.clockwork.virm.android.history.History;
 
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
 import org.opencv.features2d.DMatch;
-import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-public class AsyncLocalOpenCVScanner extends LocalOpenCVScanner {
+public class AsyncLocalOpenCVScanner extends BaseLocalOpenCVScanner {
 
 	public AsyncLocalOpenCVScanner(Context context, DataSet dataSet) {
 		super(context, dataSet);
@@ -20,14 +17,7 @@ public class AsyncLocalOpenCVScanner extends LocalOpenCVScanner {
 
 	@Override
 	public void scan(byte[] data, int width, int height) {
-		// TODO duplicate code
-		if (yuv == null || yuvResized == null) {
-			yuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
-			yuvResized = new Mat(Settings.FRAME_HEIGHT, Settings.FRAME_WIDTH, CvType.CV_8UC1);
-		}
-
-		yuv.put(0, 0, data);
-		Imgproc.resize(yuv, yuvResized, yuvResized.size());
+		super.scan(data, width, height);
 		
 		new ScanTask().execute();
 	}

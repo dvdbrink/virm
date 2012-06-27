@@ -9,18 +9,13 @@ import org.opencv.features2d.DescriptorMatcher;
 
 import android.content.Context;
 
-public class LocalOpenCVScanner extends BasicOpenCVScanner {
-	protected DataSet dataSet;
+public class LocalOpenCVScanner extends BaseLocalOpenCVScanner {
+	protected DataSet dataset;
 	protected DescriptorMatcher matcher;
 	protected MatOfDMatch matches;
 
-	public LocalOpenCVScanner(Context context, DataSet dataSet) {
-		super(context);
-		
-		this.dataSet = dataSet;
-		
-		matcher = DescriptorMatcher.create(Settings.OPENCV_MATCHER);
-		matches = new MatOfDMatch();
+	public LocalOpenCVScanner(Context context, DataSet dataset) {
+		super(context, dataset);
 	}
 
 	@Override
@@ -46,7 +41,7 @@ public class LocalOpenCVScanner extends BasicOpenCVScanner {
 		DataSet.Item bestMatch = null;
 		int bestMatchMatches = 0;
 		
-		for (DataSet.Item item : dataSet) {
+		for (DataSet.Item item : dataset) {
 			matcher.match(descriptor, item.getDescriptor(), matches);
 
 			int goodMatches = 0;
