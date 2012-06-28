@@ -63,11 +63,14 @@ public class AndroidPreview extends SurfaceView implements Preview {
 						}
 						fireOnFrameEvent();
 					}
+					// new buffer should be added to be able to capture a new frame
 					camera.addCallbackBuffer(buffer);
 				}
 			});
 
 			camera.startPreview();
+			
+			// force the camera to focus every 1500ms
 			new AutoFocusRunnable().run();
 		}
 	}

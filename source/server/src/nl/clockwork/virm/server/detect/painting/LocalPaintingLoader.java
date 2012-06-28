@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 import nl.clockwork.virm.log.Log;
+import nl.clockwork.virm.server.Settings;
 import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.util.Detect;
@@ -19,7 +20,7 @@ public class LocalPaintingLoader implements Loader {
 	public LocalPaintingLoader() {
 		try {
 			Properties prop = new Properties();
-			prop.load(new FileInputStream("conf/default.properties"));
+			prop.load(new FileInputStream(Settings.CONFIG_FILE));
 			String path = prop.getProperty("local_db_path");
 			this.path = path;
 		} catch (FileNotFoundException e) {

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Properties;
 
 import nl.clockwork.virm.log.Log;
+import nl.clockwork.virm.server.Settings;
 import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Loader;
 import nl.clockwork.virm.util.Detect;
@@ -24,7 +25,7 @@ public class RemotePaintingLoader implements Loader {
 	public RemotePaintingLoader() {
 		try {
 			Properties prop = new Properties();
-			prop.load(new FileInputStream("conf/default.properties"));
+			prop.load(new FileInputStream(Settings.CONFIG_FILE));
 			String host = prop.getProperty("db_host");
 			String user = prop.getProperty("db_user");
 			String pass = prop.getProperty("db_pass");

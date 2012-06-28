@@ -37,6 +37,7 @@ public abstract class BasicOpenCVScanner implements Scanner {
 	@Override
 	public void scan(byte[] data, int width, int height) {
 		if (yuv == null || yuvResized == null) {
+			// CV_8UC1 is grayscale
 			yuv = new Mat(height + height / 2, width, CvType.CV_8UC1);
 			yuvResized = new Mat(Settings.FRAME_HEIGHT, Settings.FRAME_WIDTH, CvType.CV_8UC1);
 		}

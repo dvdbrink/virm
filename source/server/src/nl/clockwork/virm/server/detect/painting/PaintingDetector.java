@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import nl.clockwork.virm.server.Settings;
 import nl.clockwork.virm.server.detect.Detectable;
 import nl.clockwork.virm.server.detect.Detector;
 import nl.clockwork.virm.server.detect.Loader;
@@ -26,7 +27,7 @@ public final class PaintingDetector implements Detector {
 	public PaintingDetector(Loader loader) {
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream("conf/default.properties"));
+			prop.load(new FileInputStream(Settings.CONFIG_FILE));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

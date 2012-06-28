@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Properties;
 
 import nl.clockwork.virm.log.Log;
+import nl.clockwork.virm.server.Settings;
 import nl.clockwork.virm.server.detect.Detector;
 
 public class Server implements Runnable {
@@ -27,7 +28,7 @@ public class Server implements Runnable {
 		
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream("conf/default.properties"));
+			prop.load(new FileInputStream(Settings.CONFIG_FILE));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

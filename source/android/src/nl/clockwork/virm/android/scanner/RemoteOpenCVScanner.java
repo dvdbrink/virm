@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.concurrent.TimeoutException;
 
 import nl.clockwork.virm.android.Settings;
 import nl.clockwork.virm.android.Virm;
@@ -74,7 +75,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	private void connect() {
 		try {
 			socket = new Socket();
-			socket.connect(new InetSocketAddress(Settings.SERVER_IP, Settings.SERVER_PORT));
+			socket.connect(new InetSocketAddress(Settings.SERVER_IP, Settings.SERVER_PORT), 5000);
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
 			connected = true;
@@ -82,6 +83,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 			Log.e(Virm.TAG, "IOException", e);
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setMessage("Could not connect to server");
+			builder.setCancelable(true);
 			AlertDialog alert = builder.create();
 			alert.show();
 		}
@@ -90,6 +92,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 	@Override
 	public void destroy() {
 		if (connected) {
+			// send CLOSE packet
 			Packet p = new Packet();
 			p.addByte(PacketHeaders.CLOSE);
 			p.send(out);
@@ -103,6 +106,7 @@ public class RemoteOpenCVScanner extends BasicOpenCVScanner {
 		@Override
 		protected String doInBackground(Byte... params) {
 			try {
+				// wait for either a MATCH or NO_MATCH packet
 				while (true) {
 					byte command = (byte) in.read();
 					if (command > -1) {

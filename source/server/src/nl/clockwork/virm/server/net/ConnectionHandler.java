@@ -84,7 +84,7 @@ public class ConnectionHandler implements Runnable {
 		int[][] matrix = new int[rows][cols];
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				matrix[row][col] = dp.readByte() & 0xFF;
+				matrix[row][col] = dp.readByte() & 0xFF; // unsigned char as int hack
 			}
 		}
 		
